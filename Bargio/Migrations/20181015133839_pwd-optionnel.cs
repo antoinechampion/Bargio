@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Bargio.Data.Migrations
+namespace Bargio.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class pwdoptionnel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

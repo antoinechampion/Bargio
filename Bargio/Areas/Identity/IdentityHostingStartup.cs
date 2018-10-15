@@ -1,5 +1,5 @@
 ﻿using System;
-using Bargio.Models;
+using Bargio.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -15,12 +15,12 @@ namespace Bargio.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
-                services.AddDbContext<BargioContext>(options =>
+                services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
-                        context.Configuration.GetConnectionString("BargioContextConnection")));
+                        context.Configuration.GetConnectionString("DefaultConnection")));
 
                 services.AddDefaultIdentity<IdentityUser>()
-                    .AddEntityFrameworkStores<BargioContext>();
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
             });
         }
     }
