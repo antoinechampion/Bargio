@@ -46,12 +46,16 @@ namespace Bargio.Areas.Identity.Pages.Account
             
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
+            [StringLength(0)]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
+            [StringLength(0)]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public static readonly string DefaultPassword = "default";
         }
 
         public void OnGet(string returnUrl = null)
@@ -65,6 +69,12 @@ namespace Bargio.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+
+                // Si mdp nul (champ vide), on remplace par une chaîne de caractères
+                // vide pour pas faire bugger la bdd
+                if (string.IsNullOrEmpty(Input.Password)) {
+                    Input.Password = InputModel.DefaultPassword;
+                }
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
