@@ -108,8 +108,19 @@ body {
   background-color: #3b5998;
 }
 
-img.centrage {
+img.centrage1 {
     display: block;
     margin-left: auto;
-    margin-right: auto 
+    margin-right: auto;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    
+}
+
+img.centrage2 {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    
 }

@@ -13,12 +13,12 @@
 </head>
 <body>
 
-    <img class="centrage" scr="Logal.png">
-    <img class="centrage" scr="Bargio.png" width="120" height="120">
+
     <div class="container">
     <div class="row">     
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <img class="centrage" src="Logal.png" alt="Logal Bargio" width="160" height="160">       
+            <img class="centrage1" src="Logal.png" alt="Logal Bargio" width="120" height="179"> 
+            <img class="centrage2" src="Bargio.png" alt="Logal Bargio" width="106" height="20">
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Connexion</h5>           
@@ -30,24 +30,18 @@
                 <label for="inputEmail">Num'ssXxProm'ss...</label>
             </div>
 
-                <input type="checkbox" class="custom-control-input" id="customCheck1">
-              
+                
                 
                 <div class="custom-control custom-checkbox mb-3">
-                <label class="custom-control-label" for="customCheck1">Mot de passe optionnel</label>
+                    <input type="checkbox" class="custom-control-input" id="MDPoptionnel"  /> 
+                    <label class="custom-control-label" for="MDPoptionnel" onclick="ShowHideDiv()">Mot de passe optionnel</label>    
+                </div>               
+                
+              <div id="txtMDPopt" class="form-label-group" style="display: none">
+                <input type="password" id="txtMDPopt"class="form-control" placeholder="Password" required>
+                <label for="txtMDPopt">Mot de passe optionnel3</label>
               </div>
-                
-                
-                
-              <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                <label for="inputPassword">Mot de passe optionnel...</label>
-              </div>
-
-                
-                
-              
-                
+                              
                 
               <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Connexion</button>
               
