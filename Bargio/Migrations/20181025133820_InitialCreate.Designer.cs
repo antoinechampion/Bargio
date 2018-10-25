@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bargio.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181025120605_InitialCreate")]
+    [Migration("20181025133820_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,8 @@ namespace Bargio.Migrations
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
+
+                    b.Property<string>("Nums");
 
                     b.Property<string>("PasswordHash");
 

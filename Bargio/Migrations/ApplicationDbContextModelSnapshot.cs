@@ -44,6 +44,8 @@ namespace Bargio.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
 
+                    b.Property<string>("Nums");
+
                     b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
