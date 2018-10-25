@@ -6,15 +6,15 @@
 }
 
 @section IncludeHead {
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/login.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/login.js"></script>
 }
 
 <div class="container">
     <div class="row">     
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <img class="centrage1" src="images/logo179.png" alt="Logal Bargio_pic" width="179" height="179"> 
-            <img class="centrage2" src="images/title_logo106x20.png" alt="Logal Bargio_tag" width="106" height="20">
+            <img class="centrage1" src="/images/logo179.png" alt="Logal Bargio_pic" width="179" height="179"> 
+            <img class="centrage2" src="/images/title_logo106x20.png" alt="Logal Bargio_tag" width="106" height="20">
             <div class="card bloc-central my-2">
                 <div class="bloc-case">
                     <h5 class="bloc-titre text-center">Connexion à mon compte</h5>           
@@ -25,13 +25,13 @@
                         <div class="text-box1">
                             <input asp-for="Input.Nums" type="text" id="inputNumss" class="form-control" autofocus>
                             <label for="inputNumss">Num'sTabagn'sProm's</label>
+                            <span asp-validation-for="Input.Nums" class="text-danger"></span>
                         </div>
 
                 
                         <div class="custom-control custom-checkbox mb-1">
                             <input type="checkbox" class="custom-control-input" id="MDPoptionnel"/> 
-                            <label class="custom-control-label" for="MDPoptionnel" onclick="ShowHideDiv()">Mot de passe optionnel</label> 
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <label class="custom-control-label" for="MDPoptionnel" onclick="ShowHideDiv()">Mot de passe optionnel</label>
                         </div>               
                 
                         <div id="txtMDPopt" class="text-box1" style="display: none">

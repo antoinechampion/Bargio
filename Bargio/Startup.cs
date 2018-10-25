@@ -92,7 +92,7 @@ namespace Bargio
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
             app.UseMvc();
         }

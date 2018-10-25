@@ -38,15 +38,10 @@ namespace Bargio.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            private string _nums;
             [Required]
-            public string Nums {
-                get => this._nums;
-                set => _nums = value.ToLower();
-            }
+            public string Nums { get; set; }
 
             [Display(Name = "Password")]
-            [StringLength(0)]
             [DataType(DataType.Password)]
             public string Password { get; set; }
         }
@@ -88,6 +83,7 @@ namespace Bargio.Areas.Identity.Pages.Account
                 else
                 {
                     var user = await _userManager.FindByNameAsync(Input.Nums);
+                    
                     if (user == null)
                         ModelState.AddModelError(string.Empty, "Le num's " + Input.Nums + " est inconnu");
                     else
