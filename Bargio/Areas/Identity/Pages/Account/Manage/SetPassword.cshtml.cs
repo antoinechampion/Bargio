@@ -84,7 +84,7 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Votre mot de passe a bien été défini.";
 
-            return RedirectToPage("/");
+            return Redirect("/pg");
         }
     }
 }
