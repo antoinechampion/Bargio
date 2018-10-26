@@ -1,0 +1,20 @@
+﻿@page
+
+@inject SignInManager<IdentityUserDefaultPwd> SignInManager
+@inject UserManager<IdentityUserDefaultPwd> UserManager
+
+@model Bargio.Areas.User.Pages.DashboardModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@section IncludeHead {
+    <link rel="stylesheet" href="/css/style.css">
+}
+
+<h2>@UserManager.GetUserName(User)</h2>
+<ul class="navbar">
+    <li><a asp-page="/Account/Logout" asp-area="Identity">Déconnexion</a></li>
+    <li><a asp-page="/index" asp-area="Orders">Recharger son compte</a></li>
+</ul>

@@ -46,8 +46,10 @@ namespace Bargio.Areas.Identity.Pages.Account
             public string Password { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
-        {
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null) {
+            if (User.Identity.IsAuthenticated)
+                return Redirect("/pg");
+
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -59,6 +61,7 @@ namespace Bargio.Areas.Identity.Pages.Account
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             
             ReturnUrl = returnUrl;
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -78,7 +81,7 @@ namespace Bargio.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return Redirect("/About");
+                    return Redirect("/pg");
                 }
                 else
                 {
