@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs;
 using Bargio.Areas.Identity;
 using Bargio.Data;
 using Microsoft.AspNetCore;
@@ -34,8 +35,8 @@ namespace Bargio
                 // dotnet user-secrets set SeedUserPW <pw>
 
                 var testUserPw = config["SeedUserPW"];
-                try
-                {
+                try {
+                    UserDataInitializer.SeedData(context).Wait();
                     IdentityInitializer.SeedData(userManager, roleManager).Wait();
                 }
                 catch (Exception ex)

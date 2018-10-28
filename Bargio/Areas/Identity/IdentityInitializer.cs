@@ -19,7 +19,7 @@ namespace Bargio.Areas.Identity
         public static async Task SeedUsers
             (UserManager<IdentityUserDefaultPwd> userManager)
         {
-            // PG sans mdp
+            // PG sans mdp (hors foy'ss)
             if (userManager.FindByNameAsync
                     ("1Test217").Result == null)
             {
@@ -93,11 +93,11 @@ namespace Bargio.Areas.Identity
 
             // Interface babasse
             if (userManager.FindByNameAsync
-                    ("5Test217").Result == null)
+                    ("Babasse").Result == null)
             {
                 IdentityUserDefaultPwd user = new IdentityUserDefaultPwd
                 {
-                    UserName = "5Test217"
+                    UserName = "Babasse"
                 };
                 IdentityResult result = await userManager.CreateAsync
                     (user, IdentityUserDefaultPwd.DefaultPassword);

@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
+    Layout = "~/Pages/Shared/_LayoutEditDatabase.cshtml";
 }
 
 <h2>Index</h2>
@@ -35,7 +35,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.UserData[0].DateDerniereModif)
             </th>
-            <th></th>
+            <th></th><th></th><th></th>
         </tr>
     </thead>
     <tbody>
@@ -63,8 +63,12 @@
                 @Html.DisplayFor(modelItem => item.DateDerniereModif)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.UserName">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.UserName">Details</a> |
+                <a asp-page="./Edit" asp-route-id="@item.UserName">Edit</a>
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.UserName">Details</a>
+            </td>
+            <td>
                 <a asp-page="./Delete" asp-route-id="@item.UserName">Delete</a>
             </td>
         </tr>

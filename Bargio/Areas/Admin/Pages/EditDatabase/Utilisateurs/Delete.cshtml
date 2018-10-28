@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Delete";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
+    Layout = "~/Pages/Shared/_LayoutEditDatabase.cshtml";
 }
 
 <h2>Delete</h2>
@@ -12,6 +12,7 @@
 <div>
     <h4>UserData</h4>
     <hr />
+    <label class="text-danger">@Model.ErrorMessage</label>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.UserData.Solde)

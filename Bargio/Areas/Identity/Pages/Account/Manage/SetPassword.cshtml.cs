@@ -25,9 +25,6 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        [TempData]
-        public string StatusMessage { get; set; }
-
         public class InputModel
         {
             [Required]
@@ -82,7 +79,6 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Votre mot de passe a bien été défini.";
 
             return Redirect("/pg");
         }
