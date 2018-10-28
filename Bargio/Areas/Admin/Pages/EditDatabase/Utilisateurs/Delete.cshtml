@@ -1,0 +1,66 @@
+﻿@page
+@model Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Pages/Shared/_LayoutEditDatabase.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>UserData</h4>
+    <hr />
+    <label class="text-danger">@Model.ErrorMessage</label>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.Solde)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.Solde)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.Nums)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.Nums)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.TBK)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.TBK)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.Proms)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.Proms)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.HorsFoys)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.HorsFoys)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.Surnom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.Surnom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.DateDerniereModif)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.DateDerniereModif)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="UserData.UserName" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

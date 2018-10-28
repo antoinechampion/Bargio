@@ -15,19 +15,21 @@ namespace Bargio.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<IdentityUserDefaultPwd> _signInManager;
+        private readonly UserManager<IdentityUserDefaultPwd> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUserDefaultPwd> signInManager,
+            UserManager<IdentityUserDefaultPwd> userManager,
+            ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
-
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -37,19 +39,17 @@ namespace Bargio.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            public string Nums { get; set; }
 
-            [Required]
+            [Display(Name = "Password")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
-
-            [Display(Name = "Remember me?")]
-            public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
-        {
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null) {
+            if (User.Identity.IsAuthenticated)
+                return Redirect("/pg");
+
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -59,38 +59,39 @@ namespace Bargio.Areas.Identity.Pages.Account
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
+            
             ReturnUrl = returnUrl;
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
+            // Si mdp nul (champ vide), on remplace par une chaîne de caractères
+            // vide pour pas faire bugger la bdd
+            if (string.IsNullOrEmpty(Input.Password))
+            {
+                Input.Password = IdentityUserDefaultPwd.DefaultPassword;
+            }
+
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(Input.Nums, Input.Password, true, false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
+                    return Redirect("/pg");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    var user = await _userManager.FindByNameAsync(Input.Nums);
+                    
+                    if (user == null)
+                        ModelState.AddModelError(string.Empty, "Le num's " + Input.Nums + " est inconnu");
+                    else
+                        ModelState.AddModelError(string.Empty, "Mot de passe invalide");
+   
                     return Page();
                 }
             }

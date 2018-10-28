@@ -1,6 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8" />
     <link rel="icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
@@ -8,18 +8,24 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    @RenderSection("IncludeHead", required: false)
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Bargio</title>
-</head>
-<body>
-    <partial name="_CookieConsentPartial" />
+  </head>
+  <body>
 
-    @RenderBody()
+    <div class="container">
 
+      <div class="row ">
+        <div class="col-8 mx-auto d-block">
+          <h2 class="text-center">Cette tentative d'accès non autorisé a été rhopsée.</h5>
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-8 mx-auto d-block">
+          <img class="centrage1" src="acces_interdit.jpg" alt="Accès interdit" width="600">
+        </div>
+      </div>
+    </div>
 
-    @RenderSection("Scripts", required: false)
-    <script src="~/js/bugfixes.js"></script>
-</body>
+  </body>
 </html>

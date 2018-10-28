@@ -11,13 +11,13 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUserDefaultPwd> _userManager;
+        private readonly SignInManager<IdentityUserDefaultPwd> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
         public ChangePasswordModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUserDefaultPwd> userManager,
+            SignInManager<IdentityUserDefaultPwd> signInManager,
             ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
@@ -28,25 +28,20 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        [TempData]
-        public string StatusMessage { get; set; }
-
         public class InputModel
         {
             [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "Mot de passe actuel")]
             public string OldPassword { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Nouveau mot de passe")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Confirmez le nouveau mot de passe")]
+            [Compare("NewPassword", ErrorMessage = "Le nouveau mot de passe et la confirmation ne sont pas similaires.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -55,12 +50,13 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Ne peut pas charger le num's '{_userManager.GetUserId(User)}'.");
             }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
             if (!hasPassword)
             {
+                // si l'utilisateur n'a pas de mdp
                 return RedirectToPage("./SetPassword");
             }
 
@@ -69,15 +65,24 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (string.IsNullOrEmpty(Input.NewPassword))
+            {
+                Input.NewPassword = IdentityUserDefaultPwd.DefaultPassword;
+                Input.ConfirmPassword = IdentityUserDefaultPwd.DefaultPassword;
+            }
+
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
+            
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Ne peut pas charger le num's '{_userManager.GetUserId(User)}'.");
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
@@ -91,10 +96,8 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
 
-            return RedirectToPage();
+            return Redirect("/pg");
         }
     }
 }

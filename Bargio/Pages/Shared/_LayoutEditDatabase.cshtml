@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@section IncludeHead {
+    <link rel="stylesheet" href="/css/editdatabase.css">
+    @RenderSection("IncludeHead", required: false)
+}
+
+<img class="logo-bargio-admin" src="/images/logo_admin255.jpg" alt="Logal Bargio" />
+
+@RenderBody()
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

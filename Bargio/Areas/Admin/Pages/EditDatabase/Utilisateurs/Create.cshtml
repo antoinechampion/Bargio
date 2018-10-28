@@ -1,0 +1,64 @@
+﻿@page
+@model Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_LayoutEditDatabase.cshtml";
+}
+
+<h2>Create</h2>
+
+<h4>UserData</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <label class="text-danger">@Model.ErrorMessage</label>
+            <label class="text-success">@Model.SuccessMessage</label>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserData.Solde" class="control-label"></label>
+                <input asp-for="UserData.Solde" class="form-control" />
+                <span asp-validation-for="UserData.Solde" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserData.Nums" class="control-label"></label>
+                <input asp-for="UserData.Nums" class="form-control" />
+                <span asp-validation-for="UserData.Nums" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserData.TBK" class="control-label"></label>
+                <input asp-for="UserData.TBK" class="form-control" />
+                <span asp-validation-for="UserData.TBK" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserData.Proms" class="control-label"></label>
+                <input asp-for="UserData.Proms" class="form-control" />
+                <span asp-validation-for="UserData.Proms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="UserData.HorsFoys" /> @Html.DisplayNameFor(model => model.UserData.HorsFoys)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserData.Surnom" class="control-label"></label>
+                <input asp-for="UserData.Surnom" class="form-control" />
+                <span asp-validation-for="UserData.Surnom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

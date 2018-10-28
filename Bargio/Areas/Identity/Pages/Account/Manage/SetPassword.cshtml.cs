@@ -11,12 +11,12 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUserDefaultPwd> _userManager;
+        private readonly SignInManager<IdentityUserDefaultPwd> _signInManager;
 
         public SetPasswordModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<IdentityUserDefaultPwd> userManager,
+            SignInManager<IdentityUserDefaultPwd> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -25,19 +25,15 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        [TempData]
-        public string StatusMessage { get; set; }
-
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Mot de passe")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
+            [Display(Name = "Confirmer mot de passe")]
             [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
@@ -47,13 +43,12 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Ne peut pas charger le num's '{_userManager.GetUserId(User)}'.");
             }
 
-            var hasPassword = await _userManager.HasPasswordAsync(user);
-
-            if (hasPassword)
+            if (!await _userManager.CheckPasswordAsync(user, IdentityUserDefaultPwd.DefaultPassword))
             {
+                // L'utilisateur a déjà un mdp
                 return RedirectToPage("./ChangePassword");
             }
 
@@ -70,10 +65,10 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                NotFound($"Ne peut pas charger le num's '{_userManager.GetUserId(User)}'.");
             }
 
-            var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
+            var addPasswordResult = await _userManager.ChangePasswordAsync(user, IdentityUserDefaultPwd.DefaultPassword, Input.NewPassword);
             if (!addPasswordResult.Succeeded)
             {
                 foreach (var error in addPasswordResult.Errors)
@@ -84,9 +79,8 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your password has been set.";
 
-            return RedirectToPage();
+            return Redirect("/pg");
         }
     }
 }
