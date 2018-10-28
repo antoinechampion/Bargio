@@ -1,0 +1,62 @@
+﻿@page
+@model Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>UserData</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.Solde)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.Solde)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.Nums)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.Nums)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.TBK)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.TBK)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.Proms)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.Proms)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.HorsFoys)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.HorsFoys)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.Surnom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.Surnom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserData.DateDerniereModif)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserData.DateDerniereModif)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.UserData.UserName">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

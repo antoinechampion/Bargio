@@ -5,6 +5,7 @@ using Bargio.Areas.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Bargio.Models;
 
 namespace Bargio.Data
 {
@@ -14,5 +15,6 @@ namespace Bargio.Data
             : base(options)
         {
         }
+        public DbSet<Bargio.Models.UserData> UserData { get; set; }
     }
 }
