@@ -4,14 +4,16 @@ using Bargio.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bargio.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181030083212_ajout_PaymentRequest")]
+    partial class ajout_PaymentRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,26 +86,6 @@ namespace Bargio.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("PaymentRequest");
-                });
-
-            modelBuilder.Entity("Bargio.Models.TransactionHistory", b =>
-                {
-                    b.Property<string>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Commentaire");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<long?>("IdProduit");
-
-                    b.Property<decimal>("Montant");
-
-                    b.Property<string>("UserName");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("TransactionHistory");
                 });
 
             modelBuilder.Entity("Bargio.Models.UserData", b =>
