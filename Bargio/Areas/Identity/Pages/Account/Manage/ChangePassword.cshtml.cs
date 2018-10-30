@@ -54,7 +54,7 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
-            if (!hasPassword)
+            if (await _userManager.CheckPasswordAsync(user, IdentityUserDefaultPwd.DefaultPassword))
             {
                 // si l'utilisateur n'a pas de mdp
                 return RedirectToPage("./SetPassword");
