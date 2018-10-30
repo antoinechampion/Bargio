@@ -3,8 +3,13 @@
   --input-padding-y: .75rem;
 }
 
+.margin-top {
+    margin-top: 145px;
+}
+
 body {
-  background-color: white;
+  background-color: #1EEEEE;
+
 }
 
 .bloc-central {
@@ -36,14 +41,6 @@ body {
   padding: 1rem;
   transition: all 0.2s;
   margin-top: 1rem;
-}
-
-.full-width {
-    width: 100%;
-}
-
-.margin-top {
-    margin-top: 145px;
 }
 
 .text-box1 {

@@ -11,7 +11,7 @@ namespace Bargio.Models
 
         [Key]
         public string ID { get; set; } // PK
-        [DataType(DataType.Currency)]
+        public string UserName { get; set; }
         public decimal Montant { get; set; }
         public DateTime DateDemande { get; set; }
     }

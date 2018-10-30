@@ -15,6 +15,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.PaymentRequest[0].UserName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.PaymentRequest[0].Montant)
             </th>
             <th>
@@ -26,6 +29,9 @@
     <tbody>
 @foreach (var item in Model.PaymentRequest) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Montant)
             </td>
