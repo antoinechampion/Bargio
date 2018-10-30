@@ -3,10 +3,7 @@
   --input-padding-y: .75rem;
 }
 
-body {
-  background-color: #1EEEEE;
 
-}
 
 .bloc-central {
   border: 0;
@@ -115,4 +112,20 @@ img.centrage2 {
     margin-right: auto;
     margin-bottom: 1rem;
     
+}
+
+.container2 {
+  display: flex;
+  justify-content:space-around;
+  align-items:center;
+  height: 100%;
+}
+
+.center-div
+{
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+  background-color: #ccc;
+  border-radius: 3px;
 }
