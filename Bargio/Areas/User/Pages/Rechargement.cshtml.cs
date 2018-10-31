@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Bargio.Areas.Identity;
 using Bargio.Data;
 using Bargio.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,15 +22,21 @@ namespace Bargio.Areas.User.Pages
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUserDefaultPwd> _userManager;
-        private readonly IConfiguration _configuration;
-        private HttpClient _httpClient = new HttpClient();
+        private readonly HttpClient _httpClient = new HttpClient();
+
+        private readonly string _lydiaVendorToken;
+        private readonly string _lydiaApiUrl;
 
         public RechargementModel(ApplicationDbContext context, UserManager<IdentityUserDefaultPwd> userManager,
-                IConfiguration configuration)
+                IHostingEnvironment env)
         {
             _context = context;
             _userManager = userManager;
-            _configuration = configuration;
+            // En fonction de l'environnement, on charge les donnees de test ou de production
+            _lydiaVendorToken = env.IsDevelopment() ? "5bd083bec025c852794717" : "5bd083bec025c852794717";
+            _lydiaApiUrl = env.IsDevelopment()
+                ? "https://homologation.lydia-app.com/api/request/do.json"
+                : "https://lydia-app.com/api/request/do.json";
         }
 
         [BindProperty]
@@ -104,15 +111,12 @@ namespace Bargio.Areas.User.Pages
         // https://homologation.lydia-app.com/index.php/backoffice/request/index
         public async Task<(bool,string)> LydiaInitiatePayment(string id)
         {
-            const string testApiUrl = "https://homologation.lydia-app.com/api/request/do.json";
-            const string apiUrl = "https://lydia-app.com/api/request/do.json";
-
             var req = Url.ActionContext.HttpContext.Request;
             var absoluteUri = req.Scheme + "://" + req.Host;
 
             var postData = new LydiaRequestData
             {
-                VendorToken = _configuration["Lydia:PublicTestToken"],
+                VendorToken = _lydiaVendorToken,
                 Recipient = Telephone,
                 Amount = Montant.ToString("0.##"),
                 OrderRef = id,
@@ -126,7 +130,7 @@ namespace Bargio.Areas.User.Pages
             var json = JsonConvert.SerializeObject(postData);
             var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
             var content = new FormUrlEncodedContent(dict);
-            var resp = await _httpClient.PostAsync(testApiUrl, content);
+            var resp = await _httpClient.PostAsync(_lydiaApiUrl, content);
             dynamic o = JsonConvert.DeserializeObject(await resp.Content.ReadAsStringAsync());
             if (o.error == "0") { 
                 return (true, o.mobile_url);
