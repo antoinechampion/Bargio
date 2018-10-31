@@ -11,6 +11,7 @@ using Bargio.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -106,18 +107,21 @@ namespace Bargio.Areas.User.Pages
             const string testApiUrl = "https://homologation.lydia-app.com/api/request/do.json";
             const string apiUrl = "https://lydia-app.com/api/request/do.json";
 
+            var req = Url.ActionContext.HttpContext.Request;
+            var absoluteUri = req.Scheme + "://" + req.Host;
+
             var postData = new LydiaRequestData
             {
                 VendorToken = _configuration["Lydia:PublicTestToken"],
                 Recipient = Telephone,
                 Amount = Montant.ToString("0.##"),
                 OrderRef = id,
-                ConfirmUrl = Request.Path,
-                CancelUrl = Request.Path,
-                ExpireUrl = Request.Path,
-                EndMobileUrl = Request.Path,
-                BrowserSuccessUrl = Request.Path,
-                BrowserFailUrl = Request.Path,
+                ConfirmUrl = absoluteUri + "/api/lydia/confirm",
+                CancelUrl = absoluteUri + "/api/lydia/cancel",
+                ExpireUrl = absoluteUri + "/api/lydia/cancel",
+                EndMobileUrl = absoluteUri + "/user/paiementsucces",
+                BrowserSuccessUrl = absoluteUri + "/user/paiementsucces",
+                BrowserFailUrl = absoluteUri + "/user/paiementechec",
             };
             var json = JsonConvert.SerializeObject(postData);
             var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);

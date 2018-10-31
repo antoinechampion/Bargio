@@ -92,9 +92,9 @@ namespace Bargio
             }
             else
             {
-                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            app.UseStatusCodePagesWithReExecute("/Error", "?statusCode={0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
