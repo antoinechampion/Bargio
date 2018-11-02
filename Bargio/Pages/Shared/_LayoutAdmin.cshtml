@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@section IncludeHead {
+    @RenderSection("IncludeHead", required: false)
+}
+
+<img class="logo-bargio-admin" src="/images/logo_admin255.jpg" alt="Logal Bargio" />
+
+@RenderBody()
+
+<p>
+    <a asp-area="User" asp-page="/Dashboard">Revenir vers l'index</a>
+</p>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
