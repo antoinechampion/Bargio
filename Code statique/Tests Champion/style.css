@@ -1,0 +1,14 @@
+.page {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+#page-1 {    
+  background-color: aqua;
+}
+
+#page-2 {    
+  background-color: greenyellow;
+  display: none;
+}

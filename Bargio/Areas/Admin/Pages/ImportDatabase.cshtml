@@ -1,0 +1,54 @@
+﻿@page
+@model Bargio.Areas.Admin.Pages.ImportDatabaseModel
+
+@{
+    ViewData["Title"] = "Importer une base de données";
+}
+
+<div class="jumbotron">
+    <h1 class="display-4">Importer une BDD depuis l'ancien logiciel</h1>
+    <hr class="my-4">
+    <p class="lead">Etape 1 : Ouvrir la BDD '.accdb' dans Access</p>
+    <p class="lead">Etape 2 : Clic droit sur la table 'tbUser' -> Exporter -> Fichier XML</p>
+    <p class="lead">Etape 3 : Sélectionner sur cette page le fichier XML</p>
+    <hr class="my-4">
+    <p>L'opération peut prendre plusieurs minutes. Ne quittez pas cette page pendant le transfert.</p>
+    <div class="input-group mb-3" style="width:300px;">
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="fileInput">
+            <label class="custom-file-label" for="fileInput">Choisissiez le fichier XML</label>
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col-2">
+            <p class="lead">
+                <button class="btn btn-info" id="sendXml" type="button">Envoyer</button>
+            </p>
+        </div>
+        <div class="col-6" style="padding-top:5px;">
+            <p id="info-attente" class="text-info">○ En attente...</p>
+            <p id="info-migration" class="text-warning d-none">○ Migration de la BDD en cours...</p>
+            <p id="info-echec" class="text-danger d-none">○ Echec de la migration. Erreur : </p>
+            <p id="info-succes" class="text-success d-none">○ Migration terminée </p>
+        </div>
+    </div>
+
+
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        upload_begin = false;
+        $("#sendXml").click(function (e) {
+            if (upload_begin) return;
+            if ($('#fileInput').get(0).files.length === 0) return;
+            upload_begin = true;
+            $("#info-attente").addClass("d-none");
+            $("#info-migration").removeClass("d-none");
+            $("#sendXml").addClass("disabled");
+
+        });
+    });
+</script>
