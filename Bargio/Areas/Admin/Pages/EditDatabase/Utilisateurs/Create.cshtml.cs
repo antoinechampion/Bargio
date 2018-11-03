@@ -36,6 +36,8 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
             var result = await _userManager.CreateAsync(user, IdentityUserDefaultPwd.DefaultPassword);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user,
+                    "PG");
                 return true;
             }
             foreach (var error in result.Errors)
@@ -49,14 +51,10 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
         {
             // Valeurs par défaut pour le modèle
             var tbk = "Li";
-            var proms = (uint)(200 + DateTime.Now.Year - 2000);
-            var listeNums = _context.UserData
-                           .Where(o => o.TBK == "Li" && o.Proms == proms);
-            var nums = listeNums.Any() ? listeNums.Max(o => o.Nums) + 1 : 1;
+            var proms = (200 + DateTime.Now.Year - 2000).ToString();
 
             UserData = new UserData
             {
-                Nums = nums,
                 TBK = tbk,
                 Proms = proms,
                 HorsFoys = false
@@ -91,7 +89,6 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
             SuccessMessage = "Nouvel utilisateur créé : " + UserData.UserName;
             await _context.SaveChangesAsync();
             ModelState.Clear();
-            UserData.Nums++;
             return Page();
         }
     }

@@ -13,11 +13,14 @@ namespace Bargio.Models
         public string UserName { get; set; } // PK
         [DataType(DataType.Currency)]
         public decimal Solde { get; set; }
-        public uint Nums { get; set; }
+        public string Nums { get; set; }
         public string TBK { get; set; }
-        public uint Proms { get; set; }
+        public string Proms { get; set; }
         public bool HorsFoys { get; set; }
         public string Surnom { get; set; }
+        public string Nom { get; set; }
+        public string Prenom { get; set; }
+        public string Telephone { get; set; }
         public DateTime DateDerniereModif { get; set; }
     }
 }

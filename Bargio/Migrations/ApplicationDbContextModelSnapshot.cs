@@ -117,15 +117,21 @@ namespace Bargio.Migrations
 
                     b.Property<bool>("HorsFoys");
 
-                    b.Property<long>("Nums");
+                    b.Property<string>("Nom");
 
-                    b.Property<long>("Proms");
+                    b.Property<string>("Nums");
+
+                    b.Property<string>("Prenom");
+
+                    b.Property<string>("Proms");
 
                     b.Property<decimal>("Solde");
 
                     b.Property<string>("Surnom");
 
                     b.Property<string>("TBK");
+
+                    b.Property<string>("Telephone");
 
                     b.HasKey("UserName");
 

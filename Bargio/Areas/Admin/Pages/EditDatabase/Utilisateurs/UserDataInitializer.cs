@@ -15,9 +15,9 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
             if (!userData.Any(o => o.UserName == "1Test217"))
                 await userData.AddAsync(new UserData {
                     UserName = "1Test217", 
-                    Nums = 1,
+                    Nums = "1",
                     TBK = "Test",
-                    Proms = 217,
+                    Proms = "217",
                     HorsFoys = true, 
                     Solde = 0,
                     DateDerniereModif = DateTime.Now
@@ -27,9 +27,9 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
                 await userData.AddAsync(new UserData
                 {
                     UserName = "2Test217",
-                    Nums = 2,
+                    Nums = "2",
                     TBK = "Test",
-                    Proms = 217,
+                    Proms = "217",
                     HorsFoys = false,
                     Solde = -13,
                     DateDerniereModif = DateTime.Now
@@ -39,9 +39,9 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
                 await userData.AddAsync(new UserData
                 {
                     UserName = "3Test217",
-                    Nums = 3,
+                    Nums = "3",
                     TBK = "Test",
-                    Proms = 217,
+                    Proms = "217",
                     HorsFoys = false,
                     Solde = 0,
                     DateDerniereModif = DateTime.Now
@@ -51,13 +51,14 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
                 await userData.AddAsync(new UserData
                 {
                     UserName = "4Test217",
-                    Nums = 4,
+                    Nums = "4",
                     TBK = "Test",
-                    Proms = 217,
+                    Proms = "217",
                     HorsFoys = false,
                     Solde = 10000,
                     DateDerniereModif = DateTime.Now
                 });
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
                 _context.Attach(UserData).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (DbUpdateConcurrencyException)
             {
                 if (!UserDataExists(UserData.UserName))
                 {
