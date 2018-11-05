@@ -15,11 +15,33 @@
 <body>
 
 
+    
+    
+    
     <div class="container">
     <div class="row">     
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <img class="centrage1" src="../../Logo Bargio/Logal_grand.png" alt="Logal Bargio_pic" width="179" height="179"> 
             <img class="centrage2" src="../../Logo Bargio/Bargio.png" alt="Logal Bargio_tag" width="106" height="20">
+          
+          <div id="conf" class="container" style="display: none">   
+    <div id="conf" class="card bloc-central my-2">
+          <div class="bloc-case">
+            <h5 class="bloc-titre text-center">Définir ce mot de passe ?</h5>           
+            <form class="btn-connexion">
+              
+                <button type="button" class="btn btn-primary btn-lg btn-block">OUI BORD'SS</button>
+                <button type="button" class="btn btn-primary btn-lg btn-block">OUPS ANNULER</button>
+                
+    
+              
+              
+            </form>
+          </div>
+        </div>
+    </div>
+          
+          
         <div class="card bloc-central my-2">
           <div class="bloc-case">
             <h5 class="bloc-titre text-center">Définir mon mot de passe optionnel</h5>           
@@ -36,7 +58,7 @@
                 <label for="inputNumss">Confirmer mot de passe...</label>
                 </div>
 
-                <button type="button" class="btn btn-primary btn-lg btn-block">CONFIRMER</button>
+                <button id="confbut" type="button" class="btn btn-primary btn-lg btn-block" onclick=ShowHideDiv()>CONFIRMER</button>
               
             </form>
           </div>
@@ -45,21 +67,12 @@
     </div>
   </div>
     
-    <div class="card bloc-central my-2">
-          <div class="bloc-case">
-            <h5 class="bloc-titre text-center">Définir ce mot de passe ?</h5>           
-            <form class="btn-connexion">
-              
-                <button type="button" class="btn btn-primary btn-lg btn-block">OUI</button>
-                <button type="button" class="btn btn-primary btn-lg btn-block">NON</button>
-                
+    
 
-              
-              
-            </form>
-          </div>
-        </div>
-         
+    
+    
+     
+
     
     
     
