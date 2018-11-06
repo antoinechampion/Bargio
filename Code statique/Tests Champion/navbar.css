@@ -1,0 +1,18 @@
+nav {
+    height: 50px;
+}
+
+.nav-item {
+    border-bottom: grey solid 2px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.nav-item.active {
+    border-bottom: forestgreen solid 2px;
+}
+
+#logo-navbar {
+    height: 50px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
