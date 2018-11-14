@@ -53,7 +53,6 @@ body {
 
 }
 
-
 .bloc-central .bloc-titre {
   margin-bottom: rem;
   font-weight: 300;
@@ -147,10 +146,12 @@ img.centrage1 {
     
 }
 
-.divcenter {
-    margin: auto;
-    width: 60%;
-    padding: 10px;
+img.centrage2 {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    
 }
 
 .placement {
@@ -163,11 +164,7 @@ img.centrage1 {
     font-size: 1.2rem;
 }
 
-.textcenter {
-    text-align: center;
-}
-
-.box {
-  border: 0;
-  border-radius: 1rem;
+.solde {
+    font-weight: 100;
+    font-size: 5rem;
 }
