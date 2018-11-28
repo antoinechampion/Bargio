@@ -30,6 +30,7 @@ body {
 .bloc-central {
   border-radius: 1rem;
   box-shadow: 0 0.5rem 3rem 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.5rem;
 
 }
 
@@ -58,7 +59,7 @@ body {
 
 .text-box1 {
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
 }
 
 .text-box1 input {
@@ -141,7 +142,7 @@ img.centrage2 {
 
 .paragraphe {
     font-weight: 300;
-    font-size: 1.2rem;
+    font-size: 0.8rem;
 }
 
 .solde {
