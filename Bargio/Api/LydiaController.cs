@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bargio.Api
 {
-    // POST api/<controller>
     [AllowAnonymous]
     public class LydiaController : Controller
     {

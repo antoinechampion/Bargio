@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bargio.Data;
 using Bargio.Models;
+using BCrypt;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -112,7 +113,8 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
 
             userData.DateDerniereModif = DateTime.Now;
             userData.FoysApiHasPassword = true;
-            userData.FoysApiPasswordHash = BCrypt.Net.BCrypt.HashPassword(Input.NewPassword, userData.UserName);
+            userData.FoysApiPasswordSalt = BCryptHelper.GenerateSalt();
+            userData.FoysApiPasswordHash = BCryptHelper.HashPassword(Input.NewPassword, userData.FoysApiPasswordSalt);
             _context.Attach(userData).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 

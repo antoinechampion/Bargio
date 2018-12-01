@@ -23,7 +23,8 @@ namespace Bargio.Models
         public string Telephone { get; set; }
         public DateTime DateDerniereModif { get; set; }
         public bool FoysApiHasPassword { get; set; }
-        // To be hashed with bCrypt, salt is username
+        // To be hashed with Blowfish Crypt, rev 2B
         public string FoysApiPasswordHash { get; set; }
+        public string FoysApiPasswordSalt { get; set; }
     }
 }
