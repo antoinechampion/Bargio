@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Bargio.Areas.Identity;
@@ -29,42 +30,36 @@ namespace Bargio.Api
         
         [HttpGet]
         public string Get() {
-            var userData = _context.UserData.Select(o => new {o.UserName, o.HorsFoys, 
+            var userData = _context.UserData.Select(o => new {o.UserName, o.HorsFoys, o.Surnom,
                 o.Solde, o.FoysApiHasPassword, o.FoysApiPasswordHash, o.FoysApiPasswordSalt}).ToList();
             return JsonConvert.SerializeObject(userData);
         }
         
         [HttpGet("{datetime}")]
-        public string Get(DateTime datetime)
-        {
-            var userData = _context.UserData.Where(o => o.DateDerniereModif >= datetime)
+        public string Get(string datetime) {
+            var dateTime = DateTime.ParseExact(datetime, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            var userData = _context.UserData.Where(o => o.DateDerniereModif >= dateTime)
                 .Select(o => new {o.UserName, o.HorsFoys, 
                     o.Solde, o.FoysApiHasPassword, o.FoysApiPasswordHash, o.FoysApiPasswordSalt}).ToList();
             return JsonConvert.SerializeObject(userData);
         }
         
         [HttpPost]
-        [Route("userdata")]
-        public void PostUserData(string json)
-        {
-            var userData = JsonConvert.DeserializeObject<List<UserData>>(json);
-            foreach (var user in userData)
-            {
-                var result = _context.UserData.SingleOrDefault(o => o.UserName == user.UserName);
-                if (result != null) {
-                    result.HorsFoys = user.HorsFoys;
-                    result.Solde = user.Solde;
-                }
-            }
-
-            _context.SaveChanges();
-        }
-
-        [HttpPost]
         [Route("history")]
         public void PostHistory(string json)
         {
             var transactionHistory = JsonConvert.DeserializeObject<List<TransactionHistory>>(json);
+
+            // On applique les transactions sur chaque utilisateur
+            foreach (var transaction in transactionHistory)
+            {
+                var result = _context.UserData.SingleOrDefault(o => o.UserName == transaction.UserName);
+                if (result != null) {
+                    result.Solde += transaction.Montant;
+                }
+            }
+
+            // On met à jour la BDD historique
             _context.TransactionHistory.AddRange(transactionHistory);
 
             _context.SaveChanges();
