@@ -66,6 +66,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
             ErrorMessage = SuccessMessage = null;
 
             UserData.UserName = UserData.Nums + UserData.TBK + UserData.Proms;
+            UserData.FoysApiHasPassword = false;
             
             if (!ModelState.IsValid)
             {

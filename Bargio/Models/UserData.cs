@@ -22,5 +22,8 @@ namespace Bargio.Models
         public string Prenom { get; set; }
         public string Telephone { get; set; }
         public DateTime DateDerniereModif { get; set; }
+        public bool FoysApiHasPassword { get; set; }
+        // To be hashed with bCrypt, salt is username
+        public string FoysApiPasswordHash { get; set; }
     }
 }

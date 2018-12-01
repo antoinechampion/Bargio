@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Bargio.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bargio.Areas.Identity.Pages.Account.Manage
 {
@@ -13,13 +15,16 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUserDefaultPwd> _userManager;
         private readonly SignInManager<IdentityUserDefaultPwd> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public SetPasswordModel(
             UserManager<IdentityUserDefaultPwd> userManager,
-            SignInManager<IdentityUserDefaultPwd> signInManager)
+            SignInManager<IdentityUserDefaultPwd> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         [BindProperty]
@@ -77,7 +82,24 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
                 }
                 return Page();
             }
+            // Si impossible de trouver l'utilisateur dans la BDD UserData, on annule le changement de mdp
+            var userData = _context.UserData.Find(user.UserName);
+            if (userData == null) {
+                addPasswordResult =
+                    await _userManager.ChangePasswordAsync(user, Input.NewPassword, IdentityUserDefaultPwd.DefaultPassword);
+                ModelState.AddModelError(string.Empty, "Impossible de trouver l'utilisateur dans la BDD UserData.");
+                foreach (var error in addPasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return Page();
+            }
 
+            userData.DateDerniereModif = DateTime.Now;
+            userData.FoysApiHasPassword = true;
+            userData.FoysApiPasswordHash = BCrypt.Net.BCrypt.HashPassword(Input.NewPassword, userData.UserName);
+            _context.Attach(userData).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
             await _signInManager.RefreshSignInAsync(user);
 
             return Redirect("/pg");

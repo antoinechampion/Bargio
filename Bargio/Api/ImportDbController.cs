@@ -63,6 +63,7 @@ namespace Bargio.Api
                     Nom = (string)o.Element("user_Nom") ?? "",
                     Prenom = (string)o.Element("user_Prénom") ?? "",
                     Telephone = (string)o.Element("user_Blairal") ?? "",
+                    FoysApiHasPassword = false
                 };
             }
             catch (Exception)
