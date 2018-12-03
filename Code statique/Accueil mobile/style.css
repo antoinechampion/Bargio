@@ -1,39 +1,20 @@
-/* The side navigation menu */
-.sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-    background-color: #FFFFFF;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+nav {
+    height: 50px;
 }
 
-/* The navigation menu links */
-.sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
+.nav-item {
+    border-bottom: grey solid 2px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.nav-item.active {
+    border-bottom: forestgreen solid 2px;
 }
 
-/* When you mouse over the navigation links, change their color */
-.sidenav a:hover {
-    color: #D2D2D2;
-}
-
-/* Position and style the close button (top right corner) */
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+#logo-navbar {
+    height: 50px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 :root {
@@ -53,8 +34,10 @@ body {
 
 }
 
+
+
 .bloc-central .bloc-titre {
-  margin-bottom: rem;
+  margin-bottom: auto;
   font-weight: 300;
 }
 
@@ -168,3 +151,11 @@ img.centrage2 {
     font-weight: 100;
     font-size: 5rem;
 }
+
+.bucquage {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 100;
+    font-size: 2.2rem;
+}
+
