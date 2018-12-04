@@ -25,7 +25,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
         public UserData UserData { get; set; }
 
         [BindProperty]
-        public string OldUserName { get; set; }
+        public decimal AncienSolde { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -35,7 +35,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
             }
 
             UserData = await _context.UserData.FirstOrDefaultAsync(m => m.UserName == id);
-            OldUserName = id;
+            AncienSolde = UserData.Solde;
 
             if (UserData == null)
             {
@@ -53,6 +53,13 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
                 return Page();
             }
 
+            _context.TransactionHistory.Add(new TransactionHistory {
+                Commentaire = "Edition par un administrateur",
+                Date = DateTime.Now,
+                IdProduit = null,
+                Montant = UserData.Solde - AncienSolde,
+                UserName = UserData.UserName
+            });
 
             try
             {

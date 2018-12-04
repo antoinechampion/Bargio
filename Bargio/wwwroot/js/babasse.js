@@ -16,14 +16,19 @@
             + "€, sur " + textArray[randomNumber][2] + "\n";
 
         $("#historique").val($("#historique").val() + commentaire);
-		db.UserData.update(textArray[randomNumber][2], 
-								{Solde: user.Solde + textArray[randomNumber][1]});
-		db.HistoriqueTransactions.add({UserName: textArray[randomNumber][2], 
-			Montant: textArray[randomNumber][1], IdProduit: textArray[randomNumber][2]});
+
+		db.UserData.get({UserName: textArray[randomNumber][2]}, user => {
+			db.UserData.update(textArray[randomNumber][2], 
+				{Solde: user.Solde + textArray[randomNumber][1]});
+		}).then (function() {
+			db.HistoriqueTransactions.add({UserName: textArray[randomNumber][2], 
+				Montant: textArray[randomNumber][1], IdProduit: textArray[randomNumber][0]});
+		});
+
+		
     });
 	$("#force_request").click(function() {
 		foysApiGetUpdates();
-		foysApiPostUpdates();
 	});
 	$("#clear_history").click(function() {
 		db.HistoriqueTransactions.clear();
@@ -50,16 +55,15 @@
         console.error('Failed to open db: ' + (err.stack || err));
     });
 	// DEBUG
-	db.HistoriqueTransactions.clear().then(function() {
-		db.HistoriqueTransactions.add({UserName: "1Test217", Montant: 1});
-		db.HistoriqueTransactions.add({UserName: "1Test217", Montant: 3});
-	});
+	db.HistoriqueTransactions.clear();
 	// END DEBUG
 	
 	function dateTimeNow() {
 		return dateFormat(new Date(), "dd-mm-yyyy HH:MM:ss");
 	}
-	
+
+	var derniereSynchro = null;
+	var timer = new Timer();
     function foysApiGet() {
 		// Si il n'y a pas de resynchro à faire, on recharge la liste des utilisateurs
 		db.HistoriqueTransactions.count().then( function (count) {
@@ -76,6 +80,7 @@
 							});
 							$("#chargement").hide();
 							$("#fin_chargement").show();
+							derniereSynchro = dateTimeNow();
 						}
 					});
 				});
@@ -85,39 +90,46 @@
 			}
 		});
     }
-	
+
 	function foysApiGetUpdates() {
-		$.ajax({
-			type: 'GET',
-			url: '/Api/Foys/' + dateTimeNow(),
-			success: function (response) {
-				// Pour chaque utilisateur modifié, on met à jour son solde
-				// et son status, et on re-applique tout son historique
-				// de transaction local
-				var arr = JSON.parse(response);
-				if (arr.length === 0) {
-					console.log(dateTimeNow() + ": Pas de nouvelles modifications côté serveur");
-					return;
-				}
-				arr.forEach(function(user) {
-					console.log("Modifications serveur sur l'utilisateur " + user.UserName);
-					var modifSoldeLocal = 0;
-					db.HistoriqueTransactions
-						.where("UserName")
-						.equals(user.UserName)
-						.each(
-							function (transaction) {
-								console.log("\t -> Transaction : " + transaction.Montant + "€");
-								modifSoldeLocal += transaction.Montant;
-							}
-						).then(function() {
-							console.log("\t-> Modifs solde local : " + modifSoldeLocal);
-							console.log("\t-> Nouveau solde : " + (user.Solde + modifSoldeLocal));
-							db.UserData.update(user.UserName, 
-								{Solde: user.Solde + modifSoldeLocal, HorsFoys: user.HorsFoys});
-						});
-				});
-			}
+        $.ajax({
+            type: 'GET',
+            url: '/Api/Foys/' + derniereSynchro,
+            success: function (response) {
+                // Pour chaque utilisateur modifié, on met à jour son solde
+                // et son status, et on re-applique tout son historique
+                // de transaction local
+                var arr = JSON.parse(response);
+                if (arr.length === 0) {
+                    console.log(dateTimeNow() + ": Pas de nouvelles modifications côté serveur");
+                } else {
+                    arr.forEach(function (user) {
+                        console.log("Modifications serveur sur l'utilisateur " + user.UserName);
+                        var modifSoldeLocal = 0;
+                        db.HistoriqueTransactions
+                            .where("UserName")
+                            .equals(user.UserName)
+                            .each(
+                                function (transaction) {
+                                    console.log("\t -> Transaction : " + transaction.Montant + "€");
+                                    modifSoldeLocal += transaction.Montant;
+                                }
+                            ).then(function () {
+                                console.log("\t-> Modifs solde local : " + modifSoldeLocal);
+                                console.log("\t-> Nouveau solde : " + (user.Solde + modifSoldeLocal));
+                                db.UserData.update(user.UserName,
+                                    { Solde: user.Solde + modifSoldeLocal, HorsFoys: user.HorsFoys });
+                            });
+                    });
+                }
+                derniereSynchro = dateTimeNow();
+                foysApiPostUpdates();
+            },
+			error: function(xhr, error){
+				console.log(dateTimeNow() + ": Impossible de synchroniser\n\t-> Erreur: " 
+					+ error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
+			},
+			timeout: 3000
 		});
 	}
 	
@@ -127,7 +139,7 @@
 		db.HistoriqueTransactions.toArray().then(function (arr) {
 			if (arr.length === 0) {
 				console.log(dateTimeNow() + ": Pas de nouvelles modifications côté client à POST");
-				
+				timer.reset();
 				return;
 			}
 			var json = JSON.stringify(arr);
@@ -144,7 +156,7 @@
 					// DEBUG
 					$("#historique").val("");
 					// END DEBUG
-					
+					timer.reset();
 				}
 			});
 		});      
@@ -153,15 +165,12 @@
 	// Chargement
     foysApiGet();
 
-    var timer = new Timer();
     timer.start({countdown: true, startValues: {seconds: 30}});
     timer.addEventListener('secondsUpdated', function (e) {
         $('#timer').html(timer.getTimeValues().toString());
     });
     timer.addEventListener('targetAchieved', function (e) {
 		foysApiGetUpdates();
-		foysApiPostUpdates();
-		timer.reset();
     });
 
 });
