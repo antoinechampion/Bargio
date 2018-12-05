@@ -54,9 +54,6 @@
     db.open().catch (function (err) {
         console.error('Failed to open db: ' + (err.stack || err));
     });
-	// DEBUG
-	db.HistoriqueTransactions.clear();
-	// END DEBUG
 	
 	function dateTimeNow() {
 		return dateFormat(new Date(), "dd-mm-yyyy HH:MM:ss");
@@ -67,27 +64,43 @@
     function foysApiGet() {
 		// Si il n'y a pas de resynchro à faire, on recharge la liste des utilisateurs
 		db.HistoriqueTransactions.count().then( function (count) {
+			console.log(count);
 			if (count === 0) {
 				console.log(dateTimeNow() + ": Historique vide: pas de resynchro à faire.");
 				db.UserData.clear().then(function () {
 					$.ajax({
 						type: 'GET',
 						url: '/Api/Foys',
+						cache: false,
 						success: function (response) {
 							JSON.parse(response).forEach(function(user) {
-								console.log("Ajout de " + user.UserName);
+								//console.log("Ajout de " + user.UserName);
 								db.UserData.add(user);
 							});
 							$("#chargement").hide();
 							$("#fin_chargement").show();
-							derniereSynchro = dateTimeNow();
 						}
 					});
 				});
-			} else {				
-				$("#chargement").hide();
-				$("#fin_chargement").show();
+			} else {
+				db.HistoriqueTransactions
+					.each(
+						function(transaction) {
+							var commentaire = "Id produit " +
+								transaction.IdProduit +
+								", Prix = " +
+								transaction.Montant +
+								"€, sur " +
+								transaction.UserName +
+								"\n";
+
+							$("#historique").val($("#historique").val() + commentaire);
+						}
+					);
 			}
+			derniereSynchro = dateTimeNow();
+			$("#chargement").hide();
+			$("#fin_chargement").show();
 		});
     }
 
@@ -95,6 +108,7 @@
         $.ajax({
             type: 'GET',
             url: '/Api/Foys/' + derniereSynchro,
+			cache: false,
             success: function (response) {
                 // Pour chaque utilisateur modifié, on met à jour son solde
                 // et son status, et on re-applique tout son historique
@@ -128,6 +142,7 @@
 			error: function(xhr, error){
 				console.log(dateTimeNow() + ": Impossible de synchroniser\n\t-> Erreur: " 
 					+ error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
+				timer.reset();
 			},
 			timeout: 3000
 		});
@@ -148,6 +163,7 @@
 			$.ajax({
 				type: 'POST',
 				url: '/Api/Foys/history',
+				cache: false,
 				data: fdata,
 				contentType: false,
 				processData: false,
