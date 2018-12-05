@@ -34,6 +34,12 @@ body {
 
 }
 
+.bloc-footer {
+  border-radius: 1rem;
+  margin-bottom: 0.5rem;
+
+}
+
 .bloc-central .bloc-titre {
   margin-bottom: rem;
   font-weight: 300;
@@ -148,4 +154,19 @@ img.centrage2 {
 .solde {
     font-weight: 100;
     font-size: 3rem;
+    margin-bottom: 0rem;
+}
+
+.encours {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    font-weight: lighter;
+    font-size: 1rem;
+}
+
+.table-wrapper-scroll-y {
+display: block;
+max-height: 290px;
+overflow-y: auto;
+-ms-overflow-style: -ms-autohiding-scrollbar;
 }

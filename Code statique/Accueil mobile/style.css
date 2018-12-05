@@ -120,7 +120,7 @@ body {
   color: #777;
 }
 
-img.centrage1 {
+.centrage1 {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -129,7 +129,7 @@ img.centrage1 {
     
 }
 
-img.centrage2 {
+.centrage2 {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -143,19 +143,31 @@ img.centrage2 {
 }
 
 .paragraphe {
+    margin-bottom: 0rem;
     font-weight: 300;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
 }
 
 .solde {
     font-weight: 100;
-    font-size: 5rem;
+    font-size: 3rem;
 }
 
 .bucquage {
     margin-top: 1rem;
     margin-bottom: 1rem;
     font-weight: 100;
-    font-size: 2.2rem;
+    font-size: 1.7rem;
 }
 
+
+.rechargement {
+    margin-bottom:0rem;
+    font-weight: 300;
+    font-size: 1.8rem;
+}
+
+.titre {
+    font-weight: 300;
+    font-size: 1.2rem;
+}

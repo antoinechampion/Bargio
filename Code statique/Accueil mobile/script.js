@@ -25,20 +25,15 @@ $(document).ready(function () {
 	, {
 		type: 'doughnut',
 		data: {
-			labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+			labels: ["Bières", "Zabulles", "Biffuts", "Pain choc'ss"],
 			datasets: [
 				{
-					label: "Population (millions)",
-					backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9" , "#c45850"],
-					data: [2478, 5267, 734, 784, 433]
+					label: "Historique",
+					backgroundColor: ["#234d20", "#36802d", "#77ab59", "#c9df8a"],
+					data: [2478, 5267, 734, 784]
 				}
 			]
 		},
-		options: {
-			title: {
-				display: true,
-				text: 'Predicted world population (millions) in 2050'
-			}
-		}
+
 	});
 });
