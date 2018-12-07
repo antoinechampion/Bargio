@@ -1,32 +1,193 @@
 ﻿@page
 @model Bargio.Areas.User.Pages.BabasseModel
 
-@section IncludeHead {
-    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
-    <script src="/js/easytimer.js"></script>
-    <script src="/js/babasse.js"></script>
-    <script src="/js/date.format.js"></script>
+@{
+    ViewData["Title"] = "Babasse foy's";
+    Layout = "~/Pages/Shared/_LayoutNoNavbar.cshtml";
 }
 
-<h1 id="chargement">Chargement initial...</h1>
-<div id="fin_chargement" style="display:none;">
-    <label style="color:darkgreen;">Synchronisé</label>
-    <label style="color:darkred;display:none;">Désynchronisé</label>
-    <br />
-    <br />
-    <label id="timer">00:00:00</label><label> avant la prochaîne requête</label>
-    <br />
-    <br />
-    <button id="force_request" type="button">Forcer requête</button>
-    <br />
-    <button id="clear_history" type="button">Vider la BDD locale HistoriqueTransactions</button>
-    <br />
-    <button id="clear_userdata" type="button">Vider la BDD locale UserData</button>
-    <br />
-    <button id="ajouter" type="button">Ajouter opération</button>
-    <br />
-    <br />
-<textarea id="historique" cols="100" rows="20">
-</textarea>
+@section IncludeHead {
+    <link rel="stylesheet" href="/css/babasse.css">
+}
+
+@section Scripts {
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+    <script src="~/js/easytimer.js"></script>
+    <script src="~/js/babasse.js"></script>
+    <script src="~/js/date.format.js"></script>
+}
+
+<div class="bloc-central">
+    <div class="container">
+        <ul class="list-inline list-header" id="ui-proms">
+            @foreach (var r in Model.RaccourcisProms) {
+                <li class="list-inline-item font-weight-light">@r.Raccourci</li>
+                <li class="list-inline-item font-weight-bold">@(r.TBK + r.Proms)</li>
+            }
+        </ul>
+        <ul class="list-inline list-header" id="ui-userdata">
+            <li class="list-inline-item font-weight-light"># </li>
+            <li class="list-inline-item font-weight-bold">1 Test 218</li>
+        </ul>
+    </div>
 </div>
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card bloc-central" id="ui-tarifs">
+                <div class="bloc-case">
+                    <p class="bloc-titre text-center">Tarifs</p>
+                    <table class="table">
+                        <tr>
+                            <th>Bière F1</th>
+                            <td>F1</td>
+                            <td>Prix</td>
+                        </tr>
+                        <tr>
+                            <th>Bière F2</th>
+                            <td>F2</td>
+                            <td>Prix</td>
+                        </tr>
+                        <tr>
+                            <th>Bière F5</th>
+                            <td>F5</td>
+                            <td>Prix</td>
+                        </tr>
+                        <tr>
+                            <th>Bière bout'ss</th>
+                            <td>F4</td>
+                            <td>Prix</td>
+                        </tr>
+                        <tr>
+                            <th>Cidre</th>
+                            <td>F6</td>
+                            <td>Prix</td>
+                        </tr>
+                        <tr>
+                            <th>Dose d'alcool fort</th>
+                            <td>F3</td>
+                            <td>Prix</td>
+                        </tr>
+                        <tr>
+                            <th>Zabulle</th>
+                            <td>F10</td>
+                            <td>Prix</td>
+                        </tr>
+                        <tr>
+                            <th>Biffut</th>
+                            <td>F12</td>
+                            <td>Prix</td>
+                        </tr>
+                        <tr>
+                            <th>Pain choc'ss</th>
+                            <td>F7</td>
+                            <td>Prix</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bloc-central" id="ui-nums">
+                <div class="bloc-case">
+                    <div class="text-box1">
+                        <input type="text" id="inputNumss" class="form-control input-lg" autofocus>
+                        <label for="inputNumss">Num'ss de babasse</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bloc-central" id="ui-solde">
+                <div class="bloc-case">
+                    <p class="bloc-titre text-center">Solde actuel</p>
+                    <p class="text-center solde">+123,00€</p>
+                    <p class="text-center encours">-86,00€</p>
+                </div>
+            </div>
+
+            <div class="card bloc-central" id="ui-actualites">
+                <div class="bloc-case">
+                    <p class="bloc-titre text-center">Actualités & Événements</p>
+                    <form class="btn-connexion">
+                        <p class="text-justify paragraphe">
+                            Jeudi 8 Novembre - Zbeuuuuuuul<br>
+                            Vendredi 9 Novembre - Remise de fam'ss<br>
+                            WBP - fin'ss - ce genre de choses...
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card bloc-central" id="ui-motzifoys">
+                <div class="bloc-case">
+                    <p class="bloc-titre text-center">Le mot des Zifoy'ss</p>
+                    <form class="btn-connexion">
+                        <p class="text-justify paragraphe">L'endroit parfait pour caler des rhopses hyper ayat'sssssssss.</p>
+
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bloc-central" id="ui-historique">
+                <div class="bloc-case">
+                    <p class="bloc-titre text-center">Historique</p>
+                    <div class="table-wrapper-scroll-y">
+                        <table class="table">
+                            <tr>
+                                <th>Conso</th>
+                                <td>Date</td>
+                            </tr>
+                            <tr>
+                                <th>Conso</th>
+                                <td>Date</td>
+                            </tr>
+                            <tr>
+                                <th>Conso</th>
+                                <td>Date</td>
+                            </tr>
+                            <tr>
+                                <th>Conso</th>
+                                <td>Date</td>
+                            </tr>
+                            <tr>
+                                <th>Conso</th>
+                                <td>Date</td>
+                            </tr>
+                            <tr>
+                                <th>Conso</th>
+                                <td>Date</td>
+                            </tr>
+                            <tr>
+                                <th>Conso</th>
+                                <td>Date</td>
+                            </tr>
+
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+<br>
+<footer>
+    <div class="bloc-footer">
+        <div class="bloc-case">
+            <p class="bloc-titre text-center">Dernier bucquage</p>
+            <p class="text-center paragraphe">F5 le XX/XX/XX à XX:XX</p>
+        </div>
+        <img class="centrage2" src="~/images/title_logo106x20.png" alt="Logal Bargio_tag" width="106" height="20">
+    </div>
+
+</footer>

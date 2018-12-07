@@ -1,48 +1,4 @@
 ﻿$( document ).ready(function() {
-	var interfaceAccueil = true;
-    function setInterfaceAccueil() {
-		$("#ui-proms").slideDown(200); 
-		$("#ui-tarifs").hide();
-		$("#ui-nums").show();
-		$("#ui-userdata").hide(); 
-		$("#ui-solde").hide();
-		$("#ui-actualites").show();
-		$("#ui-historique").hide();
-		$("#ui-motzifoys").show();
-		interfaceAccueil = true;
-	}
-    function setInterfaceBucquage() {
-		$("#ui-proms").hide(); 
-		$("#ui-tarifs").show();
-		$("#ui-nums").hide();
-		$("#ui-userdata").slideDown(200); 
-		$("#ui-solde").show();
-		$("#ui-actualites").hide();
-		$("#ui-historique").show();
-		$("#ui-motzifoys").hide();
-		interfaceAccueil = false;
-	}
-
-	setInterfaceAccueil();
-	
-
-	// To force fullscreen, start chrome in kiosk mode:
-	// chrome.exe --kiosk https://www.mywebsite.com
-	// F1- F12 corresponds to keycodes 112 - 123
-	$(document).on('keydown', function(e) {
-		e = e  || e.which;
-		if (e.keyCode === 112) {
-			e.preventDefault();
-		}
-		else if (e.keyCode === 13) {
-			if (interfaceAccueil)
-				setInterfaceBucquage();
-			else
-				setInterfaceAccueil();
-			e.preventDefault();
-		}
-	});
-
 	// DEBUG
     $("#ajouter").click(function(){
         // On ajoute une transaction random

@@ -4,14 +4,16 @@ using Bargio.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bargio.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181207203105_ajout_RaccourcisProms")]
+    partial class ajout_RaccourcisProms
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,22 +102,6 @@ namespace Bargio.Migrations
                     b.HasKey("Raccourci");
 
                     b.ToTable("PromsKeyboardShortcut");
-                });
-
-            modelBuilder.Entity("Bargio.Models.SystemParameters", b =>
-                {
-                    b.Property<string>("IpServeur")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("BucquagesBloques");
-
-                    b.Property<DateTime>("DerniereConnexionBabasse");
-
-                    b.Property<bool>("LydiaBloque");
-
-                    b.HasKey("IpServeur");
-
-                    b.ToTable("SystemParameters");
                 });
 
             modelBuilder.Entity("Bargio.Models.TransactionHistory", b =>

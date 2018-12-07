@@ -1,0 +1,32 @@
+﻿@page
+@model Bargio.Areas.User.Pages.BabasseTestModel
+
+@section IncludeHead {
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+    <script src="~/js/easytimer.js"></script>
+    <script src="~/js/babassetest.js"></script>
+    <script src="~/js/date.format.js"></script>
+}
+
+<h1 id="chargement">Chargement initial...</h1>
+<div id="fin_chargement" style="display:none;">
+    <label style="color:darkgreen;">Synchronisé</label>
+    <label style="color:darkred;display:none;">Désynchronisé</label>
+    <br />
+    <br />
+    <label id="timer">00:00:00</label><label> avant la prochaîne requête</label>
+    <br />
+    <br />
+    <button id="force_request" type="button">Forcer requête</button>
+    <br />
+    <button id="clear_history" type="button">Vider la BDD locale HistoriqueTransactions</button>
+    <br />
+    <button id="clear_userdata" type="button">Vider la BDD locale UserData</button>
+    <br />
+    <button id="ajouter" type="button">Ajouter opération</button>
+    <br />
+    <br />
+<textarea id="historique" cols="100" rows="20">
+</textarea>
+</div>
+

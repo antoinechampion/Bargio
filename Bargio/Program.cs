@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using Bargio.Areas.Admin.Pages.EditDatabase.RaccourcisProms;
 using Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs;
 using Bargio.Areas.Identity;
+using Bargio.Areas.User;
 using Bargio.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +36,8 @@ namespace Bargio
                 try {
                     UserDataInitializer.SeedData(context).Wait();
                     IdentityInitializer.SeedData(userManager, roleManager).Wait();
+                    PromsKeyboardShortcutInitializer.SeedData(context).Wait();
+                    SystemParametersInitializer.SeedData(context).Wait();
                 }
                 catch (Exception ex)
                 {

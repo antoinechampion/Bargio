@@ -18,5 +18,7 @@ namespace Bargio.Data
         public DbSet<Bargio.Models.UserData> UserData { get; set; }
         public DbSet<Bargio.Models.PaymentRequest> PaymentRequest { get; set; }
         public DbSet<Bargio.Models.TransactionHistory> TransactionHistory { get; set; }
+        public DbSet<Bargio.Models.PromsKeyboardShortcut> PromsKeyboardShortcut { get; set; }
+        public DbSet<Bargio.Models.SystemParameters> SystemParameters { get; set; }
     }
 }

@@ -1,3 +1,22 @@
+nav {
+    height: 50px;
+}
+
+.nav-item {
+    border-bottom: grey solid 2px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.nav-item.active {
+    border-bottom: forestgreen solid 2px;
+}
+
+#logo-navbar {
+    height: 50px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
 :root {
   --input-padding-x: 1.5rem;
   --input-padding-y: .75rem;
@@ -5,19 +24,27 @@
 
 body {
   background-color: white;
+
 }
 
 .bloc-central {
-  border: 0;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 3rem 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
 
+.bloc-footer {
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .bloc-central .bloc-titre {
   margin-bottom: 1rem;
+  margin-top: 1rem;
   font-weight: 300;
-  font-size: 1rem;
 }
 
 .bloc-central .bloc-case {
@@ -38,17 +65,9 @@ body {
   margin-top: 1rem;
 }
 
-.full-width {
-    width: 100%;
-}
-
-.margin-top {
-    margin-top: 145px;
-}
-
 .text-box1 {
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
 }
 
 .text-box1 input {
@@ -121,4 +140,42 @@ img.centrage2 {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1rem;
+    
+}
+
+.placement {
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.paragraphe {
+    font-weight: 300;
+    font-size: 0.8rem;
+}
+
+.solde {
+    font-weight: 100;
+    font-size: 3rem;
+    margin-bottom: 0rem;
+}
+
+.encours {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    font-weight: lighter;
+    font-size: 1rem;
+}
+
+.table-wrapper-scroll-y {
+display: block;
+max-height: 290px;
+overflow-y: auto;
+-ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.list-header {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  text-align: center;
 }
