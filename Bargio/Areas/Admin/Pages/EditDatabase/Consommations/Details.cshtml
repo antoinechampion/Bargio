@@ -1,0 +1,50 @@
+﻿@page
+@model Bargio.Areas.Admin.Pages.EditDatabase.Consommations.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Nom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.Nom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Prix)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.Prix)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.CompteurConsoMois)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.CompteurConsoMois)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.CompteurConsoTotal)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.CompteurConsoTotal)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.RaccourciClavier)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.RaccourciClavier)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Product.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

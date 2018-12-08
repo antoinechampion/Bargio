@@ -1,0 +1,61 @@
+﻿@page
+@model Bargio.Areas.Admin.Pages.EditDatabase.Consommations.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].Nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].Prix)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].CompteurConsoMois)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].CompteurConsoTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].RaccourciClavier)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Product) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prix)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompteurConsoMois)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompteurConsoTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RaccourciClavier)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
