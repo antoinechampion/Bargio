@@ -1,4 +1,5 @@
 ﻿using System;
+using Bargio.Areas.Admin.Pages.EditDatabase.Consommations;
 using Bargio.Areas.Admin.Pages.EditDatabase.RaccourcisProms;
 using Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs;
 using Bargio.Areas.Identity;
@@ -38,6 +39,7 @@ namespace Bargio
                     IdentityInitializer.SeedData(userManager, roleManager).Wait();
                     PromsKeyboardShortcutInitializer.SeedData(context).Wait();
                     SystemParametersInitializer.SeedData(context).Wait();
+                    ProductsInitializer.SeedData(context).Wait();
                 }
                 catch (Exception ex)
                 {

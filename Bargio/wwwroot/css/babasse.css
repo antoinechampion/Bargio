@@ -167,15 +167,33 @@ img.centrage2 {
 }
 
 .table-wrapper-scroll-y {
-display: block;
-max-height: 290px;
-overflow-y: auto;
--ms-overflow-style: -ms-autohiding-scrollbar;
+  display: block;
+  max-height: 290px;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 .list-header {
   padding-top: 12px;
   padding-bottom: 12px;
   margin-bottom: 20px;
+  text-align: center;
+}
+
+#scroll-tarifs {
+  max-height: 680px;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.clickable-tr {
+  cursor: pointer;
+}
+
+.clickable-tr:hover {
+  background-color: lightgray;
+}
+
+#ui-chargement {
   text-align: center;
 }

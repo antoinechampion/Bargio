@@ -1,16 +1,22 @@
-﻿$( document ).ready(function() {
+﻿"use strict";
+$( document ).ready(function() {
 	var interfaceAccueil = true;
     function setInterfaceAccueil() {
+		$("#undefined-user-alert").hide();
+		$("#ui-userdata").hide(); 
 		$("#ui-proms").slideDown(200); 
 		$("#ui-tarifs").hide();
 		$("#ui-nums").show();
-		$("#ui-userdata").hide(); 
 		$("#ui-solde").hide();
 		$("#ui-actualites").show();
 		$("#ui-historique").hide();
 		$("#ui-motzifoys").show();
+		$("#inputNumss").focus();
+		$("#inputNumss").val("");
+		$("#input-modal-proms").val("");
 		interfaceAccueil = true;
 	}
+
     function setInterfaceBucquage() {
 		$("#ui-proms").hide(); 
 		$("#ui-tarifs").show();
@@ -23,81 +29,21 @@
 		interfaceAccueil = false;
 	}
 
-	setInterfaceAccueil();
-	
-
-	// To force fullscreen, start chrome in kiosk mode:
-	// chrome.exe --kiosk https://www.mywebsite.com
-	// F1- F12 corresponds to keycodes 112 - 123
-	$(document).on('keydown', function(e) {
-		e = e  || e.which;
-		if (e.keyCode === 112) {
-			e.preventDefault();
-		}
-		else if (e.keyCode === 13) {
-			if (interfaceAccueil)
-				setInterfaceBucquage();
-			else
-				setInterfaceAccueil();
-			e.preventDefault();
-		}
-	});
-
-	// DEBUG
-    $("#ajouter").click(function(){
-        // On ajoute une transaction random
-        // product id, montant, utilisateur, commentaire
-        var textArray = [
-            [1,-1.25,"1Test217"],
-            [2,-2.50,"1Test217"],
-            [3,-3.75,"2Test217"],
-            [4,-5.00,"1Test217"]
-        ];
-
-        var randomNumber = Math.floor(Math.random()*textArray.length);
-        var commentaire = "Id produit " + textArray[randomNumber][0]
-            + ", Prix = " + textArray[randomNumber][1]
-            + "€, sur " + textArray[randomNumber][2] + "\n";
-
-        $("#historique").val($("#historique").val() + commentaire);
-
-		db.UserData.get({UserName: textArray[randomNumber][2]}, user => {
-			db.UserData.update(textArray[randomNumber][2], 
-				{Solde: user.Solde + textArray[randomNumber][1]});
-		}).then (function() {
-			db.HistoriqueTransactions.add({UserName: textArray[randomNumber][2], 
-				Montant: textArray[randomNumber][1], IdProduit: textArray[randomNumber][0]});
-		});
-
-		
-    });
-	$("#force_request").click(function() {
-		foysApiGetUpdates();
-	});
-	$("#clear_history").click(function() {
-		db.HistoriqueTransactions.clear();
-		$("#historique").val("");
-	});
-	$("#clear_userdata").click(function() {
-		db.UserData.clear();
-	});
-	// END DEBUG
-	
 	// Créée les tables de bdd locales :
 	// - UserData : sera chargée depuis le serveur,
 	// contient chaque PG, son solde et son statut (hors babasse...)
 	// - HistoriqueTransactions : table à synchroniser, contient tout l'historique
 	// des transactions, bucquages comme rechargement
-    var db = new Dexie("db");
-    db.version(1).stores({
-        UserData: 'UserName,HorsFoys,Surnom,Solde,'
-            + 'FoysApiHasPassword,FoysApiPasswordHash,'
-            + 'FoysApiPasswordSalt',
-        HistoriqueTransactions: '++,UserName,Date,Montant,IdProduit,Commentaire'
+	var db = new Dexie("db");
+	db.version(1).stores({
+		UserData: 'UserName,HorsFoys,Surnom,Solde,'
+			+ 'FoysApiHasPassword,FoysApiPasswordHash,'
+			+ 'FoysApiPasswordSalt',
+		HistoriqueTransactions: '++,UserName,Date,Montant,IdProduit,Commentaire'
 	});
-    db.open().catch (function (err) {
-        console.error('Failed to open db: ' + (err.stack || err));
-    });
+	db.open().catch (function (err) {
+		console.error('Failed to open db: ' + (err.stack || err));
+	});
 	
 	function dateTimeNow() {
 		return dateFormat(new Date(), "dd-mm-yyyy HH:MM:ss");
@@ -105,50 +51,90 @@
 
 	var derniereSynchro = null;
 	var timer = new Timer();
-    function foysApiGet() {
-		// Si il n'y a pas de resynchro à faire, on recharge la liste des utilisateurs
-		db.HistoriqueTransactions.count().then( function (count) {
-			console.log(count);
-			if (count === 0) {
-				console.log(dateTimeNow() + ": Historique vide: pas de resynchro à faire.");
-				db.UserData.clear().then(function () {
-					$.ajax({
-						type: 'GET',
-						url: '/Api/Foys',
-						cache: false,
-						success: function (response) {
-							JSON.parse(response).forEach(function(user) {
-								//console.log("Ajout de " + user.UserName);
-								db.UserData.add(user);
-							});
-							$("#chargement").hide();
-							$("#fin_chargement").show();
-						}
+
+    function keycodeToShortcut(keycode)
+	{
+		var raccourci = "";
+		if (keycode < 112 || keycode > 123) return null;
+		else return "F" + (keycode - 111);
+	}
+	
+	// Mises à jour asynchrones
+    (function () {	
+		function foysApiGet() {
+			// Si il n'y a pas de resynchro à faire, on recharge la liste des utilisateurs
+			db.HistoriqueTransactions.count().then( function (count) {
+
+				if (count === 0) {
+					console.log(dateTimeNow() + ": Historique vide: pas de resynchro à faire.");
+					db.UserData.clear().then(function () {
+						$.ajax({
+							type: 'GET',
+							url: '/Api/Foys',
+							cache: false,
+							success: function (response) {
+								JSON.parse(response).forEach(function(user) {
+									console.log("Ajout de " + user.UserName);
+									db.UserData.add(user);
+								});
+								$("#ui-chargement").slideUp(200);
+								setInterfaceAccueil();
+							}
+						});
 					});
+				} else {
+					db.HistoriqueTransactions
+						.each(
+							function(transaction) {
+								var commentaire = "Id produit " +
+									transaction.IdProduit +
+									", Prix = " +
+									transaction.Montant +
+									"€, sur " +
+									transaction.UserName +
+									"\n";
+
+								$("#historique").val($("#historique").val() + commentaire);
+							}
+						);
+				}
+				derniereSynchro = dateTimeNow();
+				$("#ui-chargement").slideUp(200);
+				setInterfaceAccueil();
+			});
+		}
+
+		function foysApiPostUpdates() {
+			// On créée le corps de la requête POST
+			var fdata = new FormData();
+			db.HistoriqueTransactions.toArray().then(function (arr) {
+				if (arr.length === 0) {
+					console.log(dateTimeNow() + ": Pas de nouvelles modifications côté client à POST");
+					timer.reset();
+					return;
+				}
+				var json = JSON.stringify(arr);
+				fdata.append("json", json);
+				console.log(json);
+				$.ajax({
+					type: 'POST',
+					url: '/Api/Foys/history',
+					cache: false,
+					data: fdata,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						db.HistoriqueTransactions.clear();
+						// DEBUG
+						$("#historique").val("");
+						// END DEBUG
+						timer.reset();
+					}
 				});
-			} else {
-				db.HistoriqueTransactions
-					.each(
-						function(transaction) {
-							var commentaire = "Id produit " +
-								transaction.IdProduit +
-								", Prix = " +
-								transaction.Montant +
-								"€, sur " +
-								transaction.UserName +
-								"\n";
+			});      
+		}
 
-							$("#historique").val($("#historique").val() + commentaire);
-						}
-					);
-			}
-			derniereSynchro = dateTimeNow();
-			$("#chargement").hide();
-			$("#fin_chargement").show();
-		});
-    }
-
-	function foysApiGetUpdates() {
+		function foysApiGetUpdates() {
         $.ajax({
             type: 'GET',
             url: '/Api/Foys/' + derniereSynchro,
@@ -191,46 +177,86 @@
 			timeout: 3000
 		});
 	}
+
+		foysApiGet();
+
+		timer.start({countdown: true, startValues: {seconds: 30}});
+		timer.addEventListener("secondsUpdated", function (e) {
+			$('#timer').html(timer.getTimeValues().toString());
+		});
+		timer.addEventListener("targetAchieved", function (e) {
+			foysApiGetUpdates();
+		});
+	}());
 	
-	function foysApiPostUpdates() {
-		// On créée le corps de la requête POST
-		var fdata = new FormData();
-		db.HistoriqueTransactions.toArray().then(function (arr) {
-			if (arr.length === 0) {
-				console.log(dateTimeNow() + ": Pas de nouvelles modifications côté client à POST");
-				timer.reset();
+	function onKeydownCallbackAccueil(e) {
+		// On retrouve l'identifiant du PG à travers le DOM
+		e = e || e.which;
+		var keyPressed = keycodeToShortcut(e.keyCode);
+		if (keyPressed === null)
+			return;
+		
+		async function changerInterface(proms) {
+			var username = $("#inputNumss").val() + proms;
+			// On vérifie si il existe bien dans la BDD
+			var user = await db.UserData.get({ UserName: username });
+			if (typeof user === "undefined") {
+				$("#undefined-user-alert").slideDown(200); 
+				window.setTimeout(function() {
+					$("#undefined-user-alert").slideUp(200); 
+				}, 2000);
 				return;
+			} else {
+				$("#username").text(user.UserName);
+				$("#surnom").text(user.Surnom);
 			}
-			var json = JSON.stringify(arr);
-			fdata.append("json", json);
-			console.log(json);
-			$.ajax({
-				type: 'POST',
-				url: '/Api/Foys/history',
-				cache: false,
-				data: fdata,
-				contentType: false,
-				processData: false,
-				success: function (response) {
-					db.HistoriqueTransactions.clear();
-					// DEBUG
-					$("#historique").val("");
-					// END DEBUG
-					timer.reset();
+
+			// Hors foy'ss ?
+			// Mode archi ?
+			setInterfaceBucquage();
+		}
+		
+		e.preventDefault();
+		if (keyPressed === "F1") {
+			$("#modal-autre-proms").on("hidden.bs.modal",
+				function() {
+					changerInterface($("#input-modal-proms").val());
+				}
+			);
+
+			$("#modal-autre-proms").modal("show");
+			$('#modal-autre-proms').on('keyup keypress', function(e) {
+				var keyCode = e.keyCode || e.which;
+				if (keyCode === 13) {
+					$("#button-modal-proms").click();
+					e.preventDefault();
 				}
 			});
-		});      
+			setTimeout(function() {
+				$("#input-modal-proms").focus();
+			}, 500);
+		} else {
+			var proms = $(".raccourci-proms").filter(function() {
+				return $(this).text() === keyPressed;
+			}).next().text();
+			changerInterface(proms);
+		}
 	}
 
-	// Chargement
-    foysApiGet();
+	function onKeydownCallbackBucquage(e) {
+		e = e || e.which;
+		if (e.keyCode === 27) { // ESC
+			setInterfaceAccueil();
+		}
+	}
 
-    timer.start({countdown: true, startValues: {seconds: 30}});
-    timer.addEventListener('secondsUpdated', function (e) {
-        $('#timer').html(timer.getTimeValues().toString());
-    });
-    timer.addEventListener('targetAchieved', function (e) {
-		foysApiGetUpdates();
-    });
+	// Callback pour le changement d'interface
+	
+    $(document).on("keydown", function(e) {
+		if (interfaceAccueil)
+			onKeydownCallbackAccueil(e);
+		else
+			onKeydownCallbackBucquage(e);
+	});
 
 });

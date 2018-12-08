@@ -13,22 +13,46 @@
 @section Scripts {
     <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
     <script src="~/js/easytimer.js"></script>
-    <script src="~/js/babasse.js"></script>
     <script src="~/js/date.format.js"></script>
+    <script src="~/js/babasse.js"></script>
 }
 
 <div class="bloc-central">
     <div class="container">
         <ul class="list-inline list-header" id="ui-proms">
-            @foreach (var r in Model.RaccourcisProms) {
-                <li class="list-inline-item font-weight-light">@r.Raccourci</li>
+            @foreach (var r in Model.RaccourcisProms)
+            {
+                <li class="list-inline-item font-weight-light raccourci-proms">@r.Raccourci</li>
                 <li class="list-inline-item font-weight-bold">@(r.TBK + r.Proms)</li>
             }
         </ul>
         <ul class="list-inline list-header" id="ui-userdata">
-            <li class="list-inline-item font-weight-bold">1 Test 218 -- </li>
-            <li class="list-inline-item font-weight-light">Juste Djobo Kante</li>
+            <li class="list-inline-item font-weight-bold" id="username">1 Test 218 -- </li>
+            <li class="list-inline-item font-weight-light" id="surnom">Juste Djobo Kante</li>
         </ul>
+    </div>
+</div>
+
+<!-- Modal bootstrap pour sélectionner la prom'ss manuellement -->
+<div class="modal fade" id="modal-autre-proms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">F1 - Autre prom's</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label">TBK et prom'ss</label>
+                        <input id="input-modal-proms" class="form-control input-lg" placeholder="Cl204">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="button-modal-proms" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -36,66 +60,36 @@
     <div class="row">
         <div class="col">
             <div class="card bloc-central" id="ui-tarifs">
-                <div class="bloc-case">
+                <div class="bloc-case" id="scroll-tarifs">
                     <p class="bloc-titre text-center">Tarifs</p>
                     <table class="table">
-                        <tr>
-                            <th>Bière F1</th>
-                            <td>F1</td>
-                            <td>Prix</td>
-                        </tr>
-                        <tr>
-                            <th>Bière F2</th>
-                            <td>F2</td>
-                            <td>Prix</td>
-                        </tr>
-                        <tr>
-                            <th>Bière F5</th>
-                            <td>F5</td>
-                            <td>Prix</td>
-                        </tr>
-                        <tr>
-                            <th>Bière bout'ss</th>
-                            <td>F4</td>
-                            <td>Prix</td>
-                        </tr>
-                        <tr>
-                            <th>Cidre</th>
-                            <td>F6</td>
-                            <td>Prix</td>
-                        </tr>
-                        <tr>
-                            <th>Dose d'alcool fort</th>
-                            <td>F3</td>
-                            <td>Prix</td>
-                        </tr>
-                        <tr>
-                            <th>Zabulle</th>
-                            <td>F10</td>
-                            <td>Prix</td>
-                        </tr>
-                        <tr>
-                            <th>Biffut</th>
-                            <td>F12</td>
-                            <td>Prix</td>
-                        </tr>
-                        <tr>
-                            <th>Pain choc'ss</th>
-                            <td>F7</td>
-                            <td>Prix</td>
-                        </tr>
-
+                        @foreach (var c in Model.Consommations)
+                        {
+                            <tr class="clickable-tr">
+                                <th>@c.Nom</th>
+                                <td>@(c.RaccourciClavier ?? "")</td>
+                                <td>@(c.Prix + "€")</td>
+                            </tr>
+                        }
                     </table>
                 </div>
             </div>
         </div>
         <div class="col">
+            <div id="ui-chargement" class="card bloc-central" >
+                <div class="bloc-case">
+                    <h1>
+                        CHARGEMENT INITIAL...
+                    </h1>
+                </div>
+            </div>
             <div class="card bloc-central" id="ui-nums">
                 <div class="bloc-case">
                     <div class="text-box1">
                         <input type="text" id="inputNumss" class="form-control input-lg" autofocus>
                         <label for="inputNumss">Num'ss de babasse</label>
                     </div>
+                    <p id="undefined-user-alert" class="text-danger">Ce compte foy's n'existe pas.</p>
                 </div>
             </div>
 
