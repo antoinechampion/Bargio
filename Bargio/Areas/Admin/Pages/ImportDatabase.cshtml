@@ -13,21 +13,21 @@
     <p class="lead">Etape 2 : Clic droit sur la table 'tbUser' -> Exporter -> Fichier XML</p>
     <p class="lead">Etape 3 : Sélectionner sur cette page le fichier XML</p>
     <hr class="my-4">
-    <p>L'opération peut prendre plusieurs minutes. Ne quittez pas cette page pendant le transfert.</p>
+    <p id="info-patience" class="text-danger d-none">L'opération peut durer plus d'une heure. Ne quittez pas cette page pendant le transfert.</p>
     <div class="input-group mb-3" style="width:300px;">
         <div class="custom-file">
-            <input type="file" name="fileInput" class="custom-file-input" id="fileInput">
-            <label class="custom-file-label" for="fileInput">Choisissiez le fichier XML</label>
+            <input type="file" name="fileInput" class="form-control-file custom-file-input" id="fileInput">
+            <label id="file-picker-label" class="custom-file-label" for="fileInput">Choisissiez le fichier XML</label>
         </div>
     </div>
     
-    <div class="container">
-        <input class="form-check-input append-db-radio" id="append" type="radio" value="1" name="append-db-radio" checked>
-        <label class="form-check-label" for="append">
+    <div style="margin-bottom: 20px;">
+        <input class="form-check-input" id="append" type="radio" value="1" name="append-db-radio" checked>
+        <label style="margin-left: 40px !important;" class="form-check-label" for="append">
             Ajouter à la BDD actuelle
         </label>
-        <input class="form-check-input append-db-radio" id="erase" type="radio" value="2" name="append-db-radio">
-        <label class="form-check-label" for="erase">
+        <input class="form-check-input" id="erase" type="radio" value="2" name="append-db-radio">
+        <label style="margin-left: 40px !important;" class="form-check-label" for="erase">
             Ecraser la BDD actuelle
         </label>
     </div>
@@ -62,14 +62,14 @@
             if ($('#fileInput').get(0).files.length === 0) return;
             upload_begin = true;
             $("#info-attente").addClass("d-none");
+            $("#info-patience").removeClass("d-none");
             $("#info-migration").removeClass("d-none");
             $("#sendXml").addClass("disabled");
+            $("#fileInput").addClass("disabled");
 
             var fdata = new FormData();
             fdata.append("xml_file", $("#fileInput")[0].files[0]);
-            fdata.append("append_to_db",
-                $(".append-db-radio:checked").val() === "1"
-                ? true : false);
+            fdata.append("append_to_db", $("#append").is(":checked"));
             $.ajax({
                 type: 'POST',
                 url: '/Api/ImportDb',
@@ -80,11 +80,13 @@
                     if (response.charAt(0) === "0") {
                         response = response.substr(1);
                         $("#info-migration").addClass("d-none");
+                        $("#info-patience").addClass("d-none");
                         $("#message-validation").append(response);
                         $("#message-validation").addClass("bg-warning text-dark");
                         $("#info-succes").removeClass("d-none");
                     } else {
                         $("#info-migration").addClass("d-none");
+                        $("#info-patience").addClass("d-none");
                         $("#message-validation").append(response);
                         $("#message-validation").addClass("bg-danger text-white");
                         $("#info-echec").removeClass("d-none");

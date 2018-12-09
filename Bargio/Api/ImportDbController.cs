@@ -48,8 +48,7 @@ namespace Bargio.Api
         //</tbUser>
         private UserData TryParseUserFromXElement(XElement o, ref string failedList)
         {
-            try
-            {
+            try {
                 return new UserData
                 {
                     UserName = (string)o.Element("user_numss_Reel")
@@ -73,6 +72,21 @@ namespace Bargio.Api
             }
         }
 
+        private async Task<string> SaveContext() {
+            try {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException) {
+                return
+                    "Impossible de mettre à jour la BDD: elle est actuellement utilisée.\n" +
+                    "Veuillez bloquer tout accès au site quand vous réalisez cette opération.";
+            }
+            catch (DbUpdateException e) {
+                return "Une erreur est survenue lors de la validation des changements:\n" + e;
+            }
+
+            return "";
+        }
         
         // POST api/<controller>
         [HttpPost]
@@ -124,6 +138,9 @@ namespace Bargio.Api
                                             identityResult.Errors.Select(o => o.ToString()));
                     }
                 }
+                var eraseContextError = await SaveContext();
+                if (!string.IsNullOrEmpty(eraseContextError))
+                    return eraseContextError;
             }
 
             if (!string.IsNullOrEmpty(errorMessage))
@@ -147,29 +164,34 @@ namespace Bargio.Api
             if (!string.IsNullOrEmpty(failedList))
                 errorMessage = "TryParseUserFromXElement: Impossible d'ajouter les utilisateurs " + failedList;
             if (!string.IsNullOrEmpty(duplicateList))
-                errorMessage = "/!\\ Il existe des utilisateurs en double. Les doublons ont été ignorés : " + duplicateList;
+                errorMessage = "/!\\ Il existe des utilisateurs en double.<br/> Les doublons ont été ignorés : " + duplicateList;
 
             failedList = "";
             // Pas de AddRange pour avoir des erreurs détaillées
             foreach (var user in ud)
             {
-                try
-                {
+                try {
+                    if (_context.UserData.Any(o => o.UserName == user.UserName))
+                        continue;
                     await _context.UserData.AddAsync(user);
                 }
                 catch
                 {
-                    failedList += " " + user.UserName;
+                    failedList += " \"" + user.UserName + " \"";
                 }
             }
+            var saveContextError = await SaveContext();
+            if (!string.IsNullOrEmpty(saveContextError))
+                return saveContextError;
 
             if (!string.IsNullOrEmpty(failedList))
-                errorMessage += "\n_context.UserData.AddAsync: Impossible d'ajouter les utilisateurs " + failedList;
+                errorMessage += "<br/><br/>_context.UserData.AddAsync: Impossible d'ajouter les utilisateurs " + failedList;
 
             failedList = "";
-            foreach (var userData in _context.UserData)
+            var userDataEvaluated = _context.UserData.ToList();
+            foreach (var userData in userDataEvaluated)
             {
-                if (_userManager.FindByNameAsync(userData.UserName) != null)
+                if (await _userManager.FindByNameAsync(userData.UserName) != null)
                     continue;
 
                 var user = new IdentityUserDefaultPwd
@@ -177,38 +199,31 @@ namespace Bargio.Api
                     UserName = userData.UserName
                 };
 
-                var identityResult = await _userManager.CreateAsync(user, IdentityUserDefaultPwd.DefaultPassword);
-                if (!identityResult.Succeeded)
-                {
-                    failedList += " " + user.UserName;
-                    _context.UserData.Remove(ud.First(o => o.UserName == user.UserName));
+                try {
+                    var ir = await _userManager.CreateAsync(user, IdentityUserDefaultPwd.DefaultPassword);
+                    if (!ir.Succeeded)
+                    {
+                        failedList += " \"" + user.UserName + " \"";
+                        _context.UserData.Remove(ud.First(o => o.UserName == user.UserName));
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user,
+                            "PG");
+                    }
                 }
-                else
-                {
-                    await _userManager.AddToRoleAsync(user,
-                        "PG");
+                catch (Exception e) {
+                    errorMessage += "Erreur interne à Identity : " + e;
                 }
+                
             }
+            saveContextError = await SaveContext();
+            if (!string.IsNullOrEmpty(saveContextError))
+                return saveContextError;
 
             if (!string.IsNullOrEmpty(failedList))
-                errorMessage += "\nIdentity: Impossible de créer les comptes pour les utilisateurs " + failedList;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return
-                    "Impossible de mettre à jour la BDD: elle est actuellement utilisée.\n" +
-                    "Veuillez bloquer tout accès au site quand vous réalisez cette opération.";
-            }
-            catch (DbUpdateException e)
-            {
-                return "Une erreur est survenue lors de la validation des changements:\n" + e;
-            }
-
-
+                errorMessage += "<br/><br/>Identity: Impossible de créer les comptes pour les utilisateurs " + failedList;
+                
             return "0" + errorMessage;
         }
     }

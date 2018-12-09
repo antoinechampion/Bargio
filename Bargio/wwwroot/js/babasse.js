@@ -1,10 +1,16 @@
 ﻿"use strict";
 $( document ).ready(function() {
+	// variables globales
 	var interfaceAccueil = true;
-    function setInterfaceAccueil() {
+	var db = new Dexie("db");
+	var derniereSynchro = null;
+	var timer = new Timer();
+
+	// Passe de l'interface de bucquage à l'interface d'accueil
+	function setInterfaceAccueil() {
 		$("#undefined-user-alert").hide();
-		$("#ui-userdata").hide(); 
-		$("#ui-proms").slideDown(200); 
+		$("#ui-userdata").hide();
+		$("#ui-proms").slideDown(200);
 		$("#ui-tarifs").hide();
 		$("#ui-nums").show();
 		$("#ui-solde").hide();
@@ -16,12 +22,13 @@ $( document ).ready(function() {
 		$("#input-modal-proms").val("");
 		interfaceAccueil = true;
 	}
-
-    function setInterfaceBucquage() {
-		$("#ui-proms").hide(); 
+	
+	// Passe de l'interface d'accueil à l'interface de bucquage
+	function setInterfaceBucquage() {
+		$("#ui-proms").hide();
 		$("#ui-tarifs").show();
 		$("#ui-nums").hide();
-		$("#ui-userdata").slideDown(200); 
+		$("#ui-userdata").slideDown(200);
 		$("#ui-solde").show();
 		$("#ui-actualites").hide();
 		$("#ui-historique").show();
@@ -34,24 +41,25 @@ $( document ).ready(function() {
 	// contient chaque PG, son solde et son statut (hors babasse...)
 	// - HistoriqueTransactions : table à synchroniser, contient tout l'historique
 	// des transactions, bucquages comme rechargement
-	var db = new Dexie("db");
-	db.version(1).stores({
-		UserData: 'UserName,HorsFoys,Surnom,Solde,'
-			+ 'FoysApiHasPassword,FoysApiPasswordHash,'
-			+ 'FoysApiPasswordSalt',
-		HistoriqueTransactions: '++,UserName,Date,Montant,IdProduit,Commentaire'
-	});
-	db.open().catch (function (err) {
-		console.error('Failed to open db: ' + (err.stack || err));
-	});
-	
+	(function() {
+		db.version(1).stores({
+			UserData: 'UserName,HorsFoys,Surnom,Solde,'
+				+ 'FoysApiHasPassword,FoysApiPasswordHash,'
+				+ 'FoysApiPasswordSalt',
+			HistoriqueTransactions: '++,UserName,Date,Montant,IdProduit,Commentaire'
+		});
+		db.open().catch (function (err) {
+			console.error('Failed to open db: ' + (err.stack || err));
+		});
+	})();
+
+	// Retourne la date et l'heure au format dd-mm-yyyy HH:MM:ss
 	function dateTimeNow() {
 		return dateFormat(new Date(), "dd-mm-yyyy HH:MM:ss");
 	}
-
-	var derniereSynchro = null;
-	var timer = new Timer();
-
+	
+	// Retourne une chaîne de caractère correspondant
+	// à la touche passée en paramètre
     function keycodeToShortcut(keycode)
 	{
 		var raccourci = "";
@@ -189,6 +197,7 @@ $( document ).ready(function() {
 		});
 	}());
 	
+	// Fonction de gestion des inputs pour l'accueil
 	function onKeydownCallbackAccueil(e) {
 		// On retrouve l'identifiant du PG à travers le DOM
 		e = e || e.which;
@@ -197,6 +206,7 @@ $( document ).ready(function() {
 			return;
 		
 		async function changerInterface(proms) {
+			proms = proms.toLowerCase();
 			var username = $("#inputNumss").val() + proms;
 			// On vérifie si il existe bien dans la BDD
 			var user = await db.UserData.get({ UserName: username });
@@ -239,10 +249,12 @@ $( document ).ready(function() {
 			var proms = $(".raccourci-proms").filter(function() {
 				return $(this).text() === keyPressed;
 			}).next().text();
+			console.log(proms);
 			changerInterface(proms);
 		}
 	}
-
+	
+	// Fonction de gestion des inputs pour la page de bucquage
 	function onKeydownCallbackBucquage(e) {
 		e = e || e.which;
 		if (e.keyCode === 27) { // ESC
@@ -251,7 +263,6 @@ $( document ).ready(function() {
 	}
 
 	// Callback pour le changement d'interface
-	
     $(document).on("keydown", function(e) {
 		if (interfaceAccueil)
 			onKeydownCallbackAccueil(e);
