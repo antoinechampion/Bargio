@@ -87,6 +87,15 @@ namespace Bargio.Api
 
             return "";
         }
+
+        private void SetMaintainanceOn() {
+            _context.SystemParameters.First().Maintenance = true;
+            _context.SaveChanges();
+        }
+        private void SetMaintainanceOff() {
+            _context.SystemParameters.First().Maintenance = false;
+            _context.SaveChanges();
+        }
         
         // POST api/<controller>
         [HttpPost]
@@ -116,6 +125,8 @@ namespace Bargio.Api
                 return "Fichier XML invalide\n" + e;
             }
 
+            // Activation du mode maintenance
+            SetMaintainanceOn();
             
             if (!append_to_db)
             {
@@ -139,12 +150,17 @@ namespace Bargio.Api
                     }
                 }
                 var eraseContextError = await SaveContext();
-                if (!string.IsNullOrEmpty(eraseContextError))
+                if (!string.IsNullOrEmpty(eraseContextError)) {
+                    SetMaintainanceOff();
                     return eraseContextError;
+                }
+                    
             }
 
-            if (!string.IsNullOrEmpty(errorMessage))
+            if (!string.IsNullOrEmpty(errorMessage)) {
+                SetMaintainanceOff();
                 return "\n\n" + errorMessage;
+            }
 
             string failedList = "";
             string duplicateList = "";
@@ -181,8 +197,10 @@ namespace Bargio.Api
                 }
             }
             var saveContextError = await SaveContext();
-            if (!string.IsNullOrEmpty(saveContextError))
+            if (!string.IsNullOrEmpty(saveContextError)) {
+                SetMaintainanceOff();
                 return saveContextError;
+            }
 
             if (!string.IsNullOrEmpty(failedList))
                 errorMessage += "<br/><br/>_context.UserData.AddAsync: Impossible d'ajouter les utilisateurs " + failedList;
@@ -218,12 +236,15 @@ namespace Bargio.Api
                 
             }
             saveContextError = await SaveContext();
-            if (!string.IsNullOrEmpty(saveContextError))
+            if (!string.IsNullOrEmpty(saveContextError)) {
+                SetMaintainanceOff();
                 return saveContextError;
+            }
 
             if (!string.IsNullOrEmpty(failedList))
                 errorMessage += "<br/><br/>Identity: Impossible de créer les comptes pour les utilisateurs " + failedList;
                 
+            SetMaintainanceOff();
             return "0" + errorMessage;
         }
     }

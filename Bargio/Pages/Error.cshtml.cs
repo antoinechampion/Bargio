@@ -14,11 +14,24 @@ namespace Bargio.Pages
     public class ErrorModel : PageModel
     {
         public string ErrorMessage { get; set; }
+        public string ErrorTitle { get; set; }
 
 
-        public void OnGet(int errorCode = 404)
-        {
-            ErrorMessage = "Une erreur " + errorCode + " a été rhopsée.";
+        public void OnGet(int statusCode = 404) {
+            ErrorTitle = "Erreur " + statusCode;
+            switch (statusCode) {
+            case 403:
+                ErrorMessage = "Cette tentative d'accès non autorisé a été rhopsée.";
+                break;
+            case 503:
+                ErrorMessage = "Une maintenance est en cours sur le serveur de Bargio. "
+                    + "Revenez dans quelques minutes.";
+                break;
+            default:
+                ErrorMessage = "Une erreur " + statusCode + " a été rhopsée.";
+                break;
+            }
+            
         }
     }
 }

@@ -16,12 +16,14 @@ namespace Bargio.Areas.User
             var systemParameters = context.SystemParameters;
             foreach (var entity in systemParameters)
                 systemParameters.Remove(entity);
+            await context.SaveChangesAsync();
 
             await systemParameters.AddAsync(new SystemParameters {
                 IpServeur = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0].ToString(),
                 DerniereConnexionBabasse = DateTime.Now,
                 BucquagesBloques = false,
-                LydiaBloque = false
+                LydiaBloque = false,
+                Maintenance = false
             });
 
             await context.SaveChangesAsync();

@@ -1,3 +1,4 @@
+using System.Linq;
 using Bargio.Areas.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bargio.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -94,11 +96,26 @@ namespace Bargio
             {
                 app.UseHsts();
             }
+
             app.UseStatusCodePagesWithReExecute("/Error", "?statusCode={0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            // Middleware to redirect in case of maintainance
+            app.Use(async (httpCtx, next) =>
+            {
+                var context = httpCtx.RequestServices.GetRequiredService<ApplicationDbContext>();
+
+                if (context.SystemParameters.First().Maintenance
+                    && !httpCtx.Request.GetEncodedUrl().Contains("Error")) {
+                    httpCtx.Response.Redirect("/Error?statusCode=503");
+                    return;
+                }
+
+                await next();
+            });
 
             app.UseAuthentication();
 

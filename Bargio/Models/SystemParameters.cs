@@ -13,5 +13,6 @@ namespace Bargio.Models
         public DateTime DerniereConnexionBabasse { get; set; }
         public bool BucquagesBloques { get; set; }
         public bool LydiaBloque { get; set; }
+        public bool Maintenance { get; set; }
     }
 }
