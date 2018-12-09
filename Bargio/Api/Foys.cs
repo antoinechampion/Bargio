@@ -29,6 +29,8 @@ namespace Bargio.Api
         }
         
         [HttpGet]
+        // Retourne la liste complète des utilisateurs, avec leur surnom, leur solde,
+        // le hash de leur mot de passe et le salt, et si ils sont hors foy's
         public string Get() {
             var userData = _context.UserData.Select(o => new {o.UserName, o.HorsFoys, o.Surnom,
                 o.Solde, o.FoysApiHasPassword, o.FoysApiPasswordHash, o.FoysApiPasswordSalt}).ToList();
@@ -36,16 +38,34 @@ namespace Bargio.Api
         }
         
         [HttpGet("{datetime}")]
+        // Retourne la liste des utilisateurs depuis une date indiquée en paramètre
+        // au format dd-MM-yyyy HH:mm:ss
         public string Get(string datetime) {
-            var dateTime = DateTime.ParseExact(datetime, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-            var userData = _context.UserData.Where(o => o.DateDerniereModif >= dateTime)
-                .Select(o => new {o.UserName, o.HorsFoys, 
-                    o.Solde, o.FoysApiHasPassword, o.FoysApiPasswordHash, o.FoysApiPasswordSalt}).ToList();
-            return JsonConvert.SerializeObject(userData);
+            try {
+                var dateTime = DateTime.ParseExact(datetime, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                var userData = _context.UserData.Where(o => o.DateDerniereModif >= dateTime)
+                    .Select(o => new {o.UserName, o.HorsFoys, 
+                        o.Solde, o.FoysApiHasPassword, o.FoysApiPasswordHash, o.FoysApiPasswordSalt}).ToList();
+                return JsonConvert.SerializeObject(userData);
+            }
+            catch (FormatException) {
+                return "Invalid datetime format. Was expecting dd-MM-yyyy HH:mm:ss.";
+            }
+        }
+        
+        // Retourne les 20 dernières entrées dans l'historique
+        // de l'utilisateur spécifié
+        [HttpGet("userhistory/{username}")]
+        public string GetUserHistory(string username) {
+            var history = _context.TransactionHistory.Where(o => o.UserName == username)
+                .OrderByDescending(o => o.Date).Take(20).ToList();
+            return JsonConvert.SerializeObject(history);
         }
         
         [HttpPost]
         [Route("history")]
+        // Méthode post qui reçoit l'historique local de la babasse et le
+        // fusionne avec celui du serveur
         public void PostHistory(string json)
         {
             var transactionHistory = JsonConvert.DeserializeObject<List<TransactionHistory>>(json);

@@ -242,9 +242,12 @@ $( document ).ready(function() {
 				// var hist = await db.HistoriqueTransactions.get({ UserName: username });
 				// table-historique-consos
                 if (!desynchronisation) {
-					;
+					$("#historique-indisponible").hide();
+					$("#historique-disponible").show();
+
 				} else {
-					;
+					$("#historique-disponible").hide();
+					$("#historique-indisponible").show();
 				}
 			}
 

@@ -22,7 +22,9 @@
 				{Solde: user.Solde + textArray[randomNumber][1]});
 		}).then (function() {
 			db.HistoriqueTransactions.add({UserName: textArray[randomNumber][2], 
-				Montant: textArray[randomNumber][1], IdProduit: textArray[randomNumber][0]});
+				Montant: textArray[randomNumber][1], IdProduit: textArray[randomNumber][0],
+				Commentaire: commentaire
+			});
 		});
 
 		
