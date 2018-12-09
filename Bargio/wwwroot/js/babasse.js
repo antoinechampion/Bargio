@@ -4,7 +4,11 @@ $( document ).ready(function() {
 	var interfaceAccueil = true;
 	var db = new Dexie("db");
 	var derniereSynchro = null;
-	var timer = new Timer();
+	var derniereSynchroAsDatetime = null;
+	var desynchronisation = false;
+	var timerCallback = new Timer();
+	var timerCheckDesync = new Timer();
+	var desyncTimeout = 60; // seconds
 
 	// Passe de l'interface de bucquage à l'interface d'accueil
 	function setInterfaceAccueil() {
@@ -107,6 +111,7 @@ $( document ).ready(function() {
 						);
 				}
 				derniereSynchro = dateTimeNow();
+				derniereSynchroAsDatetime = new Date();
 				$("#ui-chargement").slideUp(200);
 				setInterfaceAccueil();
 			});
@@ -118,7 +123,7 @@ $( document ).ready(function() {
 			db.HistoriqueTransactions.toArray().then(function (arr) {
 				if (arr.length === 0) {
 					console.log(dateTimeNow() + ": Pas de nouvelles modifications côté client à POST");
-					timer.reset();
+					timerCallback.reset();
 					return;
 				}
 				var json = JSON.stringify(arr);
@@ -136,7 +141,7 @@ $( document ).ready(function() {
 						// DEBUG
 						$("#historique").val("");
 						// END DEBUG
-						timer.reset();
+						timerCallback.reset();
 					}
 				});
 			});      
@@ -175,6 +180,7 @@ $( document ).ready(function() {
                     });
                 }
                 derniereSynchro = dateTimeNow();
+				derniereSynchroAsDatetime = new Date();
                 foysApiPostUpdates();
             },
 			error: function(xhr, error){
@@ -188,12 +194,24 @@ $( document ).ready(function() {
 
 		foysApiGet();
 
-		timer.start({countdown: true, startValues: {seconds: 30}});
-		timer.addEventListener("secondsUpdated", function (e) {
-			$('#timer').html(timer.getTimeValues().toString());
-		});
-		timer.addEventListener("targetAchieved", function (e) {
+		timerCallback.start({countdown: true, startValues: {seconds: 30}});
+		timerCallback.addEventListener("targetAchieved", function (e) {
 			foysApiGetUpdates();
+		});
+		timerCheckDesync.start({countdown: true, startValues: {seconds: 60}});
+		timerCheckDesync.addEventListener("targetAchieved", function (e) {
+			if (derniereSynchroAsDatetime === null)
+				return;
+
+			var desync = new Date();
+			desync.setSeconds(desync.getSeconds() + desyncTimeout);
+			desynchronisation = derniereSynchroAsDatetime > desync;
+
+            if (desynchronisation) {
+				$("#logo-footer").attr("src", "/images/title_logo_red106x20.png");
+			} else {
+				$("#logo-footer").attr("src", "/images/title_logo_106x20.png");
+			}
 		});
 	}());
 	
@@ -219,6 +237,15 @@ $( document ).ready(function() {
 			} else {
 				$("#username").text(user.UserName);
 				$("#surnom").text(user.Surnom);
+
+				// On récupère son historique
+				// var hist = await db.HistoriqueTransactions.get({ UserName: username });
+				// table-historique-consos
+                if (!desynchronisation) {
+					;
+				} else {
+					;
+				}
 			}
 
 			// Hors foy'ss ?

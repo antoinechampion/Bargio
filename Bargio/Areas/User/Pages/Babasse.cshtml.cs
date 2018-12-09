@@ -15,6 +15,8 @@ namespace Bargio.Areas.User.Pages
 
         [BindProperty] public List<PromsKeyboardShortcut> RaccourcisProms { get; set; }
         [BindProperty] public List<Product> Consommations { get; set; }
+        [BindProperty] public string SyncLogoUri { get; set; }
+        [BindProperty] public string DesyncLogoUri { get; set; }
 
         public BabasseModel(ApplicationDbContext context) {
             _context = context;
@@ -42,6 +44,7 @@ namespace Bargio.Areas.User.Pages
         public int RaccourciToInt(string raccourci) {
             return int.TryParse(raccourci?.Substring(1), out var intRaccourci) ? intRaccourci : int.MaxValue;
         }
+
         public IActionResult OnGet() {
             RaccourcisProms = _context.PromsKeyboardShortcut.OrderBy(o => o.Proms).ToList();
             Consommations = _context.Product.OrderBy(o => RaccourciToInt(o.RaccourciClavier)).ToList();
