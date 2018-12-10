@@ -134,10 +134,8 @@ img.centrage1 {
 }
 
 img.centrage2 {
-    display: block;
     margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 1rem;
+    margin-right: auto }
     
 }
 
@@ -183,4 +181,10 @@ overflow-y: auto;
     margin-bottom: 0rem;
     font-weight: 200;
     font-size: 0.7rem;
+}
+
+img.center {
+display: block;
+margin-left: auto;
+margin-right: auto;
 }
