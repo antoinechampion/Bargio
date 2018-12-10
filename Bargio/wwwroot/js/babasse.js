@@ -9,6 +9,9 @@ $( document ).ready(function() {
 	var timerCallback = new Timer();
 	var timerCheckDesync = new Timer();
 	var desyncTimeout = 60; // seconds
+	$.ajaxSetup({
+		cache: false
+	});
 
 	// Passe de l'interface de bucquage à l'interface d'accueil
 	function setInterfaceAccueil() {
@@ -138,9 +141,6 @@ $( document ).ready(function() {
 					processData: false,
 					success: function (response) {
 						db.HistoriqueTransactions.clear();
-						// DEBUG
-						$("#historique").val("");
-						// END DEBUG
 						timerCallback.reset();
 					}
 				});
@@ -148,49 +148,55 @@ $( document ).ready(function() {
 		}
 
 		function foysApiGetUpdates() {
-        $.ajax({
-            type: 'GET',
-            url: '/Api/Foys/' + derniereSynchro,
-			cache: false,
-            success: function (response) {
-                // Pour chaque utilisateur modifié, on met à jour son solde
-                // et son status, et on re-applique tout son historique
-                // de transaction local
-                var arr = JSON.parse(response);
-                if (arr.length === 0) {
-                    console.log(dateTimeNow() + ": Pas de nouvelles modifications côté serveur");
-                } else {
-                    arr.forEach(function (user) {
-                        console.log("Modifications serveur sur l'utilisateur " + user.UserName);
-                        var modifSoldeLocal = 0;
-                        db.HistoriqueTransactions
-                            .where("UserName")
-                            .equals(user.UserName)
-                            .each(
-                                function (transaction) {
-                                    console.log("\t -> Transaction : " + transaction.Montant + "€");
-                                    modifSoldeLocal += transaction.Montant;
-                                }
-                            ).then(function () {
-                                console.log("\t-> Modifs solde local : " + modifSoldeLocal);
-                                console.log("\t-> Nouveau solde : " + (user.Solde + modifSoldeLocal));
-                                db.UserData.update(user.UserName,
-                                    { Solde: user.Solde + modifSoldeLocal, HorsFoys: user.HorsFoys });
-                            });
-                    });
-                }
-                derniereSynchro = dateTimeNow();
-				derniereSynchroAsDatetime = new Date();
-                foysApiPostUpdates();
-            },
-			error: function(xhr, error){
-				console.log(dateTimeNow() + ": Impossible de synchroniser\n\t-> Erreur: " 
-					+ error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
-				timer.reset();
-			},
-			timeout: 3000
-		});
-	}
+            $.ajax({
+                type: 'GET',
+                url: '/Api/Foys/' + derniereSynchro,
+                cache: false,
+                success: function (response) {
+                    // Pour chaque utilisateur modifié, on met à jour son solde
+                    // et son status, et on re-applique tout son historique
+                    // de transaction local
+                    if (response === null) {
+                        console.log(dateTimeNow() + ": Impossible de synchroniser\n\t-> Erreur: "
+                            + error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
+                        timer.reset();
+                    }
+                    var arr = JSON.parse(response);
+                    if (arr.length === 0) {
+                        console.log(dateTimeNow() + ": Pas de nouvelles modifications côté serveur");
+                    } else {
+                        arr.forEach(function (user) {
+                            console.log("Modifications serveur sur l'utilisateur " + user.UserName);
+                            var modifSoldeLocal = 0;
+                            db.HistoriqueTransactions
+                                .where("UserName")
+                                .equals(user.UserName)
+                                .each(
+                                    function (transaction) {
+                                        console.log("\t -> Transaction : " + transaction.Montant + "€");
+                                        modifSoldeLocal += transaction.Montant;
+                                    }
+                                ).then(function () {
+                                    console.log("\t-> Modifs solde local : " + modifSoldeLocal);
+                                    console.log("\t-> Nouveau solde : " + (user.Solde + modifSoldeLocal));
+                                    db.UserData.update(user.UserName,
+                                        { Solde: user.Solde + modifSoldeLocal, HorsFoys: user.HorsFoys });
+                                });
+                        });
+                    }
+                    derniereSynchro = dateTimeNow();
+                    derniereSynchroAsDatetime = new Date();
+                    foysApiPostUpdates();
+                },
+                error: function(xhr, error) {
+					console.log(dateTimeNow() + ": Impossible de synchroniser\n\t-> Erreur: " 
+						+ error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
+					desynchronisation = true;
+					timer.reset();
+				},
+				timeout: 3000
+			});
+		}
 
 		foysApiGet();
 
@@ -198,20 +204,23 @@ $( document ).ready(function() {
 		timerCallback.addEventListener("targetAchieved", function (e) {
 			foysApiGetUpdates();
 		});
-		timerCheckDesync.start({countdown: true, startValues: {seconds: 60}});
+		timerCheckDesync.start({countdown: true, startValues: {seconds: 45}});
 		timerCheckDesync.addEventListener("targetAchieved", function (e) {
-			if (derniereSynchroAsDatetime === null)
-				return;
+            if (derniereSynchroAsDatetime === null)
+				desynchronisation = true;
+			else {
+				var desync = new Date();
+				desync.setSeconds(desync.getSeconds() + desyncTimeout);
+				desynchronisation = derniereSynchroAsDatetime < desync;
+			}
 
-			var desync = new Date();
-			desync.setSeconds(desync.getSeconds() + desyncTimeout);
-			desynchronisation = derniereSynchroAsDatetime > desync;
-
-            if (desynchronisation) {
+			if (desynchronisation) {
+				console.log("Désynchronisation ! La babasse est-elle toujours connectée à internet ?");
 				$("#logo-footer").attr("src", "/images/title_logo_red106x20.png");
 			} else {
-				$("#logo-footer").attr("src", "/images/title_logo_106x20.png");
+				$("#logo-footer").attr("src", "/images/title_logo106x20.png");
 			}
+			timerCheckDesync.reset();
 		});
 	}());
 	
@@ -241,10 +250,27 @@ $( document ).ready(function() {
 				// On récupère son historique
 				// var hist = await db.HistoriqueTransactions.get({ UserName: username });
 				// table-historique-consos
-                if (!desynchronisation) {
+				if (!desynchronisation) {
 					$("#historique-indisponible").hide();
 					$("#historique-disponible").show();
+					$("#table-historique-consos tr").remove();
 
+					$.ajax({
+						type: 'GET',
+						url: '/Api/Foys',
+						cache: false,
+						success: function (response) {
+							JSON.parse(response).forEach(function(bucquage) {
+								$("#table-historique-consos").append("<tr>"
+									+ "<th>" + bucquage.Commentaire + "</th>"
+									+ "<td>" + bucquage.Montant + "</td>"
+									+ "<td>" + bucquage.Date + "</td>"
+									+ "</tr>");
+							});
+							$("#ui-chargement").slideUp(200);
+							setInterfaceAccueil();
+						}
+					});
 				} else {
 					$("#historique-disponible").hide();
 					$("#historique-indisponible").show();

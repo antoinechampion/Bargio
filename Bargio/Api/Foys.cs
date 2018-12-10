@@ -57,8 +57,15 @@ namespace Bargio.Api
         // de l'utilisateur spécifié
         [HttpGet("userhistory/{username}")]
         public string GetUserHistory(string username) {
-            var history = _context.TransactionHistory.Where(o => o.UserName == username)
-                .OrderByDescending(o => o.Date).Take(20).ToList();
+            var lowercaseUsername = username.ToLower();
+            var history = _context.TransactionHistory.Where(o => o.UserName == lowercaseUsername)
+                .OrderByDescending(o => o.Date).Take(20)
+                .Select(o => new {
+                    Commentaire = o.Commentaire,
+                    Montant = o.Montant,
+                    Date = o.Date.ToString("d/MM HH:mm")
+                })
+                .ToList();
             return JsonConvert.SerializeObject(history);
         }
         
