@@ -5,8 +5,6 @@
     <link rel="icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     
     @RenderSection("IncludeHead", required: false)
 
@@ -14,12 +12,14 @@
     <title>@ViewData["Title"] - Bargio</title>
 </head>
 <body>
-<partial name="_CookieConsentPartial" />
+    <partial name="_CookieConsentPartial" />
 
-@RenderBody()
+    @RenderBody()
 
 
-@RenderSection("Scripts", required: false)
-<script src="~/js/bugfixes.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+    <script src="~/js/bugfixes.js"></script>
 </body>
 </html>

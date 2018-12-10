@@ -4,11 +4,8 @@ $( document ).ready(function() {
 	var interfaceAccueil = true;
 	var db = new Dexie("db");
 	var derniereSynchro = null;
-	var derniereSynchroAsDatetime = null;
 	var desynchronisation = false;
 	var timerCallback = new Timer();
-	var timerCheckDesync = new Timer();
-	var desyncTimeout = 60; // seconds
 	$.ajaxSetup({
 		cache: false
 	});
@@ -41,6 +38,17 @@ $( document ).ready(function() {
 		$("#ui-historique").show();
 		$("#ui-motzifoys").hide();
 		interfaceAccueil = false;
+	}
+
+    function setDesynchro(desync) {
+        if (desync) {
+			console.log("Désynchronisation ! La babasse est-elle toujours connectée à internet ?");
+			$("#logo-footer-sync").hide();
+			$("#logo-footer-desync").show();
+		} else {
+			$("#logo-footer-desync").hide();
+			$("#logo-footer-sync").show();
+		}
 	}
 
 	// Créée les tables de bdd locales :
@@ -114,7 +122,6 @@ $( document ).ready(function() {
 						);
 				}
 				derniereSynchro = dateTimeNow();
-				derniereSynchroAsDatetime = new Date();
 				$("#ui-chargement").slideUp(200);
 				setInterfaceAccueil();
 			});
@@ -185,14 +192,15 @@ $( document ).ready(function() {
                         });
                     }
                     derniereSynchro = dateTimeNow();
-                    derniereSynchroAsDatetime = new Date();
+					setDesynchro(false);
                     foysApiPostUpdates();
                 },
                 error: function(xhr, error) {
 					console.log(dateTimeNow() + ": Impossible de synchroniser\n\t-> Erreur: " 
 						+ error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
 					desynchronisation = true;
-					timer.reset();
+					timerCallback.reset();
+					setDesynchro(true);
 				},
 				timeout: 3000
 			});
@@ -203,24 +211,6 @@ $( document ).ready(function() {
 		timerCallback.start({countdown: true, startValues: {seconds: 30}});
 		timerCallback.addEventListener("targetAchieved", function (e) {
 			foysApiGetUpdates();
-		});
-		timerCheckDesync.start({countdown: true, startValues: {seconds: 45}});
-		timerCheckDesync.addEventListener("targetAchieved", function (e) {
-            if (derniereSynchroAsDatetime === null)
-				desynchronisation = true;
-			else {
-				var desync = new Date();
-				desync.setSeconds(desync.getSeconds() + desyncTimeout);
-				desynchronisation = derniereSynchroAsDatetime < desync;
-			}
-
-			if (desynchronisation) {
-				console.log("Désynchronisation ! La babasse est-elle toujours connectée à internet ?");
-				$("#logo-footer").attr("src", "/images/title_logo_red106x20.png");
-			} else {
-				$("#logo-footer").attr("src", "/images/title_logo106x20.png");
-			}
-			timerCheckDesync.reset();
 		});
 	}());
 	
@@ -305,7 +295,6 @@ $( document ).ready(function() {
 			var proms = $(".raccourci-proms").filter(function() {
 				return $(this).text() === keyPressed;
 			}).next().text();
-			console.log(proms);
 			changerInterface(proms);
 		}
 	}
