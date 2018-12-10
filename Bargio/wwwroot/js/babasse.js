@@ -21,6 +21,7 @@ $( document ).ready(function() {
 		$("#ui-actualites").show();
 		$("#ui-historique").hide();
 		$("#ui-motzifoys").show();
+		$("#ui-hors-truc").hide();
 		$("#inputNumss").focus();
 		$("#inputNumss").val("");
 		$("#input-modal-proms").val("");
@@ -36,6 +37,7 @@ $( document ).ready(function() {
 		$("#ui-solde").show();
 		$("#ui-actualites").hide();
 		$("#ui-historique").show();
+		$("#ui-historique-indisponible").hide();
 		$("#ui-motzifoys").hide();
 		interfaceAccueil = false;
 	}
@@ -49,6 +51,7 @@ $( document ).ready(function() {
 			$("#logo-footer-desync").hide();
 			$("#logo-footer-sync").show();
 		}
+		desynchronisation = desync;
 	}
 
 	// Créée les tables de bdd locales :
@@ -82,6 +85,14 @@ $( document ).ready(function() {
 		else return "F" + (keycode - 111);
 	}
 	
+    function isHorsBabasse(user) {
+		return user.Solde < 0;
+	}
+
+    function isHorsFoys(user) {
+		return user.HorsFoys;
+	}
+
 	// Mises à jour asynchrones
     (function () {	
 		function foysApiGet() {
@@ -96,12 +107,17 @@ $( document ).ready(function() {
 							url: '/Api/Foys',
 							cache: false,
 							success: function (response) {
-								JSON.parse(response).forEach(function(user) {
-									console.log("Ajout de " + user.UserName);
-									db.UserData.add(user);
+								var users = JSON.parse(response);
+								db.UserData.bulkAdd(users).then(function() {
+									window.setTimeout(function() {
+											console.log(users.length +
+												" utilisateurs ont été ajoutés" +
+												" à la BDD locale (GET initial).");
+											$("#ui-chargement").slideUp(200);
+											setInterfaceAccueil();
+										},
+										10000);
 								});
-								$("#ui-chargement").slideUp(200);
-								setInterfaceAccueil();
 							}
 						});
 					});
@@ -122,8 +138,6 @@ $( document ).ready(function() {
 						);
 				}
 				derniereSynchro = dateTimeNow();
-				$("#ui-chargement").slideUp(200);
-				setInterfaceAccueil();
 			});
 		}
 
@@ -198,7 +212,6 @@ $( document ).ready(function() {
                 error: function(xhr, error) {
 					console.log(dateTimeNow() + ": Impossible de synchroniser\n\t-> Erreur: " 
 						+ error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
-					desynchronisation = true;
 					timerCallback.reset();
 					setDesynchro(true);
 				},
@@ -228,14 +241,35 @@ $( document ).ready(function() {
 			// On vérifie si il existe bien dans la BDD
 			var user = await db.UserData.get({ UserName: username });
 			if (typeof user === "undefined") {
-				$("#undefined-user-alert").slideDown(200); 
+				$("#undefined-user-alert").slideDown(200);
 				window.setTimeout(function() {
-					$("#undefined-user-alert").slideUp(200); 
-				}, 2000);
+						$("#undefined-user-alert").slideUp(200);
+					},
+					2000);
+				return;
+			// On vérifie si il n'est pas hors babasse
+            } else if (isHorsBabasse(user)) {
+				$("#message-hors-truc").text("Tu es hors babasse.");
+				$("#ui-hors-truc").slideDown(200);
+				window.setTimeout(function() {
+						$("#ui-hors-truc").slideUp(200);
+					},
+					2000);
+				return;
+			// On vérifie si il n'est pas hors foy's non plus le petit enculé
+            } else if (isHorsFoys(user)) {
+				$("#message-hors-truc").text("Tu es hors foy's.");
+				$("#ui-hors-truc").slideDown(200);
+				window.setTimeout(function() {
+						$("#ui-hors-truc").slideUp(200);
+					},
+					2000);
 				return;
 			} else {
 				$("#username").text(user.UserName);
 				$("#surnom").text(user.Surnom);
+				$("#solde-actuel").text(user.Solde + "€");
+				$("#solde-en-cours").text("0€");
 
 				// On récupère son historique
 				// var hist = await db.HistoriqueTransactions.get({ UserName: username });
@@ -244,10 +278,9 @@ $( document ).ready(function() {
 					$("#historique-indisponible").hide();
 					$("#historique-disponible").show();
 					$("#table-historique-consos tr").remove();
-
 					$.ajax({
 						type: 'GET',
-						url: '/Api/Foys',
+						url: '/Api/Foys/userhistory/' + user.UserName,
 						cache: false,
 						success: function (response) {
 							JSON.parse(response).forEach(function(bucquage) {
@@ -257,8 +290,6 @@ $( document ).ready(function() {
 									+ "<td>" + bucquage.Date + "</td>"
 									+ "</tr>");
 							});
-							$("#ui-chargement").slideUp(200);
-							setInterfaceAccueil();
 						}
 					});
 				} else {

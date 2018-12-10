@@ -51,6 +51,18 @@ body {
   padding: 2rem;
 }
 
+.bloc-case-rouge {
+  background: repeating-linear-gradient(
+   45deg,
+   darkred,
+   darkred 10px,
+   firebrick 10px,
+   firebrick 20px
+  );
+  color: white;
+}
+
+
 .btn-connexion {
   width: 100%;
 }
@@ -164,6 +176,13 @@ img.centrage2 {
     margin-bottom: 0rem;
     font-weight: lighter;
     font-size: 1rem;
+}
+
+.surnom {
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  font-weight: 200;
+  font-size: 0.7rem;
 }
 
 .table-wrapper-scroll-y {

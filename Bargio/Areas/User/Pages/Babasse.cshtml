@@ -26,7 +26,7 @@
                 <li class="list-inline-item font-weight-bold">@(r.TBK + r.Proms)</li>
             }
         </ul>
-        <ul class="list-inline list-header" id="ui-userdata">
+        <ul class="list-inline list-header" id="ui-userdata" style="display: none;">
             <li class="list-inline-item font-weight-bold" id="username">1 Test 218 -- </li>
             <li class="list-inline-item font-weight-light" id="surnom">Juste Djobo Kante</li>
         </ul>
@@ -59,7 +59,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <div class="card bloc-central" id="ui-tarifs">
+            <div class="card bloc-central" id="ui-tarifs" style="display: none;">
                 <div class="bloc-case" id="scroll-tarifs">
                     <p class="bloc-titre text-center">Tarifs</p>
                     <table class="table">
@@ -83,7 +83,7 @@
                     </h1>
                 </div>
             </div>
-            <div class="card bloc-central" id="ui-nums">
+            <div class="card bloc-central" id="ui-nums" style="display: none;">
                 <div class="bloc-case">
                     <div class="text-box1">
                         <input type="text" id="inputNumss" class="form-control input-lg" autofocus>
@@ -92,16 +92,23 @@
                     <p id="undefined-user-alert" class="text-danger">Ce compte foy's n'existe pas.</p>
                 </div>
             </div>
-
-            <div class="card bloc-central" id="ui-solde">
-                <div class="bloc-case">
-                    <p class="bloc-titre text-center">Solde actuel</p>
-                    <p class="text-center solde">+123,00€</p>
-                    <p class="text-center encours">-86,00€</p>
+            
+            <div class="card bloc-central my-2" id="ui-hors-truc" style="display: none;">
+                <div class="bloc-case bloc-case-rouge">
+                    <p class="text-center solde">:(</p>
+                    <p class="text-center numss" id="message-hors-truc">Tu es hors babasse.</p>
                 </div>
             </div>
 
-            <div class="card bloc-central" id="ui-actualites">
+            <div class="card bloc-central" id="ui-solde" style="display: none;">
+                <div class="bloc-case">
+                    <p class="bloc-titre text-center">Solde actuel</p>
+                    <p id="solde-actuel" class="text-center solde">+123,00€</p>
+                    <p id="solde-en-cours" class="text-center encours">-86,00€</p>
+                </div>
+            </div>
+
+            <div class="card bloc-central" id="ui-actualites" style="display: none;">
                 <div class="bloc-case">
                     <p class="bloc-titre text-center">Actualités & Événements</p>
                     <form class="btn-connexion">
@@ -114,7 +121,7 @@
                 </div>
             </div>
 
-            <div class="card bloc-central" id="ui-motzifoys">
+            <div class="card bloc-central" id="ui-motzifoys" style="display: none;">
                 <div class="bloc-case">
                     <p class="bloc-titre text-center">Le mot des Zifoy'ss</p>
                     <form class="btn-connexion">
@@ -128,12 +135,13 @@
         </div>
 
         <div class="col">
-            <div class="card bloc-central" id="ui-historique">
+            <div class="card bloc-central" id="ui-historique" style="display: none;">
                 <div class="bloc-case">
                     <p class="bloc-titre text-center">Historique</p>
                     <div id="historique-indisponible">
-                        <h6>Historique indisponible</h6></div>
-                    <p>La babasse n'est pas connectée à internet</p>
+                        <h6>Historique indisponible</h6>
+                        <p>La babasse n'est pas connectée à internet</p>
+                    </div>
                 </div>
                 <div id="historique-disponible" class="table-wrapper-scroll-y">
                     <table class="table" id="table-historique-consos">
