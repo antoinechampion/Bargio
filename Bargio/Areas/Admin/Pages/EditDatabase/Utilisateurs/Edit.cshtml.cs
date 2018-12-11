@@ -56,7 +56,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
             _context.TransactionHistory.Add(new TransactionHistory {
                 Commentaire = "Edition par un administrateur",
                 Date = DateTime.Now,
-                IdProduit = null,
+                IdProduits = null,
                 Montant = UserData.Solde - AncienSolde,
                 UserName = UserData.UserName
             });

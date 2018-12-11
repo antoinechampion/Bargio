@@ -16,7 +16,7 @@ namespace Bargio.Models
         [DataType(DataType.Currency)]
         public decimal Montant { get; set; }
         // = null dans le cas d'un rechargement
-        public uint? IdProduit { get; set; }
+        public string IdProduits { get; set; }
         // Ex: 2 x Jupiler, Rechargement en ligne...
         public string Commentaire { get; set; }
     }

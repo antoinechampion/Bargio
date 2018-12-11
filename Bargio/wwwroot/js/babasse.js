@@ -40,6 +40,8 @@ $( document ).ready(function() {
 		$("#ui-historique").show();
 		$("#ui-historique-indisponible").hide();
 		$("#ui-motzifoys").hide();
+		$("#solde-en-cours").text("");
+		$("#solde-commentaire").text("");
 		interfaceAccueil = false;
 	}
 
@@ -65,7 +67,7 @@ $( document ).ready(function() {
 			UserData: 'UserName,HorsFoys,Surnom,Solde,'
 				+ 'FoysApiHasPassword,FoysApiPasswordHash,'
 				+ 'FoysApiPasswordSalt',
-			HistoriqueTransactions: '++,UserName,Date,Montant,IdProduit,Commentaire'
+			HistoriqueTransactions: '++,UserName,Date,Montant,IdProduits,Commentaire'
 		});
 		db.open().catch (function (err) {
 			console.error('Failed to open db: ' + (err.stack || err));
@@ -100,14 +102,14 @@ $( document ).ready(function() {
 			// Si il n'y a pas de resynchro à faire, on recharge la liste des utilisateurs
 			db.HistoriqueTransactions.count().then( function (count) {
 
-				if (count === 0) {
+                if (count === 0) {
 					console.log(dateTimeNow() + ": Historique vide: pas de resynchro à faire.");
-					db.UserData.clear().then(function () {
+					db.UserData.clear().then(function() {
 						$.ajax({
 							type: 'GET',
 							url: '/Api/Foys',
 							cache: false,
-							success: function (response) {
+							success: function(response) {
 								var users = JSON.parse(response);
 								db.UserData.bulkAdd(users).then(function() {
 									window.setTimeout(function() {
@@ -122,6 +124,10 @@ $( document ).ready(function() {
 							}
 						});
 					});
+				} else {
+					console.log(dateTimeNow() + "L'historique n'était pas vide: en attente de resynchro.");
+					$("#ui-chargement").slideUp(200);
+					setInterfaceAccueil();
 				}
 				derniereSynchro = dateTimeNow();
 			});
@@ -149,6 +155,12 @@ $( document ).ready(function() {
 					success: function (response) {
 						db.HistoriqueTransactions.clear();
 						timerCallback.reset();
+					}, 
+					error: function(xhr, error) {
+						console.log(dateTimeNow() + ": Impossible de synchroniser (POST)\n\t-> Erreur: " 
+							+ error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
+						timerCallback.reset();
+						setDesynchro(true);
 					}
 				});
 			});      
@@ -196,7 +208,7 @@ $( document ).ready(function() {
                     foysApiPostUpdates();
                 },
                 error: function(xhr, error) {
-					console.log(dateTimeNow() + ": Impossible de synchroniser\n\t-> Erreur: " 
+					console.log(dateTimeNow() + ": Impossible de synchroniser (GET)\n\t-> Erreur: " 
 						+ error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
 					timerCallback.reset();
 					setDesynchro(true);
@@ -218,7 +230,7 @@ $( document ).ready(function() {
     function nouveauBucquage(user) {
 		return {
 			userName: user.UserName,
-			montant: 0,
+			montant: 0.0,
 			listeBucquages: [],
             genererCommentaire: function() {
 				var commentaire = "";
@@ -242,9 +254,21 @@ $( document ).ready(function() {
 				prix = prix.replace(",", ".");
 				prix = parseFloat(prix.slice(0, -1));
 				this.montant -= prix;
+				this.montant = Math.round(this.montant * 100) / 100;
 				$("#solde-en-cours").text((this.montant.toFixed(2) + "€").replace(".", ","));
 				$("#solde-commentaire").text(this.genererCommentaire());
-			}
+			},
+			dexieObject: function() {
+				return {
+					UserName: this.userName,
+					Date: dateTimeNow(),
+					Montant: this.montant,
+					IdProduits: this.listeBucquages.filter(function(item, pos, self) {
+						return self.indexOf(item) === pos;
+					}).join(";"),
+					Commentaire: this.genererCommentaire()
+				};
+			} 
 		};
 	}
 
@@ -289,7 +313,7 @@ $( document ).ready(function() {
 			} else {
 				$("#username").text(user.UserName);
 				$("#surnom").text(user.Surnom);
-				$("#solde-actuel").text(user.Solde + "€");
+				$("#solde-actuel").text(user.Solde.toFixed(2).replace(".", ",") + "€");
 				$("#solde-en-cours").text("0€");
 				bucquageActuel = nouveauBucquage(user);
 
@@ -319,9 +343,7 @@ $( document ).ready(function() {
 					$("#historique-indisponible").show();
 				}
 			}
-
-			// Hors foy'ss ?
-			// Mode archi ?
+			
 			setInterfaceBucquage();
 		}
 		
@@ -360,16 +382,27 @@ $( document ).ready(function() {
 		}
 		
 		else if (e.keyCode === 13) { // Enter (valider)
-			;
+			var transaction = bucquageActuel.dexieObject();
+			db.UserData.get({ UserName: transaction.UserName },
+				user => {
+					db.UserData.update(transaction.UserName,
+						{ Solde: Math.round((user.Solde + transaction.Montant)*100)/100 });
+				}).then(function() {
+					db.HistoriqueTransactions.add(transaction).then(function() {
+						$("#dernier-bucquage")
+							.text(transaction.Commentaire + " le " 
+								+ transaction.Date + " par " + transaction.UserName);
+						setInterfaceAccueil();
+					});
+				});
 		}
 
 		var keyPressed = keycodeToShortcut(e.keyCode);
 		if (keyPressed === null)
 			return;
-
+		e.preventDefault();
 		var dom = $("#table-tarifs td:contains('" + keyPressed + "')").parent();
 		bucquageActuel.ajouter(dom);
-
 	}
 
 	// Callback pour le changement d'interface
