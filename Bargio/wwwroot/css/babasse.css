@@ -185,13 +185,6 @@ img.centrage2 {
   font-size: 0.7rem;
 }
 
-.table-wrapper-scroll-y {
-  display: block;
-  max-height: 290px;
-  overflow-y: auto;
-  -ms-overflow-style: -ms-autohiding-scrollbar;
-}
-
 .list-header {
   padding-top: 12px;
   padding-bottom: 12px;
@@ -200,6 +193,14 @@ img.centrage2 {
 }
 
 #scroll-tarifs {
+  display: block;
+  max-height: 680px;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.scroll-historique {
+  display: block;
   max-height: 680px;
   overflow-y: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;

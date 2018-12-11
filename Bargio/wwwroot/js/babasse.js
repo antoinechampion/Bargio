@@ -6,6 +6,7 @@ $( document ).ready(function() {
 	var derniereSynchro = null;
 	var desynchronisation = false;
 	var timerCallback = new Timer();
+	var bucquageActuel = null;
 	$.ajaxSetup({
 		cache: false
 	});
@@ -121,21 +122,6 @@ $( document ).ready(function() {
 							}
 						});
 					});
-				} else {
-					db.HistoriqueTransactions
-						.each(
-							function(transaction) {
-								var commentaire = "Id produit " +
-									transaction.IdProduit +
-									", Prix = " +
-									transaction.Montant +
-									"€, sur " +
-									transaction.UserName +
-									"\n";
-
-								$("#historique").val($("#historique").val() + commentaire);
-							}
-						);
 				}
 				derniereSynchro = dateTimeNow();
 			});
@@ -227,6 +213,39 @@ $( document ).ready(function() {
 		});
 	}());
 	
+	// Objet correspondant aux bucquages en cours mais
+	// pas encore validés sur la page de bucquage
+    function nouveauBucquage(user) {
+		return {
+			userName: user.UserName,
+			montant: 0,
+			listeBucquages: [],
+            genererCommentaire: function() {
+				var commentaire = "";
+				var nombreBucquagesParProduit = {};
+				this.listeBucquages.forEach(function(x) {
+					nombreBucquagesParProduit[x] = (nombreBucquagesParProduit[x] || 0)+1;
+				});
+                for (let produit in nombreBucquagesParProduit) {
+					if (nombreBucquagesParProduit.hasOwnProperty(produit)) {
+						// ex: 2 x Bière F5, 
+						commentaire += nombreBucquagesParProduit[produit] + " x " + produit + ", ";
+					}
+				}
+				// On enlève le ', ' final
+				return commentaire.slice(0, -2);
+			},
+			ajouter: function(dom) {
+				this.listeBucquages.push(dom.find(".conso-id").text());
+				var prix = dom.find(".conso-prix").text();
+				prix = prix.replace(",", ".");
+				prix = parseFloat(prix.slice(0, -1));
+				this.montant -= prix;
+				$("#solde-en-cours").text(this.montant + "€");
+			}
+		};
+	}
+
 	// Fonction de gestion des inputs pour l'accueil
 	function onKeydownCallbackAccueil(e) {
 		// On retrouve l'identifiant du PG à travers le DOM
@@ -270,6 +289,7 @@ $( document ).ready(function() {
 				$("#surnom").text(user.Surnom);
 				$("#solde-actuel").text(user.Solde + "€");
 				$("#solde-en-cours").text("0€");
+				bucquageActuel = nouveauBucquage(user);
 
 				// On récupère son historique
 				// var hist = await db.HistoriqueTransactions.get({ UserName: username });
@@ -285,7 +305,7 @@ $( document ).ready(function() {
 						success: function (response) {
 							JSON.parse(response).forEach(function(bucquage) {
 								$("#table-historique-consos").append("<tr>"
-									+ "<th>" + bucquage.Commentaire + "</th>"
+									+ "<td>" + bucquage.Commentaire + "</td>"
 									+ "<td>" + bucquage.Montant + "</td>"
 									+ "<td>" + bucquage.Date + "</td>"
 									+ "</tr>");
@@ -336,6 +356,13 @@ $( document ).ready(function() {
 		if (e.keyCode === 27) { // ESC
 			setInterfaceAccueil();
 		}
+		var keyPressed = keycodeToShortcut(e.keyCode);
+		if (keyPressed === null)
+			return;
+
+		var dom = $("#table-tarifs td:contains('" + keyPressed + "')").parent();
+		bucquageActuel.ajouter(dom);
+
 	}
 
 	// Callback pour le changement d'interface

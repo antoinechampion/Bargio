@@ -62,13 +62,14 @@
             <div class="card bloc-central" id="ui-tarifs" style="display: none;">
                 <div class="bloc-case" id="scroll-tarifs">
                     <p class="bloc-titre text-center">Tarifs</p>
-                    <table class="table">
+                    <table class="table" id="table-tarifs">
                         @foreach (var c in Model.Consommations)
                         {
                             <tr class="clickable-tr">
-                                <th>@c.Nom</th>
-                                <td>@(c.RaccourciClavier ?? "")</td>
-                                <td>@(c.Prix + "€")</td>
+                                <th class="conso-nom">@c.Nom</th>
+                                <td class="conso-raccourci">@(c.RaccourciClavier ?? "")</td>
+                                <td class="conso-prix">@(c.Prix + "€")</td>
+                                <td class="conso-id" hidden>@(c.Id)</td>
                             </tr>
                         }
                     </table>
@@ -136,17 +137,16 @@
 
         <div class="col">
             <div class="card bloc-central" id="ui-historique" style="display: none;">
-                <div class="bloc-case">
+                <div id="historique-indisponible" class="bloc-case">
                     <p class="bloc-titre text-center">Historique</p>
-                    <div id="historique-indisponible">
-                        <h6>Historique indisponible</h6>
-                        <p>La babasse n'est pas connectée à internet</p>
-                    </div>
+                    <h6>Historique indisponible</h6>
+                    <p>La babasse n'est pas connectée à internet</p>
                 </div>
-                <div id="historique-disponible" class="table-wrapper-scroll-y">
-                    <table class="table" id="table-historique-consos">
+                <div id="historique-disponible" class="bloc-case scroll-historique">
+                    <p class="bloc-titre text-center">Historique</p>
+                    <table class="table table-sm" id="table-historique-consos">
                         <tr>
-                            <th>Conso</th>
+                            <td>Conso</td>
                             <td>Date</td>
                         </tr>
                     </table>
