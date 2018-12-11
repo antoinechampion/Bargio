@@ -184,3 +184,14 @@ overflow-y: auto;
     font-weight: 200;
     font-size: 0.7rem;
 }
+
+.bloc-case-rouge {
+  background: repeating-linear-gradient(
+   45deg,
+   darkred,
+   darkred 10px,
+   firebrick 10px,
+   firebrick 20px
+  );
+  color: white;
+}
