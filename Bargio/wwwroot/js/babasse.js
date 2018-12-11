@@ -229,7 +229,8 @@ $( document ).ready(function() {
                 for (let produit in nombreBucquagesParProduit) {
 					if (nombreBucquagesParProduit.hasOwnProperty(produit)) {
 						// ex: 2 x Bière F5, 
-						commentaire += nombreBucquagesParProduit[produit] + " x " + produit + ", ";
+						var dom = $("#table-tarifs td:contains('" + produit + "')").parent();
+						commentaire += nombreBucquagesParProduit[produit] + " x " + dom.find(".conso-nom").text() + ", ";
 					}
 				}
 				// On enlève le ', ' final
@@ -241,7 +242,8 @@ $( document ).ready(function() {
 				prix = prix.replace(",", ".");
 				prix = parseFloat(prix.slice(0, -1));
 				this.montant -= prix;
-				$("#solde-en-cours").text(this.montant + "€");
+				$("#solde-en-cours").text((this.montant.toFixed(2) + "€").replace(".", ","));
+				$("#solde-commentaire").text(this.genererCommentaire());
 			}
 		};
 	}
@@ -353,9 +355,14 @@ $( document ).ready(function() {
 	// Fonction de gestion des inputs pour la page de bucquage
 	function onKeydownCallbackBucquage(e) {
 		e = e || e.which;
-		if (e.keyCode === 27) { // ESC
+		if (e.keyCode === 27) { // ESC (annuler)
 			setInterfaceAccueil();
 		}
+		
+		else if (e.keyCode === 13) { // Enter (valider)
+			;
+		}
+
 		var keyPressed = keycodeToShortcut(e.keyCode);
 		if (keyPressed === null)
 			return;
