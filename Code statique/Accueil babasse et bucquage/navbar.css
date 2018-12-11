@@ -22,13 +22,9 @@ nav {
   --input-padding-y: .75rem;
 }
 
-body {
-  background-color: #1EEEEE;
-
-}
 
 .bloc-central {
-  border-radius: 1rem;
+  border-radius: .5rem;
   box-shadow: 0 0.5rem 3rem 0 rgba(0, 0, 0, 0.1);
   margin-bottom: 0.5rem;
 
@@ -186,12 +182,24 @@ overflow-y: auto;
 }
 
 .bloc-case-rouge {
-  background: repeating-linear-gradient(
-   45deg,
-   darkred,
-   darkred 10px,
-   firebrick 10px,
-   firebrick 20px
-  );
-  color: white;
+  background-image: url('../../Logo Bargio/chat2.jpg');
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.hbb {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    font-weight: bolder;
+    font-size: 2rem;
+    text-shadow: 1px 1px 10px #000000;
+
+}
+
+.grandtexte {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    font-weight: 200;
+    font-size: 3rem;
 }
