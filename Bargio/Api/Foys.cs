@@ -110,9 +110,10 @@ namespace Bargio.Api
         }
 
         // Retourne les paramètres zifoy'ss de la babasse
-        [HttpPost("zifoysparams")]
+        [HttpPost]
+        [Route("zifoysparams")]
         public void SetZifoysParameters(string json) {
-            var p = JsonConvert.DeserializeObject<SystemParameters>(json);
+            dynamic p = JsonConvert.DeserializeObject(json);
             var parameters = _context.SystemParameters.First();
             parameters.MiseHorsBabasseAutoActivee = p.MiseHorsBabasseAutoActivee;
             parameters.MiseHorsBabasseInstantanee = p.MiseHorsBabasseInstantanee;

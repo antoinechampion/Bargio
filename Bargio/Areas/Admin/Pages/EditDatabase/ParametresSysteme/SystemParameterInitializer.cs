@@ -31,10 +31,10 @@ namespace Bargio.Areas.User
                 var previous = context.SystemParameters.First();
                 p.MiseHorsBabasseAutoActivee = previous.MiseHorsBabasseAutoActivee;
                 p.MiseHorsBabasseInstantanee = previous.MiseHorsBabasseInstantanee;
-                p.MiseHorsBabasseQuotidienne = previous.MiseHorsBabasseQuotidienne;
-                p.MiseHorsBabasseQuotidienneHeure = previous.MiseHorsBabasseQuotidienneHeure;
-                p.MiseHorsBabasseHebdomadaireHeure = previous.MiseHorsBabasseHebdomadaireHeure;
-                p.MiseHorsBabasseHebdomadaireJours = previous.MiseHorsBabasseHebdomadaireJours;
+                p.MiseHorsBabasseQuotidienne = !previous.MiseHorsBabasseInstantanee;
+                p.MiseHorsBabasseQuotidienneHeure = previous.MiseHorsBabasseQuotidienneHeure ?? "00:00";
+                p.MiseHorsBabasseHebdomadaireHeure = previous.MiseHorsBabasseHebdomadaireHeure ?? "00:00";
+                p.MiseHorsBabasseHebdomadaireJours = previous.MiseHorsBabasseHebdomadaireJours ?? "";
             }
 
             var systemParameters = context.SystemParameters;
@@ -42,7 +42,7 @@ namespace Bargio.Areas.User
                 systemParameters.Remove(entity);
             await context.SaveChangesAsync();
 
-            await systemParameters.AddAsync();
+            await systemParameters.AddAsync(p);
 
             await context.SaveChangesAsync();
         }
