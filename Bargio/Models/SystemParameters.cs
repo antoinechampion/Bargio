@@ -14,5 +14,16 @@ namespace Bargio.Models
         public bool BucquagesBloques { get; set; }
         public bool LydiaBloque { get; set; }
         public bool Maintenance { get; set; }
+
+        /* Paramètre zifoy'ss de la babasse */
+        public bool MiseHorsBabasseAutoActivee { get; set; }
+        // Instantanée ou périodique
+        public bool MiseHorsBabasseInstantanee { get; set; }
+        // Quotidienne ou hebdomadaire
+        public bool MiseHorsBabasseQuotidienne { get; set; }
+        public string MiseHorsBabasseQuotidienneHeure { get; set; }
+        public string MiseHorsBabasseHebdomadaireJours { get; set; }
+        public string MiseHorsBabasseHebdomadaireHeure { get; set; }
+
     }
 }

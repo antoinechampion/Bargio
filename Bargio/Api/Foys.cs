@@ -9,6 +9,7 @@ using Bargio.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -89,6 +90,37 @@ namespace Bargio.Api
             // On met à jour la BDD historique
             _context.TransactionHistory.AddRange(transactionHistory);
 
+            _context.SaveChanges();
+        }
+
+        // Retourne les paramètres zifoy'ss de la babasse
+        [HttpGet("zifoysparams")]
+        public string GetZifoysParameters() {
+            var parametres = _context.SystemParameters
+                .Select(o => new {
+                    o.MiseHorsBabasseAutoActivee,
+                    o.MiseHorsBabasseInstantanee,
+                    o.MiseHorsBabasseQuotidienne,
+                    o.MiseHorsBabasseQuotidienneHeure,
+                    o.MiseHorsBabasseHebdomadaireJours,
+                    o.MiseHorsBabasseHebdomadaireHeure
+                })
+                .ToList();
+            return JsonConvert.SerializeObject(parametres);
+        }
+
+        // Retourne les paramètres zifoy'ss de la babasse
+        [HttpPost("zifoysparams")]
+        public void SetZifoysParameters(string json) {
+            var p = JsonConvert.DeserializeObject<SystemParameters>(json);
+            var parameters = _context.SystemParameters.First();
+            parameters.MiseHorsBabasseAutoActivee = p.MiseHorsBabasseAutoActivee;
+            parameters.MiseHorsBabasseInstantanee = p.MiseHorsBabasseInstantanee;
+            parameters.MiseHorsBabasseQuotidienne = p.MiseHorsBabasseQuotidienne;
+            parameters.MiseHorsBabasseQuotidienneHeure = p.MiseHorsBabasseQuotidienneHeure;
+            parameters.MiseHorsBabasseHebdomadaireHeure = p.MiseHorsBabasseHebdomadaireHeure;
+            parameters.MiseHorsBabasseHebdomadaireJours = p.MiseHorsBabasseHebdomadaireJours;
+            _context.Attach(parameters).State = EntityState.Modified;
             _context.SaveChanges();
         }
     }

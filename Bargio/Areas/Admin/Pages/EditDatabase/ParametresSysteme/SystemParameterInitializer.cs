@@ -13,18 +13,36 @@ namespace Bargio.Areas.User
         public static async Task SeedData
             (ApplicationDbContext context) {
 
+            var p = new SystemParameters {
+                IpServeur = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0].ToString(),
+                DerniereConnexionBabasse = DateTime.Now,
+                BucquagesBloques = false,
+                LydiaBloque = false,
+                Maintenance = false,
+                MiseHorsBabasseAutoActivee = false,
+                MiseHorsBabasseInstantanee = false,
+                MiseHorsBabasseQuotidienne = true,
+                MiseHorsBabasseHebdomadaireHeure = "00:00",
+                MiseHorsBabasseQuotidienneHeure = "00:00",
+                MiseHorsBabasseHebdomadaireJours = ""
+            };
+
+            if (context.SystemParameters.Any()) {
+                var previous = context.SystemParameters.First();
+                p.MiseHorsBabasseAutoActivee = previous.MiseHorsBabasseAutoActivee;
+                p.MiseHorsBabasseInstantanee = previous.MiseHorsBabasseInstantanee;
+                p.MiseHorsBabasseQuotidienne = previous.MiseHorsBabasseQuotidienne;
+                p.MiseHorsBabasseQuotidienneHeure = previous.MiseHorsBabasseQuotidienneHeure;
+                p.MiseHorsBabasseHebdomadaireHeure = previous.MiseHorsBabasseHebdomadaireHeure;
+                p.MiseHorsBabasseHebdomadaireJours = previous.MiseHorsBabasseHebdomadaireJours;
+            }
+
             var systemParameters = context.SystemParameters;
             foreach (var entity in systemParameters)
                 systemParameters.Remove(entity);
             await context.SaveChangesAsync();
 
-            await systemParameters.AddAsync(new SystemParameters {
-                IpServeur = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0].ToString(),
-                DerniereConnexionBabasse = DateTime.Now,
-                BucquagesBloques = false,
-                LydiaBloque = false,
-                Maintenance = false
-            });
+            await systemParameters.AddAsync();
 
             await context.SaveChangesAsync();
         }
