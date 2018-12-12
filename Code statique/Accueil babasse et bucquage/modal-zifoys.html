@@ -155,6 +155,21 @@
 					<button id="button-hors-babasse-auto" type="button" class="btn btn-primary mt-3">Valider les changements</button>        
 				</div>
 				<hr>
+				
+				<div class="form-group">
+                    <h6 class="text-center" style="margin-top:30px;">Changer image hors babasse</h6>
+					
+					<input type="file" class="form-control-file" id="input-file-hors-babasse">
+					
+					<div class="card bloc-central my-2">
+						<div class="bloc-case bloc-case-rouge">
+							<p class="text-center text-white hbb">:(</p>
+							<p class="text-center text-white hbb">Tu es hors babasse.</p>
+						</div>
+				    </div>
+					
+					<button id="button-image-hors-babasse" type="button" class="btn btn-primary">Confirmer l'image</button>        
+				</div>
             </div>
         </div>
     </div>
@@ -192,6 +207,12 @@ $(document).ready(function () {
     }
 	$('input:radio').change(refreshUi);
 	refreshUi();
+	
+	$("#input-file-hors-babasse").change(function(e){
+         var tmppath = URL.createObjectURL(event.target.files[0]);
+		 console.log(tmppath);
+		 $(".bloc-case-rouge").css('background-image', "url(" + tmppath + ")");
+	});
 });
 
 </script>
