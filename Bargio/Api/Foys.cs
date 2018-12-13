@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -64,7 +65,7 @@ namespace Bargio.Api
                 .Select(o => new {
                     Commentaire = o.Commentaire,
                     Montant = o.Montant,
-                    Date = o.Date.ToString("d/MM HH:mm")
+                    Date = o.Date.ToString("dd/MM HH:mm")
                 })
                 .ToList();
             return JsonConvert.SerializeObject(history);
@@ -76,7 +77,9 @@ namespace Bargio.Api
         // fusionne avec celui du serveur
         public void PostHistory(string json)
         {
-            var transactionHistory = JsonConvert.DeserializeObject<List<TransactionHistory>>(json);
+            var dateTimeFormat = "dd-MM-yyyy HH:mm:ss"; // your datetime format
+            var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = dateTimeFormat };
+            var transactionHistory = JsonConvert.DeserializeObject<List<TransactionHistory>>(json, dateTimeConverter);
 
             // On applique les transactions sur chaque utilisateur
             foreach (var transaction in transactionHistory)
@@ -103,9 +106,10 @@ namespace Bargio.Api
                     o.MiseHorsBabasseQuotidienne,
                     o.MiseHorsBabasseQuotidienneHeure,
                     o.MiseHorsBabasseHebdomadaireJours,
-                    o.MiseHorsBabasseHebdomadaireHeure
+                    o.MiseHorsBabasseHebdomadaireHeure,
+                    o.MotDePasseZifoys
                 })
-                .ToList();
+                .First();
             return JsonConvert.SerializeObject(parametres);
         }
 
@@ -121,6 +125,7 @@ namespace Bargio.Api
             parameters.MiseHorsBabasseQuotidienneHeure = p.MiseHorsBabasseQuotidienneHeure;
             parameters.MiseHorsBabasseHebdomadaireHeure = p.MiseHorsBabasseHebdomadaireHeure;
             parameters.MiseHorsBabasseHebdomadaireJours = p.MiseHorsBabasseHebdomadaireJours;
+            parameters.MotDePasseZifoys = p.MotDePasseZifoys;
             _context.Attach(parameters).State = EntityState.Modified;
             _context.SaveChanges();
         }

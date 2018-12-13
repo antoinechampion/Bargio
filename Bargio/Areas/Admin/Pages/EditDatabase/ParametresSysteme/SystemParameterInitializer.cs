@@ -24,7 +24,8 @@ namespace Bargio.Areas.User
                 MiseHorsBabasseQuotidienne = true,
                 MiseHorsBabasseHebdomadaireHeure = "00:00",
                 MiseHorsBabasseQuotidienneHeure = "00:00",
-                MiseHorsBabasseHebdomadaireJours = ""
+                MiseHorsBabasseHebdomadaireJours = "",
+                MotDePasseZifoys = "zifoys"
             };
 
             if (context.SystemParameters.Any()) {
@@ -35,6 +36,7 @@ namespace Bargio.Areas.User
                 p.MiseHorsBabasseQuotidienneHeure = previous.MiseHorsBabasseQuotidienneHeure ?? "00:00";
                 p.MiseHorsBabasseHebdomadaireHeure = previous.MiseHorsBabasseHebdomadaireHeure ?? "00:00";
                 p.MiseHorsBabasseHebdomadaireJours = previous.MiseHorsBabasseHebdomadaireJours ?? "";
+                p.MotDePasseZifoys = previous.MotDePasseZifoys ?? "zifoys";
             }
 
             var systemParameters = context.SystemParameters;

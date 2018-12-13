@@ -7,15 +7,22 @@
 }
 
 @section IncludeHead {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/css/babasse.css">
 }
 
 @section Scripts {
     <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="/js/easytimer.js"></script>
     <script src="/js/date.format.js"></script>
     <script src="/js/babasse.js"></script>
+    <script src="/js/babasse-admin.js"></script>
 }
+
+<partial name="_ZifoysBabassePartial" />
 
 <div class="bloc-central">
     <div class="container">
@@ -27,14 +34,14 @@
             }
         </ul>
         <ul class="list-inline list-header" id="ui-userdata" style="display: none;">
-            <li class="list-inline-item font-weight-bold" id="username">1 Test 218 -- </li>
-            <li class="list-inline-item font-weight-light" id="surnom">Juste Djobo Kante</li>
+            <li class="list-inline-item font-weight-bold" id="username"></li>
+            <li class="list-inline-item font-weight-light" id="surnom"></li>
         </ul>
     </div>
 </div>
 
 <!-- Modal bootstrap pour sélectionner la prom'ss manuellement -->
-<div class="modal fade" id="modal-autre-proms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="modal-autre-proms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,7 +53,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="control-label">TBK et prom'ss</label>
-                        <input id="input-modal-proms" class="form-control input-lg" placeholder="Cl204">
+                    <input id="input-modal-proms" class="form-control input-lg" placeholder="Cl204">
                 </div>
             </div>
             <div class="modal-footer">
@@ -77,7 +84,7 @@
             </div>
         </div>
         <div class="col">
-            <div id="ui-chargement" class="card bloc-central" >
+            <div id="ui-chargement" class="card bloc-central">
                 <div class="bloc-case">
                     <h1>
                         CHARGEMENT INITIAL...
@@ -87,17 +94,17 @@
             <div class="card bloc-central" id="ui-nums" style="display: none;">
                 <div class="bloc-case">
                     <div class="text-box1">
-                        <input type="text" id="inputNumss" class="form-control input-lg" autofocus>
+                        <input type="text" id="inputNumss" class="form-control input-lg grandtexte text-center" size="20" autofocus>
                         <label for="inputNumss">Num'ss de babasse</label>
                     </div>
                     <p id="undefined-user-alert" class="text-danger">Ce compte foy's n'existe pas.</p>
                 </div>
             </div>
-            
+
             <div class="card bloc-central my-2" id="ui-hors-truc" style="display: none;">
                 <div class="bloc-case bloc-case-rouge">
-                    <p class="text-center solde">:(</p>
-                    <p class="text-center numss" id="message-hors-truc">Tu es hors babasse.</p>
+                    <p class="text-center text-white hbb"><span id="hors-babasse-solde"></span>€</p>
+                    <p class="text-center text-white hbb" id="message-hors-truc">Tu es hors babasse.</p>
                 </div>
             </div>
 
@@ -168,5 +175,4 @@
         <img id="logo-footer-sync" class="centrage2" src="~/images/title_logo106x20.png" alt="Logal Bargio_tag" width="106" height="20">
         <img id="logo-footer-desync" class="centrage2" src="~/images/title_logo_red106x20.png" alt="Logal Bargio_tag" width="106" height="20" style="display: none;">
     </div>
-
 </footer>

@@ -1,12 +1,28 @@
 ﻿"use strict";
+
+// variables globales
+var interfaceAccueil = true;
+var db = new Dexie("db");
+var derniereSynchro = null;
+var desynchronisation = false;
+var timerCallback = new Timer();
+var bucquageActuel = null;
+var zifoysParams = {
+	MiseHorsBabasseAutoActivee: true,
+	MiseHorsBabasseInstantanee: false,
+	MiseHorsBabasseQuotidienne: false,
+	MiseHorsBabasseQuotidienneHeure: "00:00",
+	MiseHorsBabasseHebdomadaireJours: "Mardi",
+	MiseHorsBabasseHebdomadaireHeure: "00:00",
+	MotDePasseZifoys: "zifoys"
+};
+
+// Retourne la date et l'heure au format dd-mm-yyyy HH:MM:ss
+function dateTimeNow() {
+	return dateFormat(new Date(), "dd-mm-yyyy HH:MM:ss");
+}
+
 $( document ).ready(function() {
-	// variables globales
-	var interfaceAccueil = true;
-	var db = new Dexie("db");
-	var derniereSynchro = null;
-	var desynchronisation = false;
-	var timerCallback = new Timer();
-	var bucquageActuel = null;
 	$.ajaxSetup({
 		cache: false
 	});
@@ -74,11 +90,6 @@ $( document ).ready(function() {
 		});
 	})();
 
-	// Retourne la date et l'heure au format dd-mm-yyyy HH:MM:ss
-	function dateTimeNow() {
-		return dateFormat(new Date(), "dd-mm-yyyy HH:MM:ss");
-	}
-	
 	// Retourne une chaîne de caractère correspondant
 	// à la touche passée en paramètre
     function keycodeToShortcut(keycode)
@@ -99,37 +110,43 @@ $( document ).ready(function() {
 	// Mises à jour asynchrones
     (function () {	
 		function foysApiGet() {
-			// Si il n'y a pas de resynchro à faire, on recharge la liste des utilisateurs
-			db.HistoriqueTransactions.count().then( function (count) {
-
-                if (count === 0) {
-					console.log(dateTimeNow() + ": Historique vide: pas de resynchro à faire.");
-					db.UserData.clear().then(function() {
-						$.ajax({
-							type: 'GET',
-							url: '/Api/Foys',
-							cache: false,
-							success: function(response) {
-								var users = JSON.parse(response);
-								db.UserData.bulkAdd(users).then(function() {
-									window.setTimeout(function() {
-											console.log(users.length +
-												" utilisateurs ont été ajoutés" +
-												" à la BDD locale (GET initial).");
-											$("#ui-chargement").slideUp(200);
-											setInterfaceAccueil();
-										},
-										10000);
-								});
-							}
+			db.UserData.clear().then(function() {
+				$.ajax({
+					type: 'GET',
+					url: '/Api/Foys',
+					cache: false,
+					success: function(response) {
+						var users = JSON.parse(response);
+						db.UserData.bulkAdd(users).then(function() {
+							db.HistoriqueTransactions.count().then(function(count) {
+                                if (count !== 0) {
+									db.HistoriqueTransactions.toArray().then(function(arr) {
+										arr.forEach(function(transaction) {
+											db.UserData.get({ UserName: transaction.UserName },
+												user => {
+													db.UserData.update(transaction.UserName,
+														{
+															Solde: Math.round((user.Solde + transaction.Montant) *
+																	100) /
+																100
+														});
+												});
+										});
+									});
+								}
+							});
+							derniereSynchro = dateTimeNow();
+							window.setTimeout(function() {
+									console.log(users.length +
+										" utilisateurs ont été ajoutés" +
+										" à la BDD locale (GET initial).");
+									$("#ui-chargement").slideUp(200);
+									setInterfaceAccueil();
+								},
+								10000);
 						});
-					});
-				} else {
-					console.log(dateTimeNow() + "L'historique n'était pas vide: en attente de resynchro.");
-					$("#ui-chargement").slideUp(200);
-					setInterfaceAccueil();
-				}
-				derniereSynchro = dateTimeNow();
+					}
+				});
 			});
 		}
 
@@ -283,6 +300,19 @@ $( document ).ready(function() {
 		async function changerInterface(proms) {
 			proms = proms.toLowerCase();
 			var username = $("#inputNumss").val() + proms;
+			// On vérifie si c'est le compte admin, dans ce cas on 
+			// afficher le panneau d'administration
+            if (username === "admin" + zifoysParams.MotDePasseZifoys) {
+				$('#modal-zifoys').modal('show');
+				$('#modal-zifoys').on('hidden.bs.modal',
+					function(e) {
+						$("#inputNumss").val("");
+						$("#inputNumss").focus();
+					}
+				);
+				return;
+			}
+			// Sinon c'est un PG
 			// On vérifie si il existe bien dans la BDD
 			var user = await db.UserData.get({ UserName: username });
 			if (typeof user === "undefined") {
@@ -294,8 +324,11 @@ $( document ).ready(function() {
 				return;
 			// On vérifie si il n'est pas hors babasse
             } else if (isHorsBabasse(user)) {
-				$("#message-hors-truc").text("Tu es hors babasse.");
+				$("#hors-babasse-solde").text(user.Solde);
+				$("#message-hors-truc").text("Tu es hors babasse. :(");
 				$("#ui-hors-truc").slideDown(200);
+				$("#inputNumss").val("");
+				$("#inputNumss").focus();
 				window.setTimeout(function() {
 						$("#ui-hors-truc").slideUp(200);
 					},
@@ -303,8 +336,11 @@ $( document ).ready(function() {
 				return;
 			// On vérifie si il n'est pas hors foy's non plus le petit enculé
             } else if (isHorsFoys(user)) {
+				$("#hors-babasse-solde").text("");
 				$("#message-hors-truc").text("Tu es hors foy's.");
 				$("#ui-hors-truc").slideDown(200);
+				$("#inputNumss").val("");
+				$("#inputNumss").focus();
 				window.setTimeout(function() {
 						$("#ui-hors-truc").slideUp(200);
 					},
@@ -352,10 +388,19 @@ $( document ).ready(function() {
 			$("#modal-autre-proms").on("hidden.bs.modal",
 				function() {
 					changerInterface($("#input-modal-proms").val());
+					$("#input-modal-proms").val("");
+					$("#input-modal-proms").attr("type", "text");
+					$("#inputNumss").val("");
 				}
 			);
 
 			$("#modal-autre-proms").modal("show");
+
+			// Si c'est un ID zifoys, mettre le champ en mode mdp
+            if ($("#inputNumss").val() === "admin") {
+				$("#input-modal-proms").attr("type", "password");
+			}
+
 			$('#modal-autre-proms').on('keyup keypress', function(e) {
 				var keyCode = e.keyCode || e.which;
 				if (keyCode === 13) {
@@ -365,7 +410,7 @@ $( document ).ready(function() {
 			});
 			setTimeout(function() {
 				$("#input-modal-proms").focus();
-			}, 500);
+			}, 100);
 		} else {
 			var proms = $(".raccourci-proms").filter(function() {
 				return $(this).text() === keyPressed;

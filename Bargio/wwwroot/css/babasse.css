@@ -39,6 +39,7 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
+  z-index: -1;
 }
 
 .bloc-central .bloc-titre {
@@ -51,17 +52,20 @@ body {
   padding: 2rem;
 }
 
-.bloc-case-rouge {
-  background: repeating-linear-gradient(
-   45deg,
-   darkred,
-   darkred 10px,
-   firebrick 10px,
-   firebrick 20px
-  );
-  color: white;
+.bloc-case-rouge, .bloc-case-rouge-test {
+  background-image: url("/images/chat_hors_babasse.jpg");
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 
+.hbb {
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  font-weight: bolder;
+  font-size: 2rem;
+  text-shadow: 1px 1px 10px #000000;
+}
 
 .btn-connexion {
   width: 100%;
@@ -216,4 +220,11 @@ img.centrage2 {
 
 #ui-chargement {
   text-align: center;
+}
+
+.grandtexte {
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  font-weight: 200;
+  font-size: 3rem;
 }
