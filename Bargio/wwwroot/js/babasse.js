@@ -280,9 +280,7 @@ $( document ).ready(function() {
 					UserName: this.userName,
 					Date: dateTimeNow(),
 					Montant: this.montant,
-					IdProduits: this.listeBucquages.filter(function(item, pos, self) {
-						return self.indexOf(item) === pos;
-					}).join(";"),
+					IdProduits: this.listeBucquages.join(";"),
 					Commentaire: this.genererCommentaire()
 				};
 			} 
@@ -415,6 +413,8 @@ $( document ).ready(function() {
 			var proms = $(".raccourci-proms").filter(function() {
 				return $(this).text() === keyPressed;
 			}).next().text();
+			if (proms === "")
+				return;
 			changerInterface(proms);
 		}
 	}
@@ -446,9 +446,15 @@ $( document ).ready(function() {
 		if (keyPressed === null)
 			return;
 		e.preventDefault();
-		var dom = $("#table-tarifs td:contains('" + keyPressed + "')").parent();
+		var dom = $("#table-tarifs td:contains('" + keyPressed + "')").first().parent();
 		bucquageActuel.ajouter(dom);
 	}
+
+	// Gestion des inputs pour un bucquage au clic
+	$(".clickable-tr").click(function() {
+		bucquageActuel.ajouter($(this));
+	});
+
 
 	// Callback pour le changement d'interface
     $(document).on("keydown", function(e) {
