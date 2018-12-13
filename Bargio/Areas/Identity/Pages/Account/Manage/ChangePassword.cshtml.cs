@@ -110,9 +110,9 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
                 }
                 return Page();
             }
-
+            
+            userData.FoysApiHasPassword = Input.NewPassword == IdentityUserDefaultPwd.DefaultPassword;;
             userData.DateDerniereModif = DateTime.Now;
-            userData.FoysApiHasPassword = true;
             userData.FoysApiPasswordSalt = BCryptHelper.GenerateSalt();
             userData.FoysApiPasswordHash = BCryptHelper.HashPassword(Input.NewPassword, userData.FoysApiPasswordSalt);
             _context.Attach(userData).State = EntityState.Modified;

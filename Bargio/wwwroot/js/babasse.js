@@ -16,6 +16,7 @@ var zifoysParams = {
 	MiseHorsBabasseHebdomadaireHeure: "00:00",
 	MotDePasseZifoys: "zifoys"
 };
+var bcrypt = dcodeIO.bcrypt;
 
 // Retourne la date et l'heure au format dd-mm-yyyy HH:MM:ss
 function dateTimeNow() {
@@ -215,8 +216,14 @@ $( document ).ready(function() {
                                 ).then(function () {
                                     console.log("\t-> Modifs solde local : " + modifSoldeLocal);
                                     console.log("\t-> Nouveau solde : " + (user.Solde + modifSoldeLocal));
-                                    db.UserData.update(user.UserName,
-                                        { Solde: user.Solde + modifSoldeLocal, HorsFoys: user.HorsFoys });
+                                    db.UserData.update(user.UserName, { 
+											Solde: user.Solde + modifSoldeLocal, 
+											HorsFoys: user.HorsFoys,
+											Surnom: user.Surnom,
+											FoysApiHasPassword: user.FoysApiHasPassword,
+											FoysApiPasswordHash: user.FoysApiPasswordHash,
+											FoysApiPasswordSalt: user.FoysApiPasswordSalt
+										});
                                 });
                         });
                     }
@@ -295,14 +302,46 @@ $( document ).ready(function() {
 		if (keyPressed === null)
 			return;
 		
-		async function changerInterface(proms) {
+        async function changerInterface(user) {
+			$("#username").text(user.UserName);
+			$("#surnom").text(user.Surnom);
+			$("#solde-actuel").text(user.Solde.toFixed(2).replace(".", ",") + "€");
+			$("#solde-en-cours").text("0€");
+			bucquageActuel = nouveauBucquage(user);
+
+			// On affiche son historique si il n'y a pas de désynchro
+			if (!desynchronisation) {
+				$("#historique-indisponible").hide();
+				$("#historique-disponible").show();
+				$("#table-historique-consos tr").remove();
+				$.ajax({
+					type: 'GET',
+					url: '/Api/Foys/userhistory/' + user.UserName,
+					cache: false,
+					success: function (response) {
+						JSON.parse(response).forEach(function(bucquage) {
+							$("#table-historique-consos").append("<tr>"
+								+ "<td>" + bucquage.Commentaire + "</td>"
+								+ "<td>" + bucquage.Montant + "</td>"
+								+ "<td>" + bucquage.Date + "</td>"
+								+ "</tr>");
+						});
+					}
+				});
+			} else {
+				$("#historique-disponible").hide();
+				$("#historique-indisponible").show();
+			}
+		}
+
+		async function validerUtilisateur(proms) {
 			proms = proms.toLowerCase();
 			var username = $("#inputNumss").val() + proms;
 			// On vérifie si c'est le compte admin, dans ce cas on 
 			// afficher le panneau d'administration
             if (username === "admin" + zifoysParams.MotDePasseZifoys) {
-				$('#modal-zifoys').modal('show');
-				$('#modal-zifoys').on('hidden.bs.modal',
+				$('#modal-zifoys').modal("show");
+				$('#modal-zifoys').on("hidden.bs.modal",
 					function(e) {
 						$("#inputNumss").val("");
 						$("#inputNumss").focus();
@@ -345,47 +384,67 @@ $( document ).ready(function() {
 					2000);
 				return;
 			} else {
-				$("#username").text(user.UserName);
-				$("#surnom").text(user.Surnom);
-				$("#solde-actuel").text(user.Solde.toFixed(2).replace(".", ",") + "€");
-				$("#solde-en-cours").text("0€");
-				bucquageActuel = nouveauBucquage(user);
+				// Si il a un mdp, on lui demande de l'entrer et on compare
+                if (user.FoysApiHasPassword) {
+					// attente de 100ms pour éviter le double input de touches
+					window.setTimeout(function() {
+						$("#modal-mdp").modal("show");
+						window.setTimeout(function() {
+								$("#input-mdp").focus();
+							},
+							100);
 
-				// On récupère son historique
-				// var hist = await db.HistoriqueTransactions.get({ UserName: username });
-				// table-historique-consos
-				if (!desynchronisation) {
-					$("#historique-indisponible").hide();
-					$("#historique-disponible").show();
-					$("#table-historique-consos tr").remove();
-					$.ajax({
-						type: 'GET',
-						url: '/Api/Foys/userhistory/' + user.UserName,
-						cache: false,
-						success: function (response) {
-							JSON.parse(response).forEach(function(bucquage) {
-								$("#table-historique-consos").append("<tr>"
-									+ "<td>" + bucquage.Commentaire + "</td>"
-									+ "<td>" + bucquage.Montant + "</td>"
-									+ "<td>" + bucquage.Date + "</td>"
-									+ "</tr>");
+						$("#modal-mdp").on('keyup keypress',
+							function(e) {
+								var keyCode = e.keyCode || e.which;
+								if (keyCode === 13) {
+									$("#button-mdp").click();
+									e.preventDefault();
+								}
 							});
-						}
-					});
+
+						$("#button-mdp").show();
+						$("#label-mdp-invalide").hide();
+						$("#modal-mdp").on("hidden.bs.modal",
+							function(e) {
+								$("#input-mdp").val("");
+							}
+						);
+						$("#button-mdp").click(function(e) {
+							var pwd = $("#input-mdp").val();
+							bcrypt.compare(pwd,
+								user.FoysApiPasswordHash,
+								(err, res) => {
+									if (res) {
+										$("#modal-mdp").modal("hide");
+										changerInterface(user);
+										setInterfaceBucquage();
+									} else {
+										$("#label-mdp-invalide").slideDown(200);
+										$("#button-mdp").hide();
+										window.setTimeout(function() {
+												$("#label-mdp-invalide").slideUp(200);
+												$("#modal-mdp").modal("hide");
+												setInterfaceAccueil();
+											},
+											2000);
+									}
+								});
+						});
+					}, 100);
 				} else {
-					$("#historique-disponible").hide();
-					$("#historique-indisponible").show();
+					changerInterface(user);
+					setInterfaceBucquage();
 				}
 			}
 			
-			setInterfaceBucquage();
 		}
 		
 		e.preventDefault();
 		if (keyPressed === "F1") {
 			$("#modal-autre-proms").on("hidden.bs.modal",
 				function() {
-					changerInterface($("#input-modal-proms").val());
+					validerUtilisateur($("#input-modal-proms").val());
 					$("#input-modal-proms").val("");
 					$("#input-modal-proms").attr("type", "text");
 					$("#inputNumss").val("");
@@ -415,7 +474,7 @@ $( document ).ready(function() {
 			}).next().text();
 			if (proms === "")
 				return;
-			changerInterface(proms);
+			validerUtilisateur(proms);
 		}
 	}
 	

@@ -99,6 +99,7 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             userData.DateDerniereModif = DateTime.Now;
             userData.FoysApiPasswordSalt = BCryptHelper.GenerateSalt();
             userData.FoysApiPasswordHash = BCryptHelper.HashPassword(Input.NewPassword, userData.FoysApiPasswordSalt);
+            userData.FoysApiHasPassword = true;
             _context.Attach(userData).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             await _signInManager.RefreshSignInAsync(user);
