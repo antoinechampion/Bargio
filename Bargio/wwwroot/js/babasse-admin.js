@@ -121,6 +121,21 @@ $(document).ready(function () {
             });
         });
 
+        // Hors babasse manuelle
+        $("#button-hors-babasse-manuelle").click(function() {
+            seuilHorsBabasse = parseFloat($("#input-seuil-hors-babasse-manuelle").val().replace(",", "."));
+            if (seuilHorsBabasse === undefined) {
+                return;
+            }
+            db.UserData.each(function(user) {
+                if (user.Solde < seuilHorsBabasse) {
+                    db.HorsBabasse.put({ UserName: user.UserName });
+                }
+            }).then(function() {
+                $("#modal-zifoys-validation").modal('show');
+            });
+        });
+
         // Quand le bouton de l'image hors babasse a été cliqué
         $("#button-image-hors-babasse").click(function(e) {
             if (imageHorsBabassePath !== "") {

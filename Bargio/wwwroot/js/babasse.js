@@ -7,6 +7,7 @@ var derniereSynchro = null;
 var desynchronisation = false;
 var timerCallback = new Timer();
 var bucquageActuel = null;
+var seuilHorsBabasse = 0;
 var zifoysParams = {
 	MiseHorsBabasseAutoActivee: true,
 	MiseHorsBabasseInstantanee: false,
@@ -84,9 +85,10 @@ $( document ).ready(function() {
 			UserData: 'UserName,HorsFoys,Surnom,Solde,'
 				+ 'FoysApiHasPassword,FoysApiPasswordHash,'
 				+ 'FoysApiPasswordSalt',
-			HistoriqueTransactions: '++,UserName,Date,Montant,IdProduits,Commentaire'
+			HistoriqueTransactions: '++,UserName,Date,Montant,IdProduits,Commentaire',
+			HorsBabasse: 'UserName'
 		});
-		db.open().catch (function (err) {
+		db.open().catch(function(err) {
 			console.error('Failed to open db: ' + (err.stack || err));
 		});
 	})();
@@ -101,7 +103,20 @@ $( document ).ready(function() {
 	}
 	
     function isHorsBabasse(user) {
-		return user.Solde < 0;
+        db.HorsBabasse.get({ UserName: user.UserName }).then(function(userHorsBabasse) {
+			if (userHorsBabasse !== undefined) {
+				if (user.Solde > seuilHorsBabasse) {
+					// L'utilisateur n'est plus hors babasse
+					db.HorsBabasse.where("UserName").equals(user.UserName).delete();
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				return false;
+			}
+		});
+		return false;
 	}
 
     function isHorsFoys(user) {
