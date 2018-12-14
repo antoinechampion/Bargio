@@ -200,6 +200,6 @@ overflow-y: auto;
 .grandtexte {
     margin-top: 0rem;
     margin-bottom: 0rem;
-    font-weight: 200;
-    font-size: 3rem;
+    font-weight: bolder;
+    font-size: 2rem;
 }

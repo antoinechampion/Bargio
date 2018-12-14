@@ -1,10 +1,25 @@
+nav {
+    height: 50px;
+}
+
+.nav-item {
+    border-bottom: grey solid 2px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.nav-item.active {
+    border-bottom: forestgreen solid 2px;
+}
+
+#logo-navbar {
+    height: 50px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
 :root {
   --input-padding-x: 1.5rem;
   --input-padding-y: .75rem;
-}
-
-.margin-top {
-    margin-top: 145px;
 }
 
 body {
@@ -22,7 +37,6 @@ body {
 .bloc-central .bloc-titre {
   margin-bottom: 1rem;
   font-weight: 300;
-  font-size: 1rem;
 }
 
 .bloc-central .bloc-case {
@@ -119,4 +133,16 @@ img.centrage2 {
     margin-right: auto;
     margin-bottom: 1rem;
     
+}
+
+.placement {
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.table-wrapper-scroll-y {
+display: block;
+max-height: 200px;
+overflow-y: auto;
+-ms-overflow-style: -ms-autohiding-scrollbar;
 }

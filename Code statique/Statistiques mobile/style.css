@@ -28,20 +28,16 @@ body {
 }
 
 .bloc-central {
+  border: 0;
   border-radius: 1rem;
-  box-shadow: 0 0.5rem 3rem 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: 0.5rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 
 }
 
-.bloc-footer {
-  border-radius: 1rem;
-  margin-bottom: 0.5rem;
 
-}
 
 .bloc-central .bloc-titre {
-  margin-bottom: 1rem;
+  margin-bottom: auto;
   font-weight: 300;
 }
 
@@ -65,7 +61,7 @@ body {
 
 .text-box1 {
   position: relative;
-  margin-bottom: 0rem;
+  margin-bottom: 1rem;
 }
 
 .text-box1 input {
@@ -124,7 +120,7 @@ body {
   color: #777;
 }
 
-img.centrage1 {
+.centrage1 {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -133,9 +129,11 @@ img.centrage1 {
     
 }
 
-img.centrage2 {
+.centrage2 {
+    display: block;
     margin-left: auto;
-    margin-right: auto }
+    margin-right: auto;
+    margin-bottom: 1rem;
     
 }
 
@@ -145,46 +143,31 @@ img.centrage2 {
 }
 
 .paragraphe {
+    margin-bottom: 0rem;
     font-weight: 300;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .solde {
     font-weight: 100;
     font-size: 3rem;
-    margin-bottom: 0rem;
 }
 
-.encours {
-    margin-top: 0rem;
-    margin-bottom: 0rem;
-    font-weight: lighter;
-    font-size: 1rem;
+.bucquage {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 100;
+    font-size: 1.7rem;
 }
 
-.table-wrapper-scroll-y {
-display: block;
-max-height: 290px;
-overflow-y: auto;
--ms-overflow-style: -ms-autohiding-scrollbar;
+
+.rechargement {
+    margin-bottom:0rem;
+    font-weight: 300;
+    font-size: 1.8rem;
 }
 
-.numss {
-    margin-top: 0rem;
-    margin-bottom: 0rem;
-    font-weight: 200;
-    font-size: 2rem;
-}
-
-.surnom {
-    margin-top: 0rem;
-    margin-bottom: 0rem;
-    font-weight: 200;
-    font-size: 0.7rem;
-}
-
-img.center {
-display: block;
-margin-left: auto;
-margin-right: auto;
+.titre {
+    font-weight: 300;
+    font-size: 1.2rem;
 }
