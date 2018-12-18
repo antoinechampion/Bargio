@@ -3,6 +3,7 @@
 }
 @section IncludeHead {
     <link rel="stylesheet" href="/css/editdatabase.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
     @RenderSection("IncludeHead", required: false)
 }
 
@@ -15,5 +16,11 @@
 </p>
 
 @section Scripts {
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('.table').DataTable();
+        } );
+    </script>
     @RenderSection("Scripts", required: false)
 }
