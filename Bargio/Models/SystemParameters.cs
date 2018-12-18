@@ -17,6 +17,7 @@ namespace Bargio.Models
 
         /* Paramètre zifoy'ss de la babasse */
         public bool MiseHorsBabasseAutoActivee { get; set; }
+        public decimal MiseHorsBabasseSeuil { get; set; }
         // Instantanée ou périodique
         public bool MiseHorsBabasseInstantanee { get; set; }
         // Quotidienne ou hebdomadaire

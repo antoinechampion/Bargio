@@ -10,6 +10,7 @@ var bucquageActuel = null;
 var seuilHorsBabasse = 0;
 var zifoysParams = {
 	MiseHorsBabasseAutoActivee: true,
+	MiseHorsBabasseSeuil: 0.0,
 	MiseHorsBabasseInstantanee: false,
 	MiseHorsBabasseQuotidienne: false,
 	MiseHorsBabasseQuotidienneHeure: "00:00",
@@ -58,6 +59,7 @@ $( document ).ready(function() {
 		$("#ui-historique").show();
 		$("#ui-historique-indisponible").hide();
 		$("#ui-motzifoys").hide();
+		$("#ui-hors-truc").hide();
 		$("#solde-en-cours").text("");
 		$("#solde-commentaire").text("");
 		interfaceAccueil = false;
@@ -102,21 +104,19 @@ $( document ).ready(function() {
 		else return "F" + (keycode - 111);
 	}
 	
-    function isHorsBabasse(user) {
-        db.HorsBabasse.get({ UserName: user.UserName }).then(function(userHorsBabasse) {
-			if (userHorsBabasse !== undefined) {
-				if (user.Solde > seuilHorsBabasse) {
-					// L'utilisateur n'est plus hors babasse
-					db.HorsBabasse.where("UserName").equals(user.UserName).delete();
-					return false;
-				} else {
-					return true;
-				}
-			} else {
+    async function isHorsBabasse(user) {
+		var userHorsBabasse = await db.HorsBabasse.get({ UserName: user.UserName });
+		if (userHorsBabasse !== undefined) {
+			if (user.Solde > seuilHorsBabasse) {
+				// L'utilisateur n'est plus hors babasse
+				db.HorsBabasse.where("UserName").equals(user.UserName).delete();
 				return false;
+			} else {
+				return true;
 			}
-		});
-		return false;
+		} else {
+			return false;
+		}
 	}
 
     function isHorsFoys(user) {
@@ -375,7 +375,7 @@ $( document ).ready(function() {
 					2000);
 				return;
 			// On vérifie si il n'est pas hors babasse
-            } else if (isHorsBabasse(user)) {
+            } else if (await isHorsBabasse(user)) {
 				$("#hors-babasse-solde").text(user.Solde);
 				$("#message-hors-truc").text("Tu es hors babasse. :(");
 				$("#ui-hors-truc").slideDown(200);

@@ -102,6 +102,7 @@ namespace Bargio.Api
             var parametres = _context.SystemParameters
                 .Select(o => new {
                     o.MiseHorsBabasseAutoActivee,
+                    o.MiseHorsBabasseSeuil,
                     o.MiseHorsBabasseInstantanee,
                     o.MiseHorsBabasseQuotidienne,
                     o.MiseHorsBabasseQuotidienneHeure,
@@ -120,6 +121,7 @@ namespace Bargio.Api
             dynamic p = JsonConvert.DeserializeObject(json);
             var parameters = _context.SystemParameters.First();
             parameters.MiseHorsBabasseAutoActivee = p.MiseHorsBabasseAutoActivee;
+            parameters.MiseHorsBabasseSeuil = p.MiseHorsBabasseSeuil;
             parameters.MiseHorsBabasseInstantanee = p.MiseHorsBabasseInstantanee;
             parameters.MiseHorsBabasseQuotidienne = p.MiseHorsBabasseQuotidienne;
             parameters.MiseHorsBabasseQuotidienneHeure = p.MiseHorsBabasseQuotidienneHeure;

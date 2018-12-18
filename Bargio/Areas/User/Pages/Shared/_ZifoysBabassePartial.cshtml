@@ -39,6 +39,7 @@
                 <div class="form-group">
                     <h6 class="text-center" style="margin-top:30px;">Mise hors babasse manuelle</h6>
 
+                    <h6 style="margin-top:30px;"><i>Faire une mise hors babasse collective</i></h6>
                     <label class="control-label">Seuil</label>
                     <div class="input-group mb-3">
                         <input id="input-seuil-hors-babasse-manuelle" class="form-control input-lg" type="number" value="0">
@@ -48,6 +49,12 @@
                     </div>
 
                     <button id="button-hors-babasse-manuelle" type="button" class="btn btn-primary">Faire une mise hors babasse</button>
+
+                    <h6 style="margin-top:30px;"><i>Remettre un compte en babasse</i></h6>
+                    <label class="control-label">Utilisateur</label>
+                    <input id="input-remettre-en-babasse" class="form-control input-lg mb-3" placeholder="ex: 13li217">
+                    
+                    <button id="button-remettre-en-babasse" type="button" class="btn btn-primary">Remettre en babasse</button>
                 </div>
                 <hr>
 
@@ -56,8 +63,8 @@
                     <h6 class="text-center" style="font-weight:100;">Cet ordi devra être allumé au moment de la mise hors babasse</h6>
 
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
+                        <input class="form-check-input" type="checkbox" value="" id="checkbox-hors-babasse-auto">
+                        <label class="form-check-label" for="checkbox-hors-babasse-auto">
                             Activer la mise hors babasse auto
                         </label>
                     </div>
@@ -104,29 +111,30 @@
                             </div>
                         </div>
 
-                        <div id="jours-hors-babasse-hebdomadaire" class="mt-3 mb-3 btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-secondary">
-                                <input type="checkbox" name="jour-hors-babasse" id="checkbox-hors-babasse-lundi" autocomplete="off" checked> Lundi
+                        <div id="jours-hors-babasse-hebdomadaire" class="mt-3 mb-3 btn-group btn-group-toggle btn-group-sm" data-toggle="buttons" role="group">
+                            <label class="btn btn-secondary" id="checkbox-hors-babasse-lundi" >
+                                <input type="checkbox" name="jour-hors-babasse" autocomplete="off"> Lundi
                             </label>
-                            <label class="btn btn-secondary">
-                                <input type="checkbox" name="jour-hors-babasse" id="checkbox-hors-babasse-mardi" autocomplete="off"> Mardi
+                            <label class="btn btn-secondary" id="checkbox-hors-babasse-mardi">
+                                <input type="checkbox" name="jour-hors-babasse" autocomplete="off"> Mardi
                             </label>
-                            <label class="btn btn-secondary">
-                                <input type="checkbox" name="jour-hors-babasse" id="checkbox-hors-babasse-mercredi" autocomplete="off"> Mercredi
+                            <label class="btn btn-secondary" id="checkbox-hors-babasse-mercredi">
+                                <input type="checkbox" name="jour-hors-babasse" autocomplete="off"> Mercredi
                             </label>
-                            <label class="btn btn-secondary">
-                                <input type="checkbox" name="jour-hors-babasse" id="checkbox-hors-babasse-jeudi" autocomplete="off"> Jeudi
+                            <label class="btn btn-secondary" id="checkbox-hors-babasse-jeudi">
+                                <input type="checkbox" name="jour-hors-babasse" autocomplete="off"> Jeudi
                             </label>
-                            <label class="btn btn-secondary">
-                                <input type="checkbox" name="jour-hors-babasse" id="checkbox-hors-babasse-vendredi" autocomplete="off"> Vendredi
+                            <label class="btn btn-secondary" id="checkbox-hors-babasse-vendredi">
+                                <input type="checkbox" name="jour-hors-babasse" autocomplete="off"> Vendredi
                             </label>
-                            <label class="btn btn-secondary">
-                                <input type="checkbox" name="jour-hors-babasse" id="checkbox-hors-babasse-samedi" autocomplete="off"> Samedi
+                            <label class="btn btn-secondary" id="checkbox-hors-babasse-samedi">
+                                <input type="checkbox" name="jour-hors-babasse" autocomplete="off"> Samedi
                             </label>
-                            <label class="btn btn-secondary">
-                                <input type="checkbox" name="jour-hors-babasse" id="checkbox-hors-babasse-dimanche" autocomplete="off"> Dimanche
+                            <label class="btn btn-secondary" id="checkbox-hors-babasse-dimanche">
+                                <input type="checkbox" name="jour-hors-babasse" autocomplete="off"> Dimanche
                             </label>
                         </div>
+
                         <div class="input-group date" id="timepicker-hors-babasse-hebdomadaire" data-target-input="nearest">
                             <input type="text" class="form-control datetimepicker-input" data-target="#timepicker-hors-babasse-hebdomadaire" />
                             <div class="input-group-append" data-target="#timepicker-hors-babasse-hebdomadaire" data-toggle="datetimepicker">
