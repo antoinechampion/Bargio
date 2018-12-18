@@ -225,12 +225,10 @@ $( document ).ready(function() {
                                 .equals(user.UserName)
                                 .each(
                                     function (transaction) {
-                                        console.log("\t -> Transaction : " + transaction.Montant + "€");
+                                        console.log("\t -> " + transaction.Commentaire + ": " + transaction.Montant + "€");
                                         modifSoldeLocal += transaction.Montant;
                                     }
                                 ).then(function () {
-                                    console.log("\t-> Modifs solde local : " + modifSoldeLocal);
-                                    console.log("\t-> Nouveau solde : " + (user.Solde + modifSoldeLocal));
                                     db.UserData.update(user.UserName, { 
 											Solde: user.Solde + modifSoldeLocal, 
 											HorsFoys: user.HorsFoys,
@@ -335,6 +333,14 @@ $( document ).ready(function() {
 					cache: false,
 					success: function (response) {
 						JSON.parse(response).forEach(function(bucquage) {
+                            if (bucquage.Montant > 0) {
+                                bucquage.Montant = "+" + bucquage.Montant.toFixed(2);
+                            } else if (bucquage.Montant < 0) {
+								bucquage.Montant = bucquage.Montant.toFixed(2);
+							} else {
+								return;
+							}
+
 							$("#table-historique-consos").append("<tr>"
 								+ "<td>" + bucquage.Commentaire + "</td>"
 								+ "<td>" + bucquage.Montant + "</td>"
@@ -367,7 +373,7 @@ $( document ).ready(function() {
 			// Sinon c'est un PG
 			// On vérifie si il existe bien dans la BDD
 			var user = await db.UserData.get({ UserName: username });
-			if (typeof user === "undefined") {
+			if (username !== "admin" && typeof user === "undefined") {
 				$("#undefined-user-alert").slideDown(200);
 				window.setTimeout(function() {
 						$("#undefined-user-alert").slideUp(200);
@@ -457,7 +463,7 @@ $( document ).ready(function() {
 		
 		e.preventDefault();
 		if (keyPressed === "F1") {
-			$("#modal-autre-proms").on("hidden.bs.modal",
+			$("#button-modal-proms").click(
 				function() {
 					validerUtilisateur($("#input-modal-proms").val());
 					$("#input-modal-proms").val("");

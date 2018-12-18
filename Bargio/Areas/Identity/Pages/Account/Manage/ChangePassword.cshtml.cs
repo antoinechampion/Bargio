@@ -111,7 +111,7 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
             
-            userData.FoysApiHasPassword = Input.NewPassword == IdentityUserDefaultPwd.DefaultPassword;;
+            userData.FoysApiHasPassword = Input.NewPassword != IdentityUserDefaultPwd.DefaultPassword;;
             userData.DateDerniereModif = DateTime.Now;
             userData.FoysApiPasswordSalt = BCryptHelper.GenerateSalt();
             userData.FoysApiPasswordHash = BCryptHelper.HashPassword(Input.NewPassword, userData.FoysApiPasswordSalt);
