@@ -49,7 +49,9 @@ namespace Bargio
             }
 
             host.Run();
-            CreateWebHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args)
+                .UseKestrel(o => { o.Limits.KeepAliveTimeout = TimeSpan.FromDays(1); })
+                .Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
