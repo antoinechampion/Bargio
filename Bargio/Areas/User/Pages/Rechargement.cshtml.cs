@@ -27,14 +27,17 @@ namespace Bargio.Areas.User.Pages
         private readonly string _lydiaVendorToken;
         private readonly string _lydiaApiUrl;
 
+        // Active l'API de test de lydia même sur le site en ligne
+        private const bool ForceTestApi = true;
+
         public RechargementModel(ApplicationDbContext context, UserManager<IdentityUserDefaultPwd> userManager,
                 IHostingEnvironment env)
         {
             _context = context;
             _userManager = userManager;
             // En fonction de l'environnement, on charge les donnees de test ou de production
-            _lydiaVendorToken = env.IsDevelopment() ? "5bd083bec025c852794717" : "5bd083bec025c852794717";
-            _lydiaApiUrl = env.IsDevelopment()
+            _lydiaVendorToken = (env.IsDevelopment() || ForceTestApi) ? "5bd083bec025c852794717" : "5bd083bec025c852794717";
+            _lydiaApiUrl = (env.IsDevelopment() || ForceTestApi)
                 ? "https://homologation.lydia-app.com/api/request/do.json"
                 : "https://lydia-app.com/api/request/do.json";
         }
@@ -51,9 +54,7 @@ namespace Bargio.Areas.User.Pages
         [DataType(DataType.PhoneNumber, ErrorMessage = "Veuillez entrer un numéro de téléphone valide")]
         [Display(Name = "N° de téléphone")]
         public string Telephone { get; set; }
-
-        [BindProperty]
-        public string LydiaErrorMessage { get; set; }
+      
 
         private class LydiaRequestData
         {
@@ -170,7 +171,7 @@ namespace Bargio.Areas.User.Pages
             {
                 return Redirect(message);
             }
-            LydiaErrorMessage = message;
+            ModelState.AddModelError(string.Empty, "Echec. " + message);
             return Page();
         }
     }

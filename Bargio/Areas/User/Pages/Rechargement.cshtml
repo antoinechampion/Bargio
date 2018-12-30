@@ -20,20 +20,18 @@
             <img class="centrage2" src="/images/title_logo106x20.png" alt="Logal Bargio_tag" width="106" height="20">
             <div class="card bloc-central my-2">
                 <div class="bloc-case">
-                    <h5 class="bloc-titre text-center">Recharger mon compte</h5>           
+                    <h5 class="bloc-titre text-center">Recharger mon compte</h5>      
                     <form id="lydiaForm" method="post">
-              
+                        <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group text-box1">
                             <input asp-for="Telephone" type="text" class="form-control" autofocus>
                             <label asp-for="Telephone"></label>
-                            <span asp-validation-for="Telephone" class="text-danger"></span>
                         </div>
                
                 
                         <div class="form-group text-box1">
                             <input asp-for="Montant" type="text" class="form-control">
                             <label asp-for="Montant"></label><br>
-                            <span asp-validation-for="Montant" class="text-danger"></span>
                         </div>
                 
                         <a href="javascript:{}" onclick="document.getElementById('lydiaForm').submit();">
