@@ -13,23 +13,62 @@
     <link rel="stylesheet" href="/css/style.css">
 }
 
-<h2>@UserManager.GetUserName(User)</h2>
-<br/>
-<h3>Page temporaire dégueulasse pour naviguer rapidement</h3>
-<br/>
-<br/>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="/js/dashboard.js"></script>
+}
 
-<ul>
-    <li><a asp-page="/Account/Logout" asp-area="Identity">Déconnexion</a></li>
-    <li><a asp-page="/Babasse" asp-area="User">Afficher la page de babasse</a></li>
-    <li><a asp-page="/Account/Manage/SetPassword" asp-area="Identity">Définir son mot de passe</a></li>
-    <li><a asp-page="/Account/Manage/ChangePassword" asp-area="Identity">Modifier son mot de passe</a></li>
-    <li><a asp-page="/Rechargement" asp-area="User">Recharger son compte</a></li>
-    <li><a asp-page="/EditDatabase/Utilisateurs/Index" asp-area="Admin">[ADMIN] Modifier BDD Utilisateurs</a></li>
-    <li><a asp-page="/EditDatabase/DemandesPaiement/Index" asp-area="Admin">[ADMIN] Modifier BDD Demandes Paiement</a></li>
-    <li><a asp-page="/EditDatabase/HistoriqueTransactions/Index" asp-area="Admin">[ADMIN] Modifier BDD Historique Transactions</a></li>
-    <li><a asp-page="/EditDatabase/RaccourcisProms/Index" asp-area="Admin">[ADMIN] Modifier BDD Touches de raccourcis des prom's</a></li>
-    <li><a asp-page="/EditDatabase/Consommations/Index" asp-area="Admin">[ADMIN] Modifier BDD Consos</a></li>
-    <li><a asp-page="/EditDatabase/ParametresSysteme/Index" asp-area="Admin">[ADMIN] Modifier paramètres système</a></li>
-    <li><a asp-page="/ImportDatabase" asp-area="Admin">[ADMIN] Importer BDD de l'ancien logiciel</a></li>
-</ul>
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-sm-9 ">
+            <div class="card bloc-central my-2 d-none d-md-block">
+                <div class="bloc-case">
+                    <p class="text-center numss-accueil">@Model.UserData.UserName</p>
+                    <p class="text-center surnom-accueil">@Model.UserData.Surnom</p>
+                    <p class="text-center solde-accueil">@Model.UserData.Solde € </p>
+                </div>
+            </div>
+
+            <div class="card bloc-central my-2 bg-success">
+                <div class="bloc-case">
+                    <p class=" text-center text-white rechargement">Recharger mon compte</p>
+                </div>
+            </div>
+
+            <div class="card bloc-central my-2">
+                <div class="bloc-case">
+                    <p class="bloc-titre text-center titre">Actualités & Événements</p><br>
+                    <p class="text-justify paragraphe">
+                        Jeudi 8 Novembre - Zbeuuuuuuul<br>
+                        Vendredi 9 Novembre - Remise de fam'ss<br>
+                        WBP - fin'ss - ce genre de choses...
+                    </p>
+                </div>
+            </div>
+
+            <div class="card bloc-central my-2">
+                <div class="bloc-case">
+                    <p class="bloc-titre text-center titre">Le mot des Zifoy'ss</p>
+                    <p class="text-justify paragraphe">L'endroit parfait pour caler des rhopses hyper ayat'sssssssss.<br><br></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5 col-sm-9">
+            <div class="card bloc-central my-2">
+                <div class="bloc-case">
+                    <p class="bloc-titre text-center">Dernier bucquage</p>
+                    <p class="text-center dernier-bucquage">@Model.DernierBucquage</p>
+                    <p class="text-center dernier-bucquage-date">@Model.DernierBucquageDate</p>
+                </div>
+            </div>
+
+            <div class="card bloc-central my-2">
+                <div class="bloc-case">
+                    <p class="bloc-titre text-center">Mes statistiques</p> <br>
+                    <canvas id="doughnut-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

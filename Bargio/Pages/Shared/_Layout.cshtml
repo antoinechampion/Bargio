@@ -1,20 +1,86 @@
-﻿<!DOCTYPE html>
+﻿@using Bargio.Areas.Identity
+@inject UserManager<IdentityUserDefaultPwd> UserManager
+@inject ApplicationDbContext DbContext
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <link rel="icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-    
+    <link rel="stylesheet" href="/css/navbar.css">
+
     @RenderSection("IncludeHead", required: false)
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Bargio</title>
 </head>
 <body>
-    <partial name="_CookieConsentPartial" />
+    <!-- <partial name="_CookieConsentPartial" /> -->
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-xl navbar-light bg-light justify-content-between">
+
+        <div class="navbar-brand">
+            <img src="/images/title_logo106x20.png" id="logo-navbar" alt="">
+        </div>
+
+        <div class="d-block d-md-none">
+            <span class="font-weight-bold" style="margin-right:5px;">@UserManager.GetUserName(User)</span>
+            <i class="fa fa-ellipsis-h" aria-hidden="true" style="margin-right:5px;"></i>
+            <span>@DbContext.UserData.Find(@UserManager.GetUserName(User)).Solde €</span>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse bg-light" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item active ">
+                    <a class="nav-link" href="#">Accueil <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Recharger mon compte</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Gérer mon mot de passe</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Historique détaillé</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Changer mon surn's</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <a class="nav-link" asp-page="/Account/Logout" asp-area="Identity">
+                    <i class="fa fa-power-off"></i>
+                    <span class="ml-2">Déconnexion</span>
+                </a>
+            </span>
+        </div>
+    </nav>
 
     @RenderBody()
+
+    <footer class="footer-navbar d-none d-lg-block">
+        <div class="container text-muted">
+            <div class="row justify-content-start">
+                <div class="col">
+                    <span><i class="fas fa-server" aria-hidden="true" style="margin-right:5px;"></i>ASP.NET Core 2.1 Kestrel</span>
+                </div>
+                <div class="col">
+                    <span><i class="far fa-copyright" aria-hidden="true" style="margin-right:5px;"></i>License BOOST 1.0</span>
+                </div>
+                <div class="col">
+                    <span><i class="fab fa-github" aria-hidden="true" style="margin-right:5px;"></i>Nous suivre sur Github</span>
+                </div>
+                <div class="col">
+                    <span><i class="fas fa-check" aria-hidden="true" style="margin-right:5px;"></i>9</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

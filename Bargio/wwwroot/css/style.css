@@ -7,9 +7,50 @@ body {
   background-color: white;
 }
 
+.numss-accueil {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    font-weight: 200;
+    font-size: 2rem;
+}
+
+.surnom-accueil {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    font-weight: 200;
+}
+
+.solde-accueil {
+    font-weight: 100;
+    font-size: 3rem;
+    margin-bottom: -10px;
+}
+
+.rechargement {
+    margin-bottom: 0rem;
+    font-weight: 300;
+    font-size: 1.8rem;
+}
+
+.titre {
+    font-weight: 300;
+    font-size: 1.2rem;
+}
+
+.dernier-bucquage {
+    margin-top: 1rem;
+    font-weight: 100;
+    font-size: 1.5rem;
+}
+.dernier-bucquage-date {
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    font-weight: 100;
+    font-size: 1rem;
+}
+
 .bloc-central {
   border: 0;
-  border-radius: 1rem;
   box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 
 }

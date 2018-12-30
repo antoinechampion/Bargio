@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Accueil - Foy'ss de Birse</title>
+  <link rel="icon" href="../../Logo Bargio/favicon.ico">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"> 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>     
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <script src="script.js"></script>
+  
+
+</head>
+<body>
+   <nav class="navbar navbar-expand-xl navbar-light bg-light justify-content-between">
+
+    <div class="navbar-brand" href="#">
+      <img src="logo_navbar.png" id="logo-navbar" alt="">
+    </div>
+       
+    <div class="d-block d-md-none">
+        <span class="font-weight-bold" style="margin-right:5px;">86Li217</span>
+        <i class="fa fa-ellipsis-h" aria-hidden="true" style="margin-right:5px;"></i> 
+        <span>123,00€</span>
+    </div>
+       
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse bg-light" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item active ">
+          <a class="nav-link" href="#">Accueil <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Recharger mon compte</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Gérer mon mot de passe</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Historique détaillé</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Changer mon surn's</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        <a class="nav-link" href="#">
+          <i class="fa fa-power-off"></i>
+          <span class="ml-2">Déconnexion</span>
+        </a>
+      </span>
+    </div>
+  </nav>
+
+    
+  <div class="container mt-3">
+    <div class="row justify-content-center">    
+        <div class="col-md-5 col-sm-9 ">
+            <div class="card bloc-central my-2 d-none d-md-block">
+                <div class="bloc-case">
+                  <p class="text-center numss">86Li217</p>
+                  <p class="text-center surnom">Chibre de prom'ss</p>
+                  <p class="text-center solde">+123,00€</p>
+                </div>
+            </div>
+            
+            <div class="card bloc-central my-2 bg-success">
+              <div class="bloc-case">
+                <p class=" text-center text-white rechargement">Recharger mon compte</p>           
+              </div>
+            </div>
+        
+            <div class="card bloc-central my-2">
+              <div class="bloc-case">
+                <p class="bloc-titre text-center titre">Actualités & Événements</p><br>          
+                  <p class="text-justify paragraphe">
+                      Jeudi 8 Novembre - Zbeuuuuuuul<br>
+                      Vendredi 9 Novembre - Remise de fam'ss<br>
+                      WBP - fin'ss - ce genre de choses...
+                  </p>
+              </div>         
+            </div>
+
+            <div class="card bloc-central my-2">
+              <div class="bloc-case">
+                <p class="bloc-titre text-center titre">Le mot des Zifoy'ss</p>           
+                  <p class="text-justify paragraphe">L'endroit parfait pour caler des rhopses hyper ayat'sssssssss.<br><br></p>
+              </div>
+            </div>
+        </div> 
+        
+        <div class="col-md-5 col-sm-9">
+            <div class="card bloc-central my-2">
+              <div class="bloc-case">
+                <p class="bloc-titre text-center">Dernier bucquage</p>           
+                <p class="text-center bucquage">F5 le XX/XX/XX à XX:XX</p>
+              </div>
+            </div>
+            
+            <div class="card bloc-central my-2">
+              <div class="bloc-case">
+                  <p class="bloc-titre text-center">Mes statistiques</p> <br>
+                <canvas id="doughnut-chart"></canvas>
+              </div>
+            </div>            
+        </div>        
+    </div>
+  </div>
+    
+    <footer class="footer-navbar d-none d-lg-block">
+      <div class="container text-muted">
+        <div class="row justify-content-start">
+            <div class="col">
+              <span><i class="fas fa-server" aria-hidden="true" style="margin-right:5px;"></i>ASP.NET Core 2.1 Kestrel</span>
+            </div>
+            <div class="col">
+              <span><i class="far fa-copyright" aria-hidden="true" style="margin-right:5px;"></i>License BOOST 1.0</span>
+            </div>
+            <div class="col">
+              <span><i class="fab fa-github" aria-hidden="true" style="margin-right:5px;"></i>Nous suivre sur Github</span>    
+            </div>
+            <div class="col">
+              <span><i class="fas fa-check" aria-hidden="true" style="margin-right:5px;"></i>9</span>  
+            </div>
+        </div>
+      </div>
+    </footer>
+
+</body>
+</html>
