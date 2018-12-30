@@ -23,11 +23,13 @@ namespace Bargio.Areas.User.Pages
         [BindProperty] public UserData UserData { get; set; }
         [BindProperty] public string DernierBucquage { get; set; }
         [BindProperty] public string DernierBucquageDate { get; set; }
+        [BindProperty] public Dictionary<string, int> CompteurConsos { get; set; }
 
         public DashboardModel(UserManager<IdentityUserDefaultPwd> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _context = context;
+            CompteurConsos = new Dictionary<string, int>();
         }
 
         public async Task<IActionResult> OnGet()
@@ -46,7 +48,34 @@ namespace Bargio.Areas.User.Pages
             {
                 DernierBucquage = "--";
             }
-            
+
+            var transactions = _context.TransactionHistory.Where(o => o.UserName == identityUser.UserName)
+                .Select(o => o.IdProduits);
+                
+            var compteurIdProduits = new Dictionary<string, int>();
+            foreach (var transaction in transactions)
+            {
+                if (transaction == null) // Pas d'ID produit pour la transaction (ex remise en babasse)
+                    continue;
+
+                foreach (var produit in transaction.Split(";", StringSplitOptions.RemoveEmptyEntries))
+                {
+                    if (!compteurIdProduits.ContainsKey(produit))
+                        compteurIdProduits.Add(produit, 1);
+                    else
+                        compteurIdProduits[produit] += 1;
+                }
+            }
+        
+
+            foreach (var produit in compteurIdProduits)
+            {
+                try {
+                    var nomProduit = _context.Product.Find(produit.Key).Nom;
+                    CompteurConsos.Add(nomProduit, produit.Value);
+                } catch {}
+            }
+
             return Page();
         }
     }
