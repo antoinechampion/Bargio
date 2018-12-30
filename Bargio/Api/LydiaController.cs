@@ -38,12 +38,13 @@ namespace Bargio.Api
                 return "L'utilisateur associé à cette demande de paiement est introuvable : " + request.UserName;
 
             user.Solde += request.Montant;
+            user.DateDerniereModif = DateTime.Now;
 
             _context.TransactionHistory.Add(new TransactionHistory
             {
                 UserName = user.UserName,
                 Montant = request.Montant,
-                Commentaire = "Remise en babasse en ligne"
+                Commentaire = "Rechargement lydia en ligne"
             });
 
             _context.Attach(user).State = EntityState.Modified;
