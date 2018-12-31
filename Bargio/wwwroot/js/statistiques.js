@@ -1,6 +1,4 @@
-$(document).ready(function () {
-
-    
+﻿$(document).ready(function () {
     function refreshUi() {
         if ($("#radio-conso-soiree").is(':checked')) {
             $("#choix-date").show();
@@ -105,7 +103,7 @@ $(document).ready(function () {
             },
             elements: {
                 line: {
-                    tension: 0, // disables bezier curves
+                    tension: 0 // disables bezier curves
                 }
             },
             legend: {
