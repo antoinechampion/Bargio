@@ -1,4 +1,22 @@
-﻿nav {
+﻿html {
+    height: 100%;
+}
+
+html body {
+    height: 100%;
+    overflow: hidden;
+}
+
+html body .body-content {
+    position: absolute;
+    top: 50px;
+    bottom: 30px;
+    right: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+nav {
     height: 50px;
 }
 
@@ -25,13 +43,17 @@
 .footer-navbar {
     position: absolute;
     bottom: 0;
-    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
     /* Set the fixed height of the footer here */
     height: 40px;
     line-height: 40px; /* Vertically center the text there */
     background-color: #f5f5f5;
 }
 
-body {
-    margin-bottom: 40px;
+.lien-footer {
+     color: inherit;
+     text-decoration: none;
+     outline: inherit;
 }

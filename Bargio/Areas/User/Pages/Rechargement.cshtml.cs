@@ -55,6 +55,8 @@ namespace Bargio.Areas.User.Pages
         [Display(Name = "N° de téléphone")]
         public string Telephone { get; set; }
       
+        [BindProperty]
+        public decimal SoldeActuel { get; set; }
 
         private class LydiaRequestData
         {
@@ -154,8 +156,10 @@ namespace Bargio.Areas.User.Pages
             return paymentRequest.ID;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            SoldeActuel = _context.UserData.Find(identityUser.UserName).Solde;
         }
 
         public async Task<IActionResult> OnPost()

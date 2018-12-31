@@ -37,19 +37,19 @@
         <div class="collapse navbar-collapse bg-light" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item active ">
-                    <a class="nav-link" href="#">Accueil <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" asp-page="/Dashboard" asp-area="User">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Recharger mon compte</a>
+                    <a class="nav-link" asp-page="/Rechargement" asp-area="User">Recharger mon compte</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Gérer mon mot de passe</a>
+                    <a class="nav-link" asp-page="/Account/Manage/ChangePassword" asp-area="Identity">Gérer mon mot de passe</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Historique détaillé</a>
+                    <a class="nav-link" asp-page="/Historique" asp-area="User">Historique détaillé</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Changer mon surn's</a>
+                    <a class="nav-link" asp-page="/ChangerSurnom" asp-area="User">Changer mon surn's</a>
                 </li>
             </ul>
             <span class="navbar-text">
@@ -60,20 +60,23 @@
             </span>
         </div>
     </nav>
+    
+    <div class="body-content">
+        @RenderBody()
+    </div>
 
-    @RenderBody()
 
     <footer class="footer-navbar d-none d-lg-block">
         <div class="container text-muted">
             <div class="row justify-content-start">
                 <div class="col">
-                    <span><i class="fas fa-server" aria-hidden="true" style="margin-right:5px;"></i>ASP.NET Core 2.1 Kestrel</span>
+                    <a class="lien-footer" href="https://www.asp.net/"><i class="fas fa-server" aria-hidden="true" style="margin-right:5px;"></i>ASP.NET Core 2.1 Kestrel</a>
                 </div>
                 <div class="col">
-                    <span><i class="far fa-copyright" aria-hidden="true" style="margin-right:5px;"></i>License BOOST 1.0</span>
+                    <a class="lien-footer" href="https://www.boost.org/LICENSE_1_0.txt"><i class="far fa-copyright" aria-hidden="true" style="margin-right:5px;"></i>License BOOST 1.0</a>
                 </div>
                 <div class="col">
-                    <span><i class="fab fa-github" aria-hidden="true" style="margin-right:5px;"></i>Nous suivre sur Github</span>
+                    <a class="lien-footer" href="https://github.com/antoinechampion/Bargio"><i class="fab fa-github" aria-hidden="true" style="margin-right:5px;"></i>Nous suivre sur Github</a>
                 </div>
                 <div class="col">
                     <span><i class="fas fa-check" aria-hidden="true" style="margin-right:5px;"></i>9</span>

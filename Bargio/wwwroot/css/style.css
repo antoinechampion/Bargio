@@ -4,7 +4,8 @@
 }
 
 body {
-  background-color: white;
+    background-color: white;
+    overflow: hidden;
 }
 
 .numss-accueil {
@@ -154,7 +155,6 @@ img.centrage1 {
     margin-right: auto;
     margin-bottom: 1rem;
     margin-top: 1rem;
-    
 }
 
 img.centrage2 {

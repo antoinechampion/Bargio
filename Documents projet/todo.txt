@@ -1,8 +1,8 @@
-﻿liens navbar et liens footer
+﻿historique detaillé
+changer surnom
 
 bug babasse : barres de scroll panneau admin, choix des zifoys, ce compte n'existe pas souvent
 actue evnts et mot zifoys changer sur babasse
-recharger son compte: ecrire le solde actuel
 
 regler pb datatable (ex trier valeur numerique)
 
