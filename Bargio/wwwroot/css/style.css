@@ -33,6 +33,12 @@ body {
     font-size: 1.8rem;
 }
 
+a.bloc-case {
+    color: inherit;
+    text-decoration: none;
+    outline: inherit;
+}
+
 .titre {
     font-weight: 300;
     font-size: 1.2rem;
