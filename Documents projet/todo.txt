@@ -1,7 +1,6 @@
 ﻿historique detaillé
-changer surnom
 souligner lien navbar actif
-bouton rechargement rayé
+champs mdp n'afficent pas le txt
 
 bug babasse : barres de scroll panneau admin, choix des zifoys, ce compte n'existe pas souvent
 actue evnts et mot zifoys changer sur babasse

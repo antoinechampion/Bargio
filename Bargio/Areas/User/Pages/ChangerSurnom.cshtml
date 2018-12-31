@@ -4,3 +4,33 @@
 @{
     ViewData["Title"] = "Changer de surnom";
 }
+
+@section IncludeHead {
+    <link rel="stylesheet" href="/css/style.css">
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <img class="centrage1" src="/images/logo179.png" alt="Logal Bargio_pic" width="179" height="179">
+            <img class="centrage2" src="/images/title_logo106x20.png" alt="Logal Bargio_tag" width="106" height="20">
+            <div class="card bloc-central my-2">
+                <div class="bloc-case">
+                    <h5 class="bloc-titre text-center">Changer mon surn'ss</h5>
+                    <form class="btn-connexion" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <p class="bloc-titre text-center text-info">Surnom actuel: @Model.AncienSurnom</p>
+                        <div class="text-box1">
+                            <input asp-for="NouveauSurnom" type="text" class="form-control">
+                            <label asp-for="NouveauSurnom"></label>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary bg-success btn-block text-uppercase" type="submit">Confirmer</button>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

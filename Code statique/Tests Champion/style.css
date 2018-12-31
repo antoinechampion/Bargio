@@ -198,3 +198,20 @@ body {
     font-weight: 300;
     font-size: 1.2rem;
 }
+
+
+/*   */
+
+table {
+    width: 100% !important;
+}
+.dataTables_scrollHeadInner{
+  width:100% !important;
+}
+.dataTables_scrollHeadInner table{
+  width:100% !important;
+}
+
+.titre-stats {
+    font-size: 1.3rem;
+}
