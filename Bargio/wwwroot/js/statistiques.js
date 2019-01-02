@@ -105,22 +105,29 @@
         chart = new Chart(ctx, {
             type: 'line',
             data: {
-                datasets: [{ 
-                    data: [],
-                    borderColor: "forestgreen",
-                    fill: false
-              }]
-            },        
+                datasets: [
+                    {
+                        data: [],
+                        borderColor: "forestgreen",
+                        fill: "origin"
+                    }
+                ]
+            },
             options: {
                 scales: {
                     xAxes: [{
                         type: 'time',
                         time: {
                             displayFormats: {
+                                'millisecond': 'DD/MM/YYYY HH:mm',
+                                'second': 'HH:mm',
+                                'minute': 'HH:mm',
                                 'hour': 'HH:mm',
                                 'day': 'DD/MM',
                                 'week': 'DD/MM',
-                                'month': 'MM/YYYY'
+                                'month': 'MM/YYYY',
+                                'quarter': 'MM/YYYY',
+                                'year': 'MM/YYYY'
                             }
                         }
                     }],

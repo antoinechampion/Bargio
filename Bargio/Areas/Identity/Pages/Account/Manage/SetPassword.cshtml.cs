@@ -33,14 +33,14 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Tu dois rentrer un mot de passe")]
             [DataType(DataType.Password)]
             [Display(Name = "Mot de passe")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirmer mot de passe")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Compare("NewPassword", ErrorMessage = "Le mot de passe et sa confirmation ne correspondent pas")]
             public string ConfirmPassword { get; set; }
         }
 
