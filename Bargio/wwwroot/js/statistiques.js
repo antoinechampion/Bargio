@@ -4,6 +4,14 @@
     // unité: days, hours
     function updateChart(listeTransactions, unite) {
         var data = [];
+
+        if (listeTransactions.length === 0) {
+            chart.data.datasets[0].data = [];
+            chart.options.scales.xAxes.unit = unite === "days" ? "day" : "hour";
+            chart.update();
+            return;
+        }
+
         var next = moment(listeTransactions[0][0]).add(1, unite);
         if (unite === "days")
             next.set('hour', 0);
@@ -27,6 +35,16 @@
         chart.data.datasets[0].data = data;
         chart.options.scales.xAxes.unit = unite === "days" ? "day" : "hour";
         chart.update();
+    }
+
+    function updateMontant(data) {
+        var montant = 0;
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][2] < 0) {
+                montant -= data[i][2];
+            }
+        }
+        $("#montant-total").text(montant.toFixed(2).replace(".", ","));
     }
 
     function refreshUi() {
@@ -59,6 +77,7 @@
             table.rows.add(transactions);
             table.draw();
             updateChart(transactions, "days");
+            updateMontant(transactions);
         }
     }
     
@@ -149,7 +168,6 @@
         table.clear();
         table.rows.add(transactions);
         table.draw();
-
     })();
 
     // Gestion des event (plage de temps consommation)
@@ -177,11 +195,10 @@
             table.rows.add(data);
             table.draw();
 
-            if (data.length !== 0) {
-                var unite = timescale === "days" ? "hour" : "days";
-                updateChart(data, unite);
-            }
-            
+            var unite = timescale === "days" ? "hour" : "days";
+            updateChart(data, unite);
+
+            updateMontant(data);
         });
 
         $('input:radio').change(refreshUi);

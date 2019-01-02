@@ -24,6 +24,8 @@ namespace Bargio.Areas.User.Pages
 
         [BindProperty] public List<TransactionAffichage> Transactions { get; set; }
 
+        [BindProperty] public decimal Montant { get; set; }
+
         public HistoriqueModel(ApplicationDbContext context, UserManager<IdentityUserDefaultPwd> userManager)
         {
             _context = context;
@@ -43,6 +45,9 @@ namespace Bargio.Areas.User.Pages
                     montant = o.Montant
                 })
                 .ToList();
+
+            Montant = -_context.UserData
+                .Find(user.UserName).Solde;
 
             return Page();
         }

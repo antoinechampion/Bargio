@@ -1,4 +1,4 @@
-﻿historique detaillé
+﻿historique : afficher le solde correct!
 souligner lien navbar actif
 champs mdp n'afficent pas le txt
 regler probleme menu hamburger
