@@ -27,5 +27,8 @@ namespace Bargio.Models
         public string MiseHorsBabasseHebdomadaireHeure { get; set; }
         public string MotDePasseZifoys { get; set; }
 
+        public string MotDesZifoys { get; set; }
+        public string Actualites { get; set; }
+        public bool Snow { get; set; }
     }
 }

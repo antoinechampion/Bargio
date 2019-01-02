@@ -1,0 +1,116 @@
+﻿@page
+@model Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Create</h2>
+
+<h4>SystemParameters</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SystemParameters.DerniereConnexionBabasse" class="control-label"></label>
+                <input asp-for="SystemParameters.DerniereConnexionBabasse" class="form-control" />
+                <span asp-validation-for="SystemParameters.DerniereConnexionBabasse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="SystemParameters.BucquagesBloques" /> @Html.DisplayNameFor(model => model.SystemParameters.BucquagesBloques))
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="SystemParameters.LydiaBloque" /> @Html.DisplayNameFor(model => model.SystemParameters.LydiaBloque))
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="SystemParameters.Maintenance" /> @Html.DisplayNameFor(model => model.SystemParameters.Maintenance))
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="SystemParameters.MiseHorsBabasseAutoActivee" /> @Html.DisplayNameFor(model => model.SystemParameters.MiseHorsBabasseAutoActivee))
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemParameters.MiseHorsBabasseSeuil" class="control-label"></label>
+                <input asp-for="SystemParameters.MiseHorsBabasseSeuil" class="form-control" />
+                <span asp-validation-for="SystemParameters.MiseHorsBabasseSeuil" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="SystemParameters.MiseHorsBabasseInstantanee" /> @Html.DisplayNameFor(model => model.SystemParameters.MiseHorsBabasseInstantanee))
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="SystemParameters.MiseHorsBabasseQuotidienne" /> @Html.DisplayNameFor(model => model.SystemParameters.MiseHorsBabasseQuotidienne))
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemParameters.MiseHorsBabasseQuotidienneHeure" class="control-label"></label>
+                <input asp-for="SystemParameters.MiseHorsBabasseQuotidienneHeure" class="form-control" />
+                <span asp-validation-for="SystemParameters.MiseHorsBabasseQuotidienneHeure" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemParameters.MiseHorsBabasseHebdomadaireJours" class="control-label"></label>
+                <input asp-for="SystemParameters.MiseHorsBabasseHebdomadaireJours" class="form-control" />
+                <span asp-validation-for="SystemParameters.MiseHorsBabasseHebdomadaireJours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemParameters.MiseHorsBabasseHebdomadaireHeure" class="control-label"></label>
+                <input asp-for="SystemParameters.MiseHorsBabasseHebdomadaireHeure" class="form-control" />
+                <span asp-validation-for="SystemParameters.MiseHorsBabasseHebdomadaireHeure" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemParameters.MotDePasseZifoys" class="control-label"></label>
+                <input asp-for="SystemParameters.MotDePasseZifoys" class="form-control" />
+                <span asp-validation-for="SystemParameters.MotDePasseZifoys" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemParameters.MotDesZifoys" class="control-label"></label>
+                <input asp-for="SystemParameters.MotDesZifoys" class="form-control" />
+                <span asp-validation-for="SystemParameters.MotDesZifoys" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemParameters.Actualites" class="control-label"></label>
+                <input asp-for="SystemParameters.Actualites" class="form-control" />
+                <span asp-validation-for="SystemParameters.Actualites" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="SystemParameters.Snow" /> @Html.DisplayNameFor(model => model.SystemParameters.Snow))
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+

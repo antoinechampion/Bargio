@@ -1,49 +1,121 @@
 ﻿@page
-@model Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme.EditModel
+@model Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme.IndexModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Index</h2>
 
-<h4>SystemParameters</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SystemParameters.IpServeur" class="control-label"></label>
-                <input asp-for="SystemParameters.IpServeur" class="form-control" disabled="disabled" />
-            </div>
-            <div class="form-group">
-                <label asp-for="SystemParameters.DerniereConnexionBabasse" class="control-label"></label>
-                <input asp-for="SystemParameters.DerniereConnexionBabasse" class="form-control" disabled="disabled" />
-                <span asp-validation-for="SystemParameters.DerniereConnexionBabasse" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SystemParameters.BucquagesBloques" class="control-label"></label>
-                <input asp-for="SystemParameters.BucquagesBloques" class="form-control" />
-                <span asp-validation-for="SystemParameters.BucquagesBloques" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SystemParameters.LydiaBloque" class="control-label"></label>
-                <input asp-for="SystemParameters.LydiaBloque" class="form-control" />
-                <span asp-validation-for="SystemParameters.LydiaBloque" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].DerniereConnexionBabasse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].BucquagesBloques)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].LydiaBloque)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].Maintenance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].MiseHorsBabasseAutoActivee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].MiseHorsBabasseSeuil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].MiseHorsBabasseInstantanee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].MiseHorsBabasseQuotidienne)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].MiseHorsBabasseQuotidienneHeure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].MiseHorsBabasseHebdomadaireJours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].MiseHorsBabasseHebdomadaireHeure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].MotDePasseZifoys)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].MotDesZifoys)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].Actualites)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemParameters[0].Snow)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.SystemParameters) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DerniereConnexionBabasse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BucquagesBloques)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LydiaBloque)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maintenance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiseHorsBabasseAutoActivee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiseHorsBabasseSeuil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiseHorsBabasseInstantanee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiseHorsBabasseQuotidienne)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiseHorsBabasseQuotidienneHeure)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiseHorsBabasseHebdomadaireJours)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiseHorsBabasseHebdomadaireHeure)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MotDePasseZifoys)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MotDesZifoys)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Actualites)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Snow)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.IpServeur">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.IpServeur">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.IpServeur">Delete</a>
+            </td>
+        </tr>
 }
+    </tbody>
+</table>

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Bargio.Data;
 using Bargio.Models;
 
-namespace Bargio.Areas.Admin.Pages.EditDatabase.DemandesPaiement
+namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.DemandesPaiement
         }
 
         [BindProperty]
-        public PaymentRequest PaymentRequest { get; set; }
+        public SystemParameters SystemParameters { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -30,9 +30,9 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.DemandesPaiement
                 return NotFound();
             }
 
-            PaymentRequest = await _context.PaymentRequest.FirstOrDefaultAsync(m => m.ID == id);
+            SystemParameters = await _context.SystemParameters.FirstOrDefaultAsync(m => m.IpServeur == id);
 
-            if (PaymentRequest == null)
+            if (SystemParameters == null)
             {
                 return NotFound();
             }
@@ -46,13 +46,15 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.DemandesPaiement
                 return Page();
             }
 
+            _context.Attach(SystemParameters).State = EntityState.Modified;
+
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PaymentRequestExists(PaymentRequest.ID))
+                if (!SystemParametersExists(SystemParameters.IpServeur))
                 {
                     return NotFound();
                 }
@@ -65,9 +67,9 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.DemandesPaiement
             return RedirectToPage("./Index");
         }
 
-        private bool PaymentRequestExists(string id)
+        private bool SystemParametersExists(string id)
         {
-            return _context.PaymentRequest.Any(e => e.ID == id);
+            return _context.SystemParameters.Any(e => e.IpServeur == id);
         }
     }
 }

@@ -108,7 +108,10 @@ namespace Bargio.Api
                     o.MiseHorsBabasseQuotidienneHeure,
                     o.MiseHorsBabasseHebdomadaireJours,
                     o.MiseHorsBabasseHebdomadaireHeure,
-                    o.MotDePasseZifoys
+                    o.MotDePasseZifoys,
+                    o.Snow,
+                    o.MotDesZifoys,
+                    o.Actualites
                 })
                 .First();
             return JsonConvert.SerializeObject(parametres);

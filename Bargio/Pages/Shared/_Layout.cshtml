@@ -86,6 +86,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/snowstorm.js"></script>
     @RenderSection("Scripts", required: false)
     <script type="text/javascript">
         $(document).ready(function() {
@@ -94,7 +95,16 @@
             } else {
                 $("#solde-mobile-wrapper").addClass("text-success");
             }
+
+            
+            var snowEnabled = @Json.Serialize(DbContext.SystemParameters.First().Snow);
+            snowStorm.autoStart = false;
+            snowStorm.snowColor = '#bbddbb';
+            if (snowEnabled) {
+                snowStorm.toggleSnow();
+            }
         });
+
     </script>
     <script src="~/js/bugfixes.js"></script>
     
