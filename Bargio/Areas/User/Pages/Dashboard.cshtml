@@ -76,6 +76,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script type="text/javascript">
         var compteurConsos = @Html.Raw(Json.Serialize(Model.CompteurConsos));
+
+        $("#navbar-accueil").addClass("active");
     </script>
     <script src="/js/dashboard.js"></script>
 }

@@ -7,7 +7,6 @@
 
         if (listeTransactions.length === 0) {
             chart.data.datasets[0].data = [];
-            chart.options.scales.xAxes.unit = unite === "days" ? "day" : "hour";
             chart.update();
             return;
         }
@@ -33,7 +32,6 @@
         }
         data.push({ x: moment(next).subtract(1, unite), y: -montant });
         chart.data.datasets[0].data = data;
-        chart.options.scales.xAxes.unit = unite === "days" ? "day" : "hour";
         chart.update();
     }
 
@@ -52,7 +50,7 @@
             $("#choix-date").show();
             $('#timepicker-conso').datetimepicker("destroy");
             $('#timepicker-conso').datetimepicker({
-                format: 'DD/MM/YYYY',
+                format: 'DD/MMM/YYYY',
                 viewMode: "days"
             });
         } else if ($("#radio-conso-mois").is(':checked')) {
@@ -76,14 +74,14 @@
             table.clear();
             table.rows.add(transactions);
             table.draw();
-            updateChart(transactions, "days");
+            updateChart(transactions, "month");
             updateMontant(transactions);
         }
     }
     
     // Initialisation des tables et du graph
     (() => {
-        $(".table-consos-total-datatable").DataTable({
+        var table = $(".table-consos-total-datatable").DataTable({
             "scrollX": true,
             "language": {
               "info": "_TOTAL_ bucquages au total",
@@ -99,29 +97,16 @@
                 "render": $.fn.dataTable.render.moment("DD/MM/YYYY HH:mm")
             } ]
         });
+        table.clear();
         $("#choix-date").hide();
         
         var ctx = document.getElementById("conso-chart");
+        moment.locale("fr");
         chart = new Chart(ctx, {
             type: 'line',
             data: {
                 datasets: [{ 
-                    data: [{
-                        x: new Date("12/02/2018 05:35:00"),
-                        y: 1.25
-                    }, {
-                        x: new Date("12/03/2018 22:05:00"),
-                        y: 1.60
-                    },  {
-                        x: new Date("12/04/2018 22:05:00"),
-                        y: 0
-                    },  {
-                        x: new Date("12/05/2018 22:05:00"),
-                        y: 0
-                    }, {
-                        x: new Date("12/06/2018 22:05:02"),
-                        y: 0.80
-                    }],
+                    data: [],
                     borderColor: "forestgreen",
                     fill: false
               }]
@@ -131,7 +116,12 @@
                     xAxes: [{
                         type: 'time',
                         time: {
-                            unit: 'day'
+                            displayFormats: {
+                                'hour': 'HH:mm',
+                                'day': 'DD/MM',
+                                'week': 'DD/MM',
+                                'month': 'MM/YYYY'
+                            }
                         }
                     }],
                     yAxes: [{
@@ -195,7 +185,12 @@
             table.rows.add(data);
             table.draw();
 
-            var unite = timescale === "days" ? "hour" : "days";
+            var unite = "month";
+            if (timescale === "months") {
+                unite = "day";
+            } else if (timescale === "days") {
+                unite = "hour";
+            }
             updateChart(data, unite);
 
             updateMontant(data);

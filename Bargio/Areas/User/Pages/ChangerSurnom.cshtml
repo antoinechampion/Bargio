@@ -16,12 +16,12 @@
             <img class="centrage2 d-none d-sm-block" src="/images/title_logo106x20.png" alt="Logal Bargio_tag" width="106" height="20">
             <div class="card bloc-central my-2">
                 <div class="bloc-case">
-                    <h5 class="bloc-titre text-center">Changer mon surn'ss</h5>
+                    <h5 class="bloc-titre text-center">Changer mon surnom</h5>
                     <form class="btn-connexion" method="post">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <p class="bloc-titre text-center text-info">Surnom actuel: @Model.AncienSurnom</p>
                         <div class="text-box1">
-                            <input asp-for="NouveauSurnom" type="text" class="form-control">
+                            <input asp-for="NouveauSurnom" type="text" class="form-control" autofocus>
                             <label asp-for="NouveauSurnom"></label>
                         </div>
 
@@ -34,3 +34,9 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#navbar-surnom").addClass("active");
+    </script>
+}

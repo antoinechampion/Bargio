@@ -25,10 +25,8 @@
             <img src="/images/title_logo106x20.png" id="logo-navbar" alt="">
         </div>
 
-        <div class="d-block d-md-none">
-            <span class="font-weight-bold" style="margin-right:5px;">@UserManager.GetUserName(User)</span>
-            <i class="fa fa-ellipsis-h" aria-hidden="true" style="margin-right:5px;"></i>
-            <span>@DbContext.UserData.Find(@UserManager.GetUserName(User)).Solde €</span>
+        <div class="d-block d-md-none info-navbar">
+            <span id="solde-mobile-wrapper" class="font-weight-bold"><span id="solde-mobile">@DbContext.UserData.Find(@UserManager.GetUserName(User)).Solde</span>€</span>
         </div>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,19 +34,19 @@
         </button>
         <div class="collapse navbar-collapse bg-light" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item active ">
+                <li id="navbar-accueil" class="nav-item">
                     <a class="nav-link" asp-page="/Dashboard" asp-area="User">Accueil</a>
                 </li>
-                <li class="nav-item">
+                <li id="navbar-rechargement" class="nav-item">
                     <a class="nav-link" asp-page="/Rechargement" asp-area="User">Recharger mon compte</a>
                 </li>
-                <li class="nav-item">
+                <li id="navbar-mdp" class="nav-item">
                     <a class="nav-link" asp-page="/Account/Manage/ChangePassword" asp-area="Identity">Gérer mon mot de passe</a>
                 </li>
-                <li class="nav-item">
+                <li id="navbar-historique" class="nav-item">
                     <a class="nav-link" asp-page="/Historique" asp-area="User">Historique détaillé</a>
                 </li>
-                <li class="nav-item">
+                <li id="navbar-surnom" class="nav-item">
                     <a class="nav-link" asp-page="/ChangerSurnom" asp-area="User">Changer mon surn's</a>
                 </li>
             </ul>
@@ -89,6 +87,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     @RenderSection("Scripts", required: false)
+    <script type="text/javascript">
+        $(document).ready(function() {
+            if (parseFloat($("#solde-mobile").text().replace(",", ".")) < 0) {
+                $("#solde-mobile-wrapper").addClass("text-danger");
+            } else {
+                $("#solde-mobile-wrapper").addClass("text-success");
+            }
+        });
+    </script>
     <script src="~/js/bugfixes.js"></script>
+    
 </body>
 </html>

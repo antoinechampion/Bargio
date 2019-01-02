@@ -31,12 +31,24 @@ nav {
 }
 
 #logo-navbar {
-    height: 40px;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    margin-bottom: 7px;
+}
+
+.info-navbar {
+    position: fixed;
+    top: 0.7rem;
+    left: 2rem;
+    width: 100%;
+    text-align: center;
 }
 
 .navbar-collapse {
+    z-index: 1000;
+}
+
+.navbar-toggler {
+    position: absolute;
+    right: 5px;
     z-index: 1000;
 }
 

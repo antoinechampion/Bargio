@@ -111,6 +111,8 @@
     
     <script type="text/javascript">
         var transactions = @Html.Raw(Json.Serialize(Model.Transactions));
+
+        $("#navbar-historique").addClass("active");
     </script>
 
     <script src="/js/statistiques.js"></script>

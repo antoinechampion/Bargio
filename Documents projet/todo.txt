@@ -1,15 +1,7 @@
-﻿historique : afficher le solde correct!
-souligner lien navbar actif
-champs mdp n'afficent pas le txt
-regler probleme menu hamburger
-bind entree sur rechargement
+﻿importer db: entrez les comptes zifoys
 
-importer db: entrez les comptes zifoys
-
-bug babasse : barres de scroll panneau admin, choix des zifoys, ce compte n'existe pas souvent
+bug babasse : choix des zifoys
 actue evnts et mot zifoys changer sur babasse
-
-regler pb datatable (ex trier valeur numerique)
 
 pages admin en ligne
 update compteur consommations
@@ -21,3 +13,4 @@ dessin sur fond page accueil
 easter eggs: appuyez sur f13, bucquage créateurs, theme hiver 
 
 tej les avertissements sur vs
+clean code

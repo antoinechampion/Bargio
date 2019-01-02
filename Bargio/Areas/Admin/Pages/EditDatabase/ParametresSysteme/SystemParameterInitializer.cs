@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bargio.Data;
 using Bargio.Models;
 
-namespace Bargio.Areas.User
+namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
 {
     public class SystemParametersInitializer
     {
