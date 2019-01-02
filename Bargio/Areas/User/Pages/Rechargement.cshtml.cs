@@ -58,6 +58,12 @@ namespace Bargio.Areas.User.Pages
         [BindProperty]
         public decimal SoldeActuel { get; set; }
 
+        [BindProperty]
+        public string StatutPaiement { get; set; }
+
+        [BindProperty]
+        public string ClasseTexteStatut { get; set; }
+
         private class LydiaRequestData
         {
             // API public key
@@ -126,9 +132,9 @@ namespace Bargio.Areas.User.Pages
                 ConfirmUrl = absoluteUri + "/api/lydia/confirm",
                 CancelUrl = absoluteUri + "/api/lydia/cancel",
                 ExpireUrl = absoluteUri + "/api/lydia/cancel",
-                EndMobileUrl = absoluteUri + "/user/paiementsucces",
-                BrowserSuccessUrl = absoluteUri + "/user/paiementsucces",
-                BrowserFailUrl = absoluteUri + "/user/paiementechec",
+                EndMobileUrl = absoluteUri + "/user/rechargement?statut=succes",
+                BrowserSuccessUrl = absoluteUri + "/user/rechargement?statut=succes",
+                BrowserFailUrl = absoluteUri + "/user/rechargement?statut=echec"
             };
             var json = JsonConvert.SerializeObject(postData);
             var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
@@ -156,8 +162,22 @@ namespace Bargio.Areas.User.Pages
             return paymentRequest.ID;
         }
 
-        public async Task OnGet()
+        public async Task OnGet(string statut)
         {
+            if (statut == "succes")
+            {
+                ClasseTexteStatut = "text-success";
+                StatutPaiement = "Paiement effectué";
+            }
+            else if (statut == "echec")
+            {
+                ClasseTexteStatut = "text-danger";
+                StatutPaiement = "Impossible d'effectuer le paiement";
+            }
+            else
+            {
+                ClasseTexteStatut = "d-none";
+            }
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             SoldeActuel = _context.UserData.Find(identityUser.UserName).Solde;
         }

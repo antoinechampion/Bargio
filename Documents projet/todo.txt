@@ -1,6 +1,8 @@
 ﻿historique detaillé
 souligner lien navbar actif
 champs mdp n'afficent pas le txt
+regler probleme menu hamburger
+bind entree sur rechargement
 
 importer db: entrez les comptes zifoys
 

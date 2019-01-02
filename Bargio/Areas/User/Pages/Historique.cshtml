@@ -22,7 +22,7 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input id="radio-conso-soiree" type="radio" class="form-check-input" name="radio-temps-consommation">Sur une soirée (15h->9h)
+                                    <input id="radio-conso-soiree" type="radio" class="form-check-input" name="radio-temps-consommation">Sur une soirée
                                 </label>
                             </div>
                             <div class="form-check">
@@ -56,47 +56,6 @@
 
                     <p class="text-center solde-accueil">13,00€</p>
                     <br />
-                    <div id="table-consos-partiel">
-                        <table class="table-consos-partiel-datatable display nowrap">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Date
-                                    </th>
-                                    <th>
-                                        Montant
-                                    </th>
-                                    <th>
-                                        Consommation
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        05/12/2017 23:00:12
-                                    </td>
-                                    <td>
-                                        -1,25€
-                                    </td>
-                                    <td>
-                                        1x Bière F5
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        06/12/2017 01:08:10
-                                    </td>
-                                    <td>
-                                        -1,60€
-                                    </td>
-                                    <td>
-                                        2x Jupiler/Illoise
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
         </div>
@@ -125,36 +84,14 @@
                                         Date
                                     </th>
                                     <th>
-                                        Montant
+                                        Bucquage
                                     </th>
                                     <th>
-                                        Consommation
+                                        Montant
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        05/12/2017 23:00:12
-                                    </td>
-                                    <td>
-                                        -1,25€
-                                    </td>
-                                    <td>
-                                        1x Bière F5
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        06/12/2017 01:08:10
-                                    </td>
-                                    <td>
-                                        -1,60€
-                                    </td>
-                                    <td>
-                                        2x Jupiler/Illoise
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -165,12 +102,16 @@
 
 </div>
 
-
-
 @section Scripts {
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.10.19/dataRender/datetime.js"></script>
+    
+    <script type="text/javascript">
+        var transactions = @Html.Raw(Json.Serialize(Model.Transactions));
+    </script>
+
     <script src="/js/statistiques.js"></script>
 }

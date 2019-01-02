@@ -17,9 +17,9 @@ namespace Bargio.Areas.User.Pages
 
         public class TransactionAffichage
         {
-            public DateTime Date { get; set; }
-            public string Commmentaire { get; set; }
-            public decimal Montant { get; set; }
+            public string date { get; set; }
+            public string commentaire { get; set; }
+            public decimal montant { get; set; }
         }
 
         [BindProperty] public List<TransactionAffichage> Transactions { get; set; }
@@ -35,11 +35,12 @@ namespace Bargio.Areas.User.Pages
             var user = await _userManager.GetUserAsync(HttpContext.User);
             Transactions = _context.TransactionHistory
                 .Where(o => o.UserName == user.UserName)
+                .OrderBy(o => o.Date)
                 .Select(o => new TransactionAffichage
                 {
-                    Commmentaire = o.Commentaire ?? "",
-                    Date = o.Date,
-                    Montant = o.Montant
+                    commentaire = o.Commentaire ?? "",
+                    date = o.Date.ToString("dd/MM/yyyy HH:mm"),
+                    montant = o.Montant
                 })
                 .ToList();
 
