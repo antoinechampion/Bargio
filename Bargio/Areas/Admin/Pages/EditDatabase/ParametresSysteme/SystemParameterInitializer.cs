@@ -15,7 +15,6 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
             (ApplicationDbContext context) {
 
             var p = new SystemParameters {
-                IpServeur = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0].ToString(),
                 DerniereConnexionBabasse = DateTime.Now,
                 BucquagesBloques = false,
                 LydiaBloque = false,

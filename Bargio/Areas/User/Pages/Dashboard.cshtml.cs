@@ -25,6 +25,9 @@ namespace Bargio.Areas.User.Pages
         [BindProperty] public string DernierBucquageDate { get; set; }
         [BindProperty] public Dictionary<string, int> CompteurConsos { get; set; }
 
+        [BindProperty] public string MotDesZifoys { get; set; }
+        [BindProperty] public string Actualites { get; set; }
+
         public DashboardModel(UserManager<IdentityUserDefaultPwd> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
@@ -66,7 +69,6 @@ namespace Bargio.Areas.User.Pages
                         compteurIdProduits[produit] += 1;
                 }
             }
-        
 
             foreach (var produit in compteurIdProduits)
             {
@@ -75,6 +77,10 @@ namespace Bargio.Areas.User.Pages
                     CompteurConsos.Add(nomProduit, produit.Value);
                 } catch {}
             }
+
+            var systemParameters = await _context.SystemParameters.FirstAsync();
+            MotDesZifoys = systemParameters.MotDesZifoys;
+            Actualites = systemParameters.Actualites;
 
             return Page();
         }
