@@ -7,10 +7,14 @@
 <head>
     <meta charset="utf-8" />
     <link rel="icon" href="/images/favicon.ico">
+    <environment names="Development">            
+        <link rel="stylesheet" href="/css/navbar.css">
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="/css/navbar.min.css">
+    </environment>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/navbar.css">
-
     @RenderSection("IncludeHead", required: false)
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -88,7 +92,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     @if (DbContext.SystemParameters.First().Snow)
     {
-        <script src="/js/snowstorm.js"></script>
+        <environment names="Development">
+            <script src="~/js/snowstorm.js"></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script src="~/js/snowstorm.min.js"></script>
+        </environment>
         <script type="text/javascript">
             snowStorm.snowColor = '#bbddbb';
         </script>
@@ -102,9 +111,12 @@
                 $("#solde-mobile-wrapper").addClass("text-success");
             }
         });
-
     </script>
-    <script src="~/js/bugfixes.js"></script>
-
+    <environment names="Development">
+        <script src="~/js/bugfixes.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/bugfixes.min.js"></script>
+    </environment>
 </body>
 </html>

@@ -10,8 +10,30 @@
 }
 
 @section IncludeHead {
-    <link rel="stylesheet" href="/css/style.css">
+    <environment names="Development">
+        <link rel="stylesheet" href="/css/style.css">
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="/css/style.min.css">
+    </environment>
 }
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script type="text/javascript">
+        var compteurConsos = @Html.Raw(Json.Serialize(Model.CompteurConsos));
+
+        $("#navbar-accueil").addClass("active");
+    </script>
+    <environment names="Development">
+        <script src="/js/dashboard.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="/js/dashboard.min.js"></script>
+    </environment>
+}
+
 
 <div class="container mt-3">
     <div class="row justify-content-center">
@@ -26,9 +48,9 @@
 
             <div class="card bloc-central my-2 bg-rechargement">
                 <a class="bloc-case" asp-page="/Rechargement" asp-area="User">
-                        <p class="text-center text-white rechargement d-none d-md-block">Recharger mon compte</p>
-                        <p class="text-center text-white rechargement d-block d-md-none"
-                           style="font-size: 1.4rem; margin: -15px 0 -15px 0;">Recharger mon compte</p>
+                    <p class="text-center text-white rechargement d-none d-md-block">Recharger mon compte</p>
+                    <p class="text-center text-white rechargement d-block d-md-none"
+                       style="font-size: 1.4rem; margin: -15px 0 -15px 0;">Recharger mon compte</p>
                 </a>
             </div>
 
@@ -67,13 +89,3 @@
     </div>
 </div>
 
-@section Scripts
-{
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script type="text/javascript">
-        var compteurConsos = @Html.Raw(Json.Serialize(Model.CompteurConsos));
-
-        $("#navbar-accueil").addClass("active");
-    </script>
-    <script src="/js/dashboard.js"></script>
-}

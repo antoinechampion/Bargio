@@ -2,6 +2,10 @@
 - importer db: entrez les comptes zifoys
 - choix des zifoys
 
+passer api lydia en production
+mettre internet sur babasse foy's
+faire test 1 semaine
+
 faire mise hors babasse auto
 actue evnts et mot zifoys changer sur babasse
 
@@ -11,7 +15,6 @@ conserve mise hors foyss et mode archi (sélectionner par prom'ss qui ne sont pa
 mode archi => si un bucquage fait passer en négat's -> impossible de se bucquer
 autorisations
 
-dessin sur fond page accueil
 easter eggs: appuyez sur f13, bucquage créateur
 
 tej les avertissements sur vs

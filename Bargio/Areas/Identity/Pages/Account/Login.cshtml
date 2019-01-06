@@ -7,43 +7,56 @@
 }
 
 @section IncludeHead {
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/login.js"></script>
+    <environment names="Development">
+        <link rel="stylesheet" href="/css/style.css">
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="/css/style.min.css">
+    </environment>
+}
+
+@section Scripts {
+    <environment names="Development">
+        <script src="/js/login.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="/js/login.min.js"></script>
+    </environment>
 }
 
 <div class="container">
-    <div class="row">     
+    <div class="row">
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <img class="centrage1" src="/images/logo179.png" alt="Logal Bargio_pic" width="179" height="179"> 
+            <img class="centrage1" src="/images/logo179.png" alt="Logal Bargio_pic" width="179" height="179">
             <img class="centrage2" src="/images/title_logo106x20.png" alt="Logal Bargio_tag" width="106" height="20">
             <div class="card bloc-central my-2">
                 <div class="bloc-case">
-                    <h5 class="bloc-titre text-center">Connexion à mon compte</h5>           
+                    <h5 class="bloc-titre text-center">Connexion à mon compte</h5>
                     <form class="btn-connexion" method="post">
-                        
+
                         <div asp-validation-summary="All" class="text-danger"></div>
-                
+
                         <div class="text-box1">
                             <input asp-for="Input.Nums" type="text" id="inputNumss" class="form-control" autofocus>
                             <label for="inputNumss">Num'sTabagn'sProm's</label>
                         </div>
 
-                
+
                         <div class="custom-control custom-checkbox mb-1">
-                            <input type="checkbox" class="custom-control-input" id="MDPoptionnel"/> 
+                            <input type="checkbox" class="custom-control-input" id="MDPoptionnel" />
                             <label class="custom-control-label" for="MDPoptionnel" onclick="ShowHideDiv()">Mot de passe optionnel</label>
-                        </div>               
-                
+                        </div>
+
                         <div id="txtMDPopt" class="text-box1" style="display: none">
                             <input asp-for="Input.Password" type="password" class="form-control">
                             <label for="txtMDPopt">Mot de passe optionnel...</label>
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
-                              
-                
+
+
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Connexion</button>
-              
-              
+
+
                     </form>
                 </div>
             </div>
