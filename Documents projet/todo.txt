@@ -1,6 +1,8 @@
-﻿importer db: entrez les comptes zifoys
+﻿voir ac clément si 1 compte zifoys unique, puis en fonction:
+- importer db: entrez les comptes zifoys
+- choix des zifoys
 
-bug babasse : choix des zifoys
+faire mise hors babasse auto
 actue evnts et mot zifoys changer sur babasse
 
 pages admin en ligne
@@ -10,7 +12,7 @@ mode archi => si un bucquage fait passer en négat's -> impossible de se bucquer
 autorisations
 
 dessin sur fond page accueil
-easter eggs: appuyez sur f13, bucquage créateurs, theme hiver 
+easter eggs: appuyez sur f13, bucquage créateur
 
 tej les avertissements sur vs
 clean code

@@ -17,7 +17,7 @@
             <input type="hidden" asp-for="SystemParameters.Id" />
             <div class="form-group">
                 <label asp-for="SystemParameters.DerniereConnexionBabasse" class="control-label"></label>
-                <input asp-for="SystemParameters.DerniereConnexionBabasse" class="form-control" disabled="disabled" />
+                <input asp-for="SystemParameters.DerniereConnexionBabasse" class="form-control" />
                 <span asp-validation-for="SystemParameters.DerniereConnexionBabasse" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -110,8 +110,3 @@
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
-
