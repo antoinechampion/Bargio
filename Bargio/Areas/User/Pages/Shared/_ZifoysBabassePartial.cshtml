@@ -3,7 +3,7 @@
 
 <!-- Modal pour panneau d'administration zifoys -->
 <div class="modal fade" id="modal-zifoys" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document" style="max-width: 40%;">
+    <div class="modal-dialog modal-dialog-zifoys" role="document" style="max-width: 40%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Interface ZiFoy's</h5>
@@ -12,7 +12,7 @@
                 </button>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body modal-body-zifoys">
                 <div class="form-group">
                     <h6 class="text-center" style="margin-top:30px;">Rechargement - bucquage manuel</h6>
 
@@ -184,6 +184,33 @@
                     <input id="input-username-reset-mdp" class="form-control input-lg mb-3" placeholder="ex: 13li217">
 
                     <button id="button-reset-mdp" type="button" class="btn btn-primary">Réinitialiser</button>
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <h6 class="text-center" style="margin-top:30px;">Thème de Noël</h6>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" value="" id="checkbox-snow">
+                        <label class="form-check-label" for="checkbox-snow">
+                            Oh, il neige !
+                        </label>
+                    </div>
+
+                    <button id="button-snow" type="button" class="btn btn-primary">Confirmer</button>
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <h6 class="text-center" style="margin-top:30px;">Changer mot des zifoys / actualités</h6>
+
+                    <label class="control-label">Mot des zifoy's</label>
+                    <textarea class="form-control mb-3" cols="40" rows="5" id="textarea-mot-des-zifoys"></textarea>
+
+                    <label class="control-label">Actualités</label>
+                    <textarea class="form-control mb-3" cols="40" rows="5" id="textarea-actualites"></textarea>
+
+                    <button id="button-mots-des-zifoys-actualites" type="button" class="btn btn-primary">Confirmer</button>
                 </div>
                 <hr>
             </div>

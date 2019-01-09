@@ -41,9 +41,18 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
                 return Page();
             }
 
-            _context.Attach(SystemParameters).State = EntityState.Modified;
+            // On del et on recrée plutôt que d'éditer à la volée :
+            // Ca évite les comportements étranges et autres 
+            // dbconcurrencyexception
+            var systemParameters = _context.SystemParameters;
+            foreach (var entity in systemParameters)
+                systemParameters.Remove(entity);
             await _context.SaveChangesAsync();
 
+            await systemParameters.AddAsync(SystemParameters);
+
+            await _context.SaveChangesAsync();
+            
             return RedirectToPage("./Index");
         }
     }

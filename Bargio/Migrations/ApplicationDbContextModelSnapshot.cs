@@ -124,8 +124,10 @@ namespace Bargio.Migrations
 
             modelBuilder.Entity("Bargio.Models.SystemParameters", b =>
                 {
-                    b.Property<string>("IpServeur")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Actualites");
 
                     b.Property<bool>("BucquagesBloques");
 
@@ -151,7 +153,11 @@ namespace Bargio.Migrations
 
                     b.Property<string>("MotDePasseZifoys");
 
-                    b.HasKey("IpServeur");
+                    b.Property<string>("MotDesZifoys");
+
+                    b.Property<bool>("Snow");
+
+                    b.HasKey("Id");
 
                     b.ToTable("SystemParameters");
                 });

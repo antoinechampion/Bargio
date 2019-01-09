@@ -39,7 +39,7 @@ namespace Bargio.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Tu dois rentrer ton num'ss")]
             public string Nums { get; set; }
 
             [Display(Name = "Password")]

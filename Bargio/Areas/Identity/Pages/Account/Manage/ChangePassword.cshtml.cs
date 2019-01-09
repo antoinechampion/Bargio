@@ -37,7 +37,7 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Tu dois rentrer ton mot de passe actuel")]
             [DataType(DataType.Password)]
             [Display(Name = "Mot de passe actuel")]
             public string OldPassword { get; set; }

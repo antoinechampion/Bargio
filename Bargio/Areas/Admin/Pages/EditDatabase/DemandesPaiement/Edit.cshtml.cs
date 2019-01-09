@@ -46,8 +46,6 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.DemandesPaiement
                 return Page();
             }
 
-            _context.Attach(PaymentRequest).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();

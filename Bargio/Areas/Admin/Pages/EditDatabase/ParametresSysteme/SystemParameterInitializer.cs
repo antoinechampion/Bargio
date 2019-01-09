@@ -5,8 +5,9 @@ using System.Net;
 using System.Threading.Tasks;
 using Bargio.Data;
 using Bargio.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Bargio.Areas.User
+namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
 {
     public class SystemParametersInitializer
     {
@@ -14,7 +15,6 @@ namespace Bargio.Areas.User
             (ApplicationDbContext context) {
 
             var p = new SystemParameters {
-                IpServeur = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0].ToString(),
                 DerniereConnexionBabasse = DateTime.Now,
                 BucquagesBloques = false,
                 LydiaBloque = false,
@@ -25,20 +25,13 @@ namespace Bargio.Areas.User
                 MiseHorsBabasseHebdomadaireHeure = "00:00",
                 MiseHorsBabasseQuotidienneHeure = "00:00",
                 MiseHorsBabasseHebdomadaireJours = "",
-                MotDePasseZifoys = "zifoys"
+                MotDePasseZifoys = "zifoys",
+                Snow = true,
+                MotDesZifoys = "L'endroit parfait pour caler des rhopses hyper ayat'sssssssss.",
+                Actualites = "Jeudi 8 Novembre - Zbeuuuuuuul\n"
+                    + "Vendredi 9 Novembre - Remise de fam'ss\n"
+                    + "WBP - fin'ss - ce genre de choses..."
             };
-
-            if (context.SystemParameters.Any()) {
-                var previous = context.SystemParameters.First();
-                p.MiseHorsBabasseAutoActivee = previous.MiseHorsBabasseAutoActivee;
-                p.MiseHorsBabasseInstantanee = previous.MiseHorsBabasseInstantanee;
-                p.MiseHorsBabasseQuotidienne = !previous.MiseHorsBabasseInstantanee;
-                p.MiseHorsBabasseQuotidienneHeure = previous.MiseHorsBabasseQuotidienneHeure ?? "00:00";
-                p.MiseHorsBabasseHebdomadaireHeure = previous.MiseHorsBabasseHebdomadaireHeure ?? "00:00";
-                p.MiseHorsBabasseHebdomadaireJours = previous.MiseHorsBabasseHebdomadaireJours ?? "";
-                p.MotDePasseZifoys = previous.MotDePasseZifoys ?? "zifoys";
-            }
-
             var systemParameters = context.SystemParameters;
             foreach (var entity in systemParameters)
                 systemParameters.Remove(entity);

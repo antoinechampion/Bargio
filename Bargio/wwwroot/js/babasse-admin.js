@@ -1,6 +1,18 @@
 ﻿/// <reference path="./babasse.js" />
 
 $(document).ready(function () {
+    var timerCallbackZifoys = new Timer();
+    snowStorm.snowColor = '#bbddbb';
+    snowStorm.flakesMaxActive = 30;   
+    snowStorm.flakesMax = 40;
+    snowStorm.snowStick = false;
+    snowStorm.useTwinkleEffect = false; 
+    snowStorm.useMeltEffect = false;
+    snowStorm.autoStart = false;
+    snowStorm.animationInterval = 50;
+    snowStorm.vMaxX = 5;
+    snowStorm.vMaxY = 5;
+
     $('#timepicker-hors-babasse-quotidienne').datetimepicker({
         format: 'HH:mm',
         defaultDate: new Date('1900-01-01T00:00:00')
@@ -28,21 +40,37 @@ $(document).ready(function () {
                 $("#radio-quotidienne").prop('checked', zifoysParams.MiseHorsBabasseQuotidienne);
                 $("#radio-hebdomadaire").prop('checked', !zifoysParams.MiseHorsBabasseQuotidienne);
                 $("#timepicker-hors-babasse-quotidienne").datetimepicker("date", zifoysParams.MiseHorsBabasseQuotidienneHeure);
+                $("#checkbox-snow").prop('checked', zifoysParams.Snow);
+                $("#textarea-mot-des-zifoys").val(zifoysParams.MotDesZifoys);
+                $("#textarea-actualites").val(zifoysParams.Actualites);
 
-                if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("lundi"))
-                    $("#checkbox-hors-babasse-lundi").button("toggle");
-                if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("mardi"))
-                    $("#checkbox-hors-babasse-mardi").button("toggle");
-                if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("mercredi"))
-                    $("#checkbox-hors-babasse-mercredi").button("toggle");
-                if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("jeudi"))
-                    $("#checkbox-hors-babasse-jeudi").button("toggle");
-                if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("vendredi"))
-                    $("#checkbox-hors-babasse-vendredi").button("toggle");
-                if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("samedi"))
-                    $("#checkbox-hors-babasse-samedi").button("toggle");
-                if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("dimanche"))
-                    $("#checkbox-hors-babasse-dimanche").button("toggle");
+                $("#p-mot-des-zifoys").text(zifoysParams.MotDesZifoys);
+                $("#p-actualites").text(zifoysParams.Actualites);
+
+                if (zifoysParams.MiseHorsBabasseHebdomadaireJours !== null) {
+                    if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("lundi"))
+                        $("#checkbox-hors-babasse-lundi").button("toggle");
+                    if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("mardi"))
+                        $("#checkbox-hors-babasse-mardi").button("toggle");
+                    if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("mercredi"))
+                        $("#checkbox-hors-babasse-mercredi").button("toggle");
+                    if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("jeudi"))
+                        $("#checkbox-hors-babasse-jeudi").button("toggle");
+                    if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("vendredi"))
+                        $("#checkbox-hors-babasse-vendredi").button("toggle");
+                    if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("samedi"))
+                        $("#checkbox-hors-babasse-samedi").button("toggle");
+                    if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("dimanche"))
+                        $("#checkbox-hors-babasse-dimanche").button("toggle");
+                }
+                
+                if (zifoysParams.Snow) {
+                    snowStorm.show();
+                    snowStorm.resume();
+                } else {
+                    snowStorm.stop();
+                    snowStorm.freeze();
+                }
 
                 refreshUi();
             },
@@ -52,6 +80,14 @@ $(document).ready(function () {
 			timeout: 30000
 		});
     }
+
+    timerCallbackZifoys.start({countdown: true, startValues: {seconds: 30}});
+    timerCallbackZifoys.addEventListener("targetAchieved", function (e) {
+        if (!desynchronisation) {
+            uiGetAjax();
+        }
+    });
+
     function uiPostAjax() {
         var fdata = new FormData();
         var json = JSON.stringify(zifoysParams);
@@ -67,7 +103,6 @@ $(document).ready(function () {
                 if (response === null) {
                     console.log("Impossible de récupérer les paramètres zifoy'ss");
                 }
-                zifoysParams = JSON.parse(response);
             },
             error: function(xhr, error) {
                 console.log("Impossible de récupérer les paramètres zifoy'ss");
@@ -75,7 +110,7 @@ $(document).ready(function () {
             timeout: 30000
         });
     }
-
+    
     function clearUi() {
         $("#input-mdp-zifoys").val("");
         $("#input-mdp-zifoys-confirmer").val("");
@@ -110,7 +145,7 @@ $(document).ready(function () {
 
     // On relie chaque input à son bouton
     (() => {
-        $("input-username-rechargement-manuel,#input-montant-rechargement-manuel,#input-commentaire-rechargement-manuel")
+        $("#input-username-rechargement-manuel,#input-montant-rechargement-manuel,#input-commentaire-rechargement-manuel")
             .each(function() {
                 $(this).keypress(function(e) {
                     if (e.keyCode === 13)
@@ -137,6 +172,14 @@ $(document).ready(function () {
             if(e.keyCode===13)
                 $('#button-reset-mdp').click();
         });
+
+        $("#textarea-actualites,#textarea-mot-des-zifoys")
+            .each(function() {
+                $(this).keypress(function(e) {
+                    if (e.keyCode === 13)
+                        $("#button-mots-des-zifoys-actualites").click();
+                });
+            });
         
     })();
 
@@ -243,6 +286,35 @@ $(document).ready(function () {
                 $(".bloc-case-rouge").css('background-image', "url(" + imageHorsBabassePath + ")");
                 $("#modal-zifoys-validation").modal('show');
             }
+        });
+
+        // Activer la neige
+        $("#button-snow").click(function(e) {
+            zifoysParams.Snow = $("#checkbox-snow").is(":checked");
+            
+            if (zifoysParams.Snow) {
+                snowStorm.show();
+                snowStorm.resume();
+            } else {
+                snowStorm.stop();
+                snowStorm.freeze();
+            }
+
+
+            uiPostAjax();
+            $("#modal-zifoys-validation").modal('show');
+        });
+
+        // Mot des zifoys / actualités
+        $("#button-mots-des-zifoys-actualites").click(function(e) {
+            zifoysParams.MotDesZifoys = $("#textarea-mot-des-zifoys").val();
+            zifoysParams.Actualites = $("#textarea-actualites").val();
+
+            $("#p-mot-des-zifoys").text(zifoysParams.MotDesZifoys);
+            $("#p-actualites").text(zifoysParams.Actualites);
+            
+            uiPostAjax();
+            $("#modal-zifoys-validation").modal('show');
         });
 
     })();

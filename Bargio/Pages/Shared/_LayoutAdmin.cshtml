@@ -1,8 +1,13 @@
 ﻿@{
-    Layout = "~/Pages/Shared/_Layout.cshtml";
+    Layout = "~/Pages/Shared/_LayoutNoNavbar.cshtml";
 }
 @section IncludeHead {
-    <link rel="stylesheet" href="/css/editdatabase.css">
+    <environment names="Development">         
+        <link rel="stylesheet" href="/css/editdatabase.css">   
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="/css/editdatabase.min.css">
+    </environment>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
     @RenderSection("IncludeHead", required: false)
 }

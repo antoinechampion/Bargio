@@ -108,7 +108,10 @@ namespace Bargio.Api
                     o.MiseHorsBabasseQuotidienneHeure,
                     o.MiseHorsBabasseHebdomadaireJours,
                     o.MiseHorsBabasseHebdomadaireHeure,
-                    o.MotDePasseZifoys
+                    o.MotDePasseZifoys,
+                    o.Snow,
+                    o.MotDesZifoys,
+                    o.Actualites
                 })
                 .First();
             return JsonConvert.SerializeObject(parametres);
@@ -117,7 +120,7 @@ namespace Bargio.Api
         // Retourne les paramètres zifoy'ss de la babasse
         [HttpPost]
         [Route("zifoysparams")]
-        public void SetZifoysParameters(string json) {
+        public async Task SetZifoysParameters(string json) {
             dynamic p = JsonConvert.DeserializeObject(json);
             var parameters = _context.SystemParameters.First();
             parameters.MiseHorsBabasseAutoActivee = p.MiseHorsBabasseAutoActivee;
@@ -128,8 +131,18 @@ namespace Bargio.Api
             parameters.MiseHorsBabasseHebdomadaireHeure = p.MiseHorsBabasseHebdomadaireHeure;
             parameters.MiseHorsBabasseHebdomadaireJours = p.MiseHorsBabasseHebdomadaireJours;
             parameters.MotDePasseZifoys = p.MotDePasseZifoys;
-            _context.Attach(parameters).State = EntityState.Modified;
-            _context.SaveChanges();
+            parameters.MotDesZifoys = p.MotDesZifoys;
+            parameters.Actualites = p.Actualites;
+            parameters.Snow = p.Snow;
+
+            var systemParameters = _context.SystemParameters;
+            foreach (var entity in systemParameters)
+                systemParameters.Remove(entity);
+            await _context.SaveChangesAsync();
+
+            await systemParameters.AddAsync(parameters);
+
+            await _context.SaveChangesAsync();
         }
     }
 }

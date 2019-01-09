@@ -10,38 +10,56 @@
 }
 
 @section IncludeHead {
-    <link rel="stylesheet" href="/css/style.css">
+    <environment names="Development">
+        <link rel="stylesheet" href="/css/style.css">
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="/css/style.min.css">
+    </environment>
 }
 
 <div class="container">
-    <div class="row">     
+    <div class="row">
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <img class="centrage1" src="/images/logo179.png" alt="Logal Bargio_pic" width="179" height="179"> 
-            <img class="centrage2" src="/images/title_logo106x20.png" alt="Logal Bargio_tag" width="106" height="20">
+            <img class="centrage1 d-none d-sm-block" src="/images/logo179.png" alt="Logal Bargio_pic" width="179" height="179">
+            <img class="centrage2 d-none d-sm-block" src="/images/title_logo106x20.png" alt="Logal Bargio_tag" width="106" height="20">
             <div class="card bloc-central my-2">
                 <div class="bloc-case">
-                    <h5 class="bloc-titre text-center">Recharger mon compte</h5>      
+                    <h5 class="bloc-titre text-center">Recharger mon compte</h5>
+                    <p class="text-center @Model.ClasseTexteStatut">@Model.StatutPaiement<br /></p>
+                    <p class="bloc-titre text-center text-info">Solde actuel: @Model.SoldeActuel €</p>
                     <form id="lydiaForm" method="post">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group text-box1">
-                            <input asp-for="Telephone" type="text" class="form-control" autofocus>
+                            <input class="form-control rechargement-input" asp-for="Telephone" type="text" autofocus>
                             <label asp-for="Telephone"></label>
                         </div>
-               
-                
+
+
                         <div class="form-group text-box1">
-                            <input asp-for="Montant" type="text" class="form-control">
+                            <input class="form-control rechargement-input" asp-for="Montant" type="text">
                             <label asp-for="Montant"></label><br>
                         </div>
-                
-                        <a href="javascript:{}" onclick="document.getElementById('lydiaForm').submit();">
+
+                        <a id="lydia-button" href="javascript:{}" onclick="document.getElementById('lydiaForm').submit();">
                             <img class="full-width" src="https://homologation.lydia-app.com/assets/img/paymentbutton.png" />
                         </a>
-   
-              
+
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#navbar-rechargement").addClass("active");
+
+        $('.rechargement-input').keypress(function (e) {
+            if (e.keyCode === 13)
+                $('#lydia-button').click();
+        });
+    </script>
+}

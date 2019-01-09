@@ -1,25 +1,122 @@
-﻿<!DOCTYPE html>
+﻿@using Bargio.Areas.Identity
+@inject UserManager<IdentityUserDefaultPwd> UserManager
+@inject ApplicationDbContext DbContext
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <link rel="icon" href="/images/favicon.ico">
+    <environment names="Development">            
+        <link rel="stylesheet" href="/css/navbar.css">
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="/css/navbar.min.css">
+    </environment>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-    
     @RenderSection("IncludeHead", required: false)
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Bargio</title>
 </head>
 <body>
-    <partial name="_CookieConsentPartial" />
+    <!-- <partial name="_CookieConsentPartial" /> -->
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-xl navbar-light bg-light justify-content-between">
 
-    @RenderBody()
+        <div class="navbar-brand">
+            <img src="/images/title_logo106x20.png" id="logo-navbar" alt="">
+        </div>
+
+        <div class="d-block d-md-none info-navbar">
+            <span id="solde-mobile-wrapper" class="font-weight-bold"><span id="solde-mobile">@DbContext.UserData.Find(@UserManager.GetUserName(User)).Solde</span>€</span>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse bg-light" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+                <li id="navbar-accueil" class="nav-item">
+                    <a class="nav-link" asp-page="/Dashboard" asp-area="User">Accueil</a>
+                </li>
+                <li id="navbar-rechargement" class="nav-item">
+                    <a class="nav-link" asp-page="/Rechargement" asp-area="User">Recharger mon compte</a>
+                </li>
+                <li id="navbar-mdp" class="nav-item">
+                    <a class="nav-link" asp-page="/Account/Manage/ChangePassword" asp-area="Identity">Gérer mon mot de passe</a>
+                </li>
+                <li id="navbar-historique" class="nav-item">
+                    <a class="nav-link" asp-page="/Historique" asp-area="User">Historique détaillé</a>
+                </li>
+                <li id="navbar-surnom" class="nav-item">
+                    <a class="nav-link" asp-page="/ChangerSurnom" asp-area="User">Changer mon surn's</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <a class="nav-link" asp-page="/Account/Logout" asp-area="Identity">
+                    <i class="fa fa-power-off"></i>
+                    <span class="ml-2">Déconnexion</span>
+                </a>
+            </span>
+        </div>
+    </nav>
+
+    <div class="body-content">
+        @RenderBody()
+    </div>
+
+
+    <footer class="footer-navbar d-none d-lg-block">
+        <div class="container text-muted">
+            <div class="row justify-content-start">
+                <div class="col">
+                    <a class="lien-footer" href="https://www.asp.net/"><i class="fas fa-server" aria-hidden="true" style="margin-right:5px;"></i>ASP.NET Core 2.1 Kestrel</a>
+                </div>
+                <div class="col">
+                    <a class="lien-footer" href="https://www.boost.org/LICENSE_1_0.txt"><i class="far fa-copyright" aria-hidden="true" style="margin-right:5px;"></i>License BOOST 1.0</a>
+                </div>
+                <div class="col">
+                    <a class="lien-footer" href="https://github.com/antoinechampion/Bargio"><i class="fab fa-github" aria-hidden="true" style="margin-right:5px;"></i>Nous suivre sur Github</a>
+                </div>
+                <div class="col">
+                    <span><i class="fas fa-check" aria-hidden="true" style="margin-right:5px;"></i>9</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    @if (DbContext.SystemParameters.First().Snow)
+    {
+        <environment names="Development">
+            <script src="~/js/snowstorm.js"></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script src="~/js/snowstorm.min.js"></script>
+        </environment>
+        <script type="text/javascript">
+            snowStorm.snowColor = '#bbddbb';
+        </script>
+    }
     @RenderSection("Scripts", required: false)
-    <script src="~/js/bugfixes.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            if (parseFloat($("#solde-mobile").text().replace(",", ".")) < 0) {
+                $("#solde-mobile-wrapper").addClass("text-danger");
+            } else {
+                $("#solde-mobile-wrapper").addClass("text-success");
+            }
+        });
+    </script>
+    <environment names="Development">
+        <script src="~/js/bugfixes.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/bugfixes.min.js"></script>
+    </environment>
 </body>
 </html>

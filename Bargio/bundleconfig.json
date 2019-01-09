@@ -1,0 +1,80 @@
+[
+  {
+    "outputFileName": "wwwroot/css/babasse.min.css",
+    "inputFiles": [
+      "wwwroot/css/babasse.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/editdatabase.min.css",
+    "inputFiles": [
+      "wwwroot/css/editdatabase.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/navbar.min.css",
+    "inputFiles": [
+      "wwwroot/css/navbar.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/style.min.css",
+    "inputFiles": [
+      "wwwroot/css/style.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/bcrypt.min.js",
+    "inputFiles": [
+      "wwwroot/js/bcrypt.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/bugfixes.min.js",
+    "inputFiles": [
+      "wwwroot/js/bugfixes.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/dashboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/dashboard.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/date.format.min.js",
+    "inputFiles": [
+      "wwwroot/js/date.format.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/easytimer.min.js",
+    "inputFiles": [
+      "wwwroot/js/easytimer.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/import-db.min.js",
+    "inputFiles": [
+      "wwwroot/js/import-db.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/login.min.js",
+    "inputFiles": [
+      "wwwroot/js/login.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/snowstorm.min.js",
+    "inputFiles": [
+      "wwwroot/js/snowstorm.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/statistiques.min.js",
+    "inputFiles": [
+      "wwwroot/js/statistiques.js"
+    ]
+  }
+]

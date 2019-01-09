@@ -16,7 +16,10 @@ var zifoysParams = {
 	MiseHorsBabasseQuotidienneHeure: "00:00",
 	MiseHorsBabasseHebdomadaireJours: "Mardi",
 	MiseHorsBabasseHebdomadaireHeure: "00:00",
-	MotDePasseZifoys: "zifoys"
+	MotDePasseZifoys: "zifoys",
+    Snow: false,
+    MotDesZifoys: "",
+    Actualites: ""
 };
 var bcrypt = dcodeIO.bcrypt;
 
@@ -133,6 +136,7 @@ $( document ).ready(function() {
 					cache: false,
 					success: function(response) {
 						var users = JSON.parse(response);
+					    console.log(users);
 						db.UserData.bulkAdd(users).then(function() {
 							db.HistoriqueTransactions.count().then(function(count) {
                                 if (count !== 0) {
@@ -394,7 +398,7 @@ $( document ).ready(function() {
 				return;
 			// On vérifie si il n'est pas hors foy's non plus le petit enculé
             } else if (isHorsFoys(user)) {
-				$("#hors-babasse-solde").text("");
+				$("#hors-babasse-solde").text(user.Solde);
 				$("#message-hors-truc").text("Tu es hors foy's.");
 				$("#ui-hors-truc").slideDown(200);
 				$("#inputNumss").val("");

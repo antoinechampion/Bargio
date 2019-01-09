@@ -1,0 +1,71 @@
+﻿html {
+    height: 100%;
+}
+
+html body {
+    height: 100%;
+    overflow: hidden;
+}
+
+html body .body-content {
+    position: absolute;
+    top: 50px;
+    bottom: 30px;
+    right: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+nav {
+    height: 50px;
+}
+
+.nav-item {
+    border-bottom: gainsboro solid 2px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.nav-item.active {
+    border-bottom: forestgreen solid 2px;
+}
+
+#logo-navbar {
+    margin-bottom: 7px;
+}
+
+.info-navbar {
+    position: fixed;
+    top: 0.7rem;
+    left: 2rem;
+    width: 100%;
+    text-align: center;
+}
+
+.navbar-collapse {
+    z-index: 1000;
+}
+
+.navbar-toggler {
+    position: absolute;
+    right: 5px;
+    z-index: 1000;
+}
+
+.footer-navbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Set the fixed height of the footer here */
+    height: 40px;
+    line-height: 40px; /* Vertically center the text there */
+    background-color: whitesmoke;
+}
+
+.lien-footer {
+     color: inherit;
+     text-decoration: none;
+     outline: inherit;
+}

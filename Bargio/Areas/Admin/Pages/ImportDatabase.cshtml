@@ -52,5 +52,10 @@
 </div>
 
 @section Scripts {
-    <script type="text/javascript" src="/js/import-db.js"></script>
+    <environment names="Development">
+        <script type="text/javascript" src="/js/import-db.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script type="text/javascript" src="/js/import-db.min.js"></script>
+    </environment>
 } 

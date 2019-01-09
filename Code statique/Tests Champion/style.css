@@ -3,7 +3,7 @@ nav {
 }
 
 .nav-item {
-    border-bottom: grey solid 2px;
+    border-bottom: gainsboro solid 2px;
     margin-left: 15px;
     margin-right: 15px;
 }
@@ -12,7 +12,7 @@ nav {
 }
 
 #logo-navbar {
-    height: 50px;
+    height: 40px;
     padding-bottom: 10px;
     padding-top: 10px;
 }
@@ -22,27 +22,48 @@ nav {
   --input-padding-y: .75rem;
 }
 
-body {
-  background-color: #1EEEEE;
+.navbar-collapse {
+    z-index: 1000;
+}
 
+.footer-navbar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 40px;
+  line-height: 40px; /* Vertically center the text there */
+  background-color: #f5f5f5;
+}
+
+
+body {
+  margin-bottom: 40px;
 }
 
 .bloc-central {
+  border: 0;
   border-radius: 1rem;
-  -webkit-box-shadow: 0 0.5rem 3rem 0 rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0.5rem 3rem 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: 0.5rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 
 }
 
-.bloc-footer {
-  border-radius: 1rem;
-  margin-bottom: 0.5rem;
+.numss {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    font-weight: 200;
+    font-size: 2rem;
+}
 
+.surnom {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    font-weight: 200;
+    font-size: 0.7rem;
 }
 
 .bloc-central .bloc-titre {
-  margin-bottom: 1rem;
+  margin-bottom: auto;
   font-weight: 300;
 }
 
@@ -60,14 +81,13 @@ body {
   letter-spacing: .1rem;
   font-weight: bold;
   padding: 1rem;
-  -webkit-transition: all 0.2s;
   transition: all 0.2s;
   margin-top: 1rem;
 }
 
 .text-box1 {
   position: relative;
-  margin-bottom: 0rem;
+  margin-bottom: 1rem;
 }
 
 .text-box1 input {
@@ -91,7 +111,6 @@ body {
   color: #495057;
   border: 1px solid transparent;
   border-radius: .25rem;
-  -webkit-transition: all .1s ease-in-out;
   transition: all .1s ease-in-out;
 }
 
@@ -107,11 +126,7 @@ body {
   color: transparent;
 }
 
-.text-box1 input::-webkit-input-placeholder {
-  color: transparent;
-}
-
-.text-box1 input:-ms-input-placeholder {
+.text-box1 input::-moz-placeholder {
   color: transparent;
 }
 
@@ -131,21 +146,21 @@ body {
   color: #777;
 }
 
-img.centrage1 {
+.centrage1 {
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1rem;
     margin-top: 1rem;
-
+    
 }
 
-img.centrage2 {
+.centrage2 {
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1rem;
-
+    
 }
 
 .placement {
@@ -154,51 +169,49 @@ img.centrage2 {
 }
 
 .paragraphe {
+    margin-bottom: 0rem;
     font-weight: 300;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .solde {
     font-weight: 100;
     font-size: 3rem;
-    margin-bottom: 0rem;
+    margin-bottom: -10px;
 }
 
-.encours {
-    margin-top: 0rem;
-    margin-bottom: 0rem;
-    font-weight: lighter;
-    font-size: 1rem;
+.bucquage {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 100;
+    font-size: 1.7rem;
 }
 
-.table-wrapper-scroll-y {
-display: block;
-max-height: 290px;
-overflow-y: auto;
--ms-overflow-style: -ms-autohiding-scrollbar;
+
+.rechargement {
+    margin-bottom:0rem;
+    font-weight: 300;
+    font-size: 1.8rem;
 }
 
-.numss {
-    margin-top: 0rem;
-    margin-bottom: 0rem;
-    font-weight: 200;
-    font-size: 2rem;
+.titre {
+    font-weight: 300;
+    font-size: 1.2rem;
 }
 
-.surnom {
-    margin-top: 0rem;
-    margin-bottom: 0rem;
-    font-weight: 200;
-    font-size: 0.7rem;
+
+/*   */
+
+table {
+    width: 100% !important;
+}
+.dataTables_scrollHeadInner{
+  width:100% !important;
+}
+.dataTables_scrollHeadInner table{
+  width:100% !important;
 }
 
-.bloc-case-rouge {
-  background: repeating-linear-gradient(
-    45deg,
-    darkred,
-    darkred 10px,
-    firebrick 10px,
-    firebrick 20px
-  );
-  color: white;
+.titre-stats {
+    font-size: 1.3rem;
 }

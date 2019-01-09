@@ -15,6 +15,14 @@ namespace Bargio.Data
             : base(options)
         {
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            #if DEBUG
+            optionsBuilder.EnableSensitiveDataLogging();
+            #endif
+        }
+
         public DbSet<Bargio.Models.UserData> UserData { get; set; }
         public DbSet<Bargio.Models.PaymentRequest> PaymentRequest { get; set; }
         public DbSet<Bargio.Models.TransactionHistory> TransactionHistory { get; set; }

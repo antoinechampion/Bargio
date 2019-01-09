@@ -20,6 +20,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     @RenderSection("Scripts", required: false)
-    <script src="~/js/bugfixes.js"></script>
+    <environment names="Development">
+        <script src="~/js/bugfixes.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/bugfixes.min.js"></script>
+    </environment>
 </body>
 </html>
