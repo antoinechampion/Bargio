@@ -1,10 +1,5 @@
-function ShowHideDiv() {
-    "use strict";
-    if (document.getElementById('MDPoptionnel').checked) {
-        document.getElementById('txtMDPopt').style.display = 'none';
-        
-    } else {
-        document.getElementById('txtMDPopt').style.display = 'block';
-        
-    }
-}
+$(document).ready(function(e) {
+    $('#MDPoptionnel').change(function() {
+        $("#txtMDPopt").slideToggle(50);
+    });
+});
