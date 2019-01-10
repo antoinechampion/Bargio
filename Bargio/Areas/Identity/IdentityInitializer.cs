@@ -19,34 +19,17 @@ namespace Bargio.Areas.Identity
         public static async Task SeedUsers
             (UserManager<IdentityUserDefaultPwd> userManager)
         {
+            #if DEBUG
             // PG sans mdp (hors foy'ss)
             if (userManager.FindByNameAsync
-                    ("1Test217").Result == null)
+                    ("1test217").Result == null)
             {
                 IdentityUserDefaultPwd user = new IdentityUserDefaultPwd
                 {
-                    UserName = "1Test217"
+                    UserName = "1test217"
                 };
                 IdentityResult result = await userManager.CreateAsync
                     (user, IdentityUserDefaultPwd.DefaultPassword);
-
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user,
-                        "PG");
-                }
-            }
-
-            // PG avec mdp
-            if (userManager.FindByNameAsync
-                    ("2Test217").Result == null)
-            {
-                IdentityUserDefaultPwd user = new IdentityUserDefaultPwd
-                {
-                    UserName = "2Test217"
-                };
-                IdentityResult result = await userManager.CreateAsync
-                    (user, "testmdp");
 
                 if (result.Succeeded)
                 {
@@ -57,11 +40,11 @@ namespace Bargio.Areas.Identity
 
             // Archi sans mdp
             if (userManager.FindByNameAsync
-                    ("3Test217").Result == null)
+                    ("2test217").Result == null)
             {
                 IdentityUserDefaultPwd user = new IdentityUserDefaultPwd
                 {
-                    UserName = "3Test217"
+                    UserName = "2test217"
                 };
                 IdentityResult result = await userManager.CreateAsync
                     (user, IdentityUserDefaultPwd.DefaultPassword);
@@ -72,40 +55,22 @@ namespace Bargio.Areas.Identity
                         "Archi");
                 }
             }
-
-            // ZiFoy's
+            #endif
+            // Admin
             if (userManager.FindByNameAsync
-                    ("4Test217").Result == null)
+                    ("admin").Result == null)
             {
                 IdentityUserDefaultPwd user = new IdentityUserDefaultPwd
                 {
-                    UserName = "4Test217"
+                    UserName = "admin"
                 };
                 IdentityResult result = await userManager.CreateAsync
-                    (user, IdentityUserDefaultPwd.DefaultPassword);
+                    (user, "zifoys");
 
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user,
-                        "ZiFoys");
-                }
-            }
-
-            // Interface babasse
-            if (userManager.FindByNameAsync
-                    ("Babasse").Result == null)
-            {
-                IdentityUserDefaultPwd user = new IdentityUserDefaultPwd
-                {
-                    UserName = "Babasse"
-                };
-                IdentityResult result = await userManager.CreateAsync
-                    (user, IdentityUserDefaultPwd.DefaultPassword);
-
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user,
-                        "Babasse");
+                        "Admin");
                 }
             }
         }
@@ -130,17 +95,9 @@ namespace Bargio.Areas.Identity
             }
 
             if (!await roleManager.RoleExistsAsync
-                ("ZiFoys"))
+                ("Admin"))
             {
-                IdentityRole role = new IdentityRole { Name = "ZiFoys" };
-                IdentityResult roleResult = await roleManager.
-                    CreateAsync(role);
-            }
-
-            if (!await roleManager.RoleExistsAsync
-                ("Babasse"))
-            {
-                IdentityRole role = new IdentityRole { Name = "Babasse" };
+                IdentityRole role = new IdentityRole { Name = "Admin" };
                 IdentityResult roleResult = await roleManager.
                     CreateAsync(role);
             }

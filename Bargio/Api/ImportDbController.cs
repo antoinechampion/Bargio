@@ -139,8 +139,11 @@ namespace Bargio.Api
                     errorMessage += "Impossible de vider la DB UserData actuelle\n" + e;
                 }
 
-                foreach (var user in _userManager.Users.ToList())
-                {
+                foreach (var user in _userManager.Users.ToList()) {
+                    // On ne wipe pas le compte zifoys
+                    if (user.UserName == "admin")
+                        continue;
+
                     var identityResult = await _userManager.DeleteAsync(user);
                     if (!identityResult.Succeeded)
                     {

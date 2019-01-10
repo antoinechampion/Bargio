@@ -1,13 +1,14 @@
-﻿voir ac clément si 1 compte zifoys unique, puis en fonction:
-- importer db: entrez les comptes zifoys
-- choix des zifoys
+﻿faire que tab sur checkbox mdp optionel envoie le champ
+
+babasse zifoys : mettre hors babasse individuel
+faire un champs de bdd pour les commissions lydia (tx fixe + tx variable qui sont déduits au pg quand il aura rechargé)
+-> et expliquer sur page de rechargement
 
 passer api lydia en production
 mettre internet sur babasse foy's
 faire test 1 semaine
 
 faire mise hors babasse auto
-actue evnts et mot zifoys changer sur babasse
 
 pages admin en ligne
 update compteur consommations

@@ -25,9 +25,11 @@ namespace Bargio.Api
     public class FoysController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUserDefaultPwd> _userManager;
 
-        public FoysController(ApplicationDbContext context) {
+        public FoysController(ApplicationDbContext context, UserManager<IdentityUserDefaultPwd> userManager) {
             _context = context;
+            _userManager = userManager;
         }
         
         [HttpGet]
@@ -123,6 +125,20 @@ namespace Bargio.Api
         public async Task SetZifoysParameters(string json) {
             dynamic p = JsonConvert.DeserializeObject(json);
             var parameters = _context.SystemParameters.First();
+
+            if (parameters.MotDePasseZifoys != p.MotDePasseZifoys) {
+                var user = await _userManager.FindByIdAsync("admin");
+                if (user != null)
+                {
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, p.MotDePasseZifoys);
+                    var result = await _userManager.UpdateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        parameters.MotDePasseZifoys = p.MotDePasseZifoys;
+                    }
+                }
+            }
+
             parameters.MiseHorsBabasseAutoActivee = p.MiseHorsBabasseAutoActivee;
             parameters.MiseHorsBabasseSeuil = p.MiseHorsBabasseSeuil;
             parameters.MiseHorsBabasseInstantanee = p.MiseHorsBabasseInstantanee;

@@ -52,7 +52,13 @@ namespace Bargio
             services.AddIdentity<IdentityUserDefaultPwd, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddMvc(config =>
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Admin"));
+            });
+
+            services
+                .AddMvc(config =>
                 {
                     // using Microsoft.AspNetCore.Mvc.Authorization;
                     // using Microsoft.AspNetCore.Authorization;
@@ -62,22 +68,25 @@ namespace Bargio
                     config.Filters.Add(new AuthorizeFilter(policy));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+
+
                 .AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Logout", "logout");
                 options.Conventions.AddAreaPageRoute("User", "/Dashboard", "pg");
-                options.Conventions.AuthorizeFolder("/Identity/Account/Manage");
-                options.Conventions.AuthorizeFolder("/User");
+                options.Conventions.AddPageRoute("/Error", "Error/{statusCode}");
+                options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                options.Conventions.AuthorizeAreaPage("Identity", "/Logout");
+                options.Conventions.AuthorizeAreaFolder("User", "/");
+                options.Conventions.AuthorizeAreaFolder("Admin", "/", "RequireAdministratorRole");
             });
-
-
 
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Account/Login";
                 options.LogoutPath = "/Identity/Account/Logout";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.AccessDeniedPath = "/Error/403";
             });
 
         }
@@ -97,7 +106,7 @@ namespace Bargio
                 app.UseHsts();
             }
 
-            app.UseStatusCodePagesWithReExecute("/Error", "?statusCode={0}");
+            app.UseStatusCodePagesWithReExecute("/Error", "?statusCode/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -110,7 +119,7 @@ namespace Bargio
 
                 if (context.SystemParameters.First().Maintenance
                     && !httpCtx.Request.GetEncodedUrl().Contains("Error")) {
-                    httpCtx.Response.Redirect("/Error?statusCode=503");
+                    httpCtx.Response.Redirect("/Error?statusCode/503");
                     return;
                 }
 
