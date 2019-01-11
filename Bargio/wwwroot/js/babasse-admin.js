@@ -163,6 +163,16 @@ $(document).ready(function () {
                 $('#button-remettre-en-babasse').click();
         });
 
+        $('#input-mettre-hors-babasse').keypress(function(e){
+            if(e.keyCode===13)
+                $('#button-mettre-hors-babasse').click();
+        });
+
+        $('#input-mettre-hors-foys').keypress(function(e){
+            if(e.keyCode===13)
+                $('#button-mettre-hors-foys').click();
+        });
+
         $('#input-mdp-zifoys-confirmer').keypress(function(e){
             if(e.keyCode===13)
                 $('#button-mdp-zifoys').click();
@@ -250,6 +260,34 @@ $(document).ready(function () {
             var user = db.HorsBabasse.where("UserName").equals(userName).delete().then(function () {
                 $("#modal-zifoys-validation").modal('show');
                 console.log(dateTimeNow() + ": " + userName + " a été remis en babasse manuellement.");
+            });
+        });
+
+        // Mettre hors babasse un compte
+        $("#button-mettre-hors-babasse").click(async function(e) {
+            var userName = $("#input-mettre-hors-babasse").val();
+            db.HorsBabasse.put({ UserName: userName }).catch(function(err) {
+                console.error(err.stack || err);
+            });
+        });
+        
+        // Remettre en foys un compte
+        $("#button-remettre-en-foys").click(async function(e) {
+            var userName = $("#input-remettre-en-foys").val();
+            db.UserData.update(userName,
+                { HorsFoys: false }
+            ).then(function() {
+                $("#modal-zifoys-validation").modal('show');
+            });
+        });
+
+        // Mettre hors foys un compte
+        $("#button-mettre-hors-foys").click(async function(e) {
+            var userName = $("#input-mettre-hors-foys").val();
+            db.UserData.update(userName,
+                { HorsFoys: true }
+            ).then(function() {
+                $("#modal-zifoys-validation").modal('show');
             });
         });
         
