@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -141,7 +142,7 @@ namespace Bargio.Areas.User.Pages
             {
                 VendorToken = _lydiaVendorToken,
                 Recipient = Telephone,
-                Amount = montantPaye.ToString("0.##"),
+                Amount = montantPaye.ToString("0.##", new CultureInfo("en-US")),
                 OrderRef = id,
                 ConfirmUrl = absoluteUri + "/api/lydia/confirm",
                 CancelUrl = absoluteUri + "/api/lydia/cancel",

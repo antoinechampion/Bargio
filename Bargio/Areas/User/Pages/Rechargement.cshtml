@@ -65,10 +65,8 @@
             var commission_fixe = parseFloat($("#commission-lydia-fixe").val().replace(",", "."));
             var commission_variable = parseFloat($("#commission-lydia-variable").val().replace(",", ".")) / 100;
             var minimum_rechargement = parseFloat($("#minimum-rechargement-lydia").val().replace(",", "."));
-
-            console.log(minimum_rechargement);
-            var montant = Math.round(parseFloat($("#montant-rechargement").val()) * 100) / 100;
-
+            
+            var montant = Math.round(parseFloat($("#montant-rechargement").val().replace(",", ".")) * 100) / 100;
             if (montant.isNaN || montant < minimum_rechargement) {
                 $("#montant-avec-commission").text("Minimum de rechargement : " + minimum_rechargement + "€");
             } else {

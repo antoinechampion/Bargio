@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Bargio.Areas.Admin.Pages.EditDatabase.Consommations;
 using Bargio.Areas.Admin.Pages.EditDatabase.HistoriqueTransactions;
 using Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme;
@@ -24,6 +25,7 @@ namespace Bargio
             var host = CreateWebHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
+                CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
                 var services = scope.ServiceProvider;
                 var userManager = services.GetService<UserManager<IdentityUserDefaultPwd>>();
                 var roleManager = services.GetService<RoleManager<IdentityRole>>();
