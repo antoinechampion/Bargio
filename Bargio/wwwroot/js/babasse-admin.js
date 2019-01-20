@@ -2,6 +2,10 @@
 
 $(document).ready(function () {
     var timerCallbackZifoys = new Timer();
+    var horsBabasseTimer = null;
+    var initialGet = true;
+    later.date.localTime();
+
     snowStorm.snowColor = '#bbddbb';
     snowStorm.flakesMaxActive = 30;   
     snowStorm.flakesMax = 40;
@@ -12,6 +16,64 @@ $(document).ready(function () {
     snowStorm.animationInterval = 50;
     snowStorm.vMaxX = 5;
     snowStorm.vMaxY = 5;
+
+    function runAt(daysOfWeek, hourOfDay, minuteOfHour, callback) {
+        var cronStr;
+        if (daysOfWeek === null) {
+            cronStr = minuteOfHour + " " + hourOfDay + " * * *";
+        } else {
+            var cronDays = daysOfWeek.toLowerCase();
+            cronDays = cronDays.replace("lundi", "MON");
+            cronDays = cronDays.replace("mardi", "TUE");
+            cronDays = cronDays.replace("mercredi", "WED");
+            cronDays = cronDays.replace("jeudi", "THU");
+            cronDays = cronDays.replace("vendredi", "FRI");
+            cronDays = cronDays.replace("samedi", "SAT");
+            cronDays = cronDays.replace("dimanche", "SUN");
+            cronStr = minuteOfHour + " " + hourOfDay + " * * " + cronDays;
+        }
+        var sched = later.parse.cron(cronStr);
+        var occurrences = later.schedule(sched).next(1, new Date());
+        bargio.log("--> Prochaine mise hors babasse auto: " + occurrences);
+        bargio.log("\t\t (CRON string: " + cronStr + ")");
+        if (horsBabasseTimer !== null) {
+            horsBabasseTimer.clear();
+        }
+        horsBabasseTimer = later.setInterval(callback, sched);
+    }
+
+    function miseHorsBabasseAuto() {
+        var callback = function() {
+            db.transaction('rw',
+                db.UserData,
+                db.HorsBabasse,
+                () => {
+                    db.UserData.each(function(user) {
+                        if (user.Solde < zifoysParams.MiseHorsBabasseSeuil) {
+                            db.HorsBabasse.put({ UserName: user.UserName }).catch(function(err) {
+                                bargio.log(err.stack || err);
+                            });
+                        }
+                    }).then(function() {
+                        bargio.log("Mise hors babasse auto effectuée.");
+                    });
+                });
+        };
+
+        if (zifoysParams.MiseHorsBabasseAutoActivee && zifoysParams.MiseHorsBabasseQuotidienne) {
+            runAt(null,
+                $("#timepicker-hors-babasse-quotidienne").datetimepicker("viewDate").get("hour"),
+                $("#timepicker-hors-babasse-quotidienne").datetimepicker("viewDate").get("minute"),
+                callback);
+        } else if (zifoysParams.MiseHorsBabasseAutoActivee) {
+            runAt(zifoysParams.MiseHorsBabasseHebdomadaireJours,
+                $("#timepicker-hors-babasse-hebdomadaire").datetimepicker("viewDate").get("hour"),
+                $("#timepicker-hors-babasse-hebdomadaire").datetimepicker("viewDate").get("minute"),
+                callback);
+        } else if (horsBabasseTimer !== null) {
+            horsBabasseTimer.clear();
+        }
+    }
 
     $('#timepicker-hors-babasse-quotidienne').datetimepicker({
         format: 'HH:mm',
@@ -29,9 +91,20 @@ $(document).ready(function () {
             cache: false,
             success: function (response) {
                 if (response === null) {
-                    console.log("Impossible de récupérer les paramètres zifoy'ss");
+                    bargio.log("Impossible de récupérer les paramètres zifoy'ss");
                 }
-                zifoysParams = JSON.parse(response);
+                var newZifoysParams = JSON.parse(response);
+                if (initialGet
+                   || newZifoysParams.MiseHorsBabasseAutoActivee !== zifoysParams.MiseHorsBabasseAutoActivee
+                   || newZifoysParams.MiseHorsBabasseHebdomadaireHeure !== zifoysParams.MiseHorsBabasseHebdomadaireHeure
+                   || newZifoysParams.MiseHorsBabasseHebdomadaireJours !== zifoysParams.MiseHorsBabasseHebdomadaireJours
+                   || newZifoysParams.MiseHorsBabasseQuotidienne !== zifoysParams.MiseHorsBabasseQuotidienne
+                   || newZifoysParams.MiseHorsBabasseQuotidienneHeure !== zifoysParams.MiseHorsBabasseQuotidienneHeure) {
+                    initialGet = false;
+                    zifoysParams = newZifoysParams;
+                    miseHorsBabasseAuto();
+                }
+                zifoysParams = newZifoysParams;
                 
                 $("#checkbox-hors-babasse-auto").prop('checked', zifoysParams.MiseHorsBabasseAutoActivee);
                 $("#input-seuil-hors-babasse-auto").val(zifoysParams.MiseHorsBabasseSeuil.toFixed(2));
@@ -75,7 +148,7 @@ $(document).ready(function () {
                 refreshUi();
             },
             error: function(xhr, error) {
-                console.log("Impossible de récupérer les paramètres zifoy'ss");
+                bargio.log("Impossible de récupérer les paramètres zifoy'ss");
 			},
 			timeout: 30000
 		});
@@ -100,12 +173,9 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (response) {
-                if (response === null) {
-                    console.log("Impossible de récupérer les paramètres zifoy'ss");
-                }
             },
             error: function(xhr, error) {
-                console.log("Impossible de récupérer les paramètres zifoy'ss");
+                bargio.log("Impossible d'envoyer les paramètres zifoy'ss: " + error);
             },
             timeout: 30000
         });
@@ -118,6 +188,10 @@ $(document).ready(function () {
         $("#input-montant-rechargement-manuel").val("0.00");
         $("#input-commentaire-rechargement-manuel").val("bucquage manuel par zifoy'ss");
         $("#validation-rechargement-manuel").text("");
+        $("#input-mettre-hors-babasse").text("");
+        $("#input-remettre-en-babasse").text("");
+        $("#input-mettre-hors-foys").text("");
+        $("#input-remettre-en-foys").text("");
     }
 
     function refreshUi() {
@@ -168,6 +242,11 @@ $(document).ready(function () {
                 $('#button-mettre-hors-babasse').click();
         });
 
+        $('#input-remettre-en-foys').keypress(function(e){
+            if(e.keyCode===13)
+                $('#button-remettre-en-foys').click();
+        });
+
         $('#input-mettre-hors-foys').keypress(function(e){
             if(e.keyCode===13)
                 $('#button-mettre-hors-foys').click();
@@ -182,15 +261,6 @@ $(document).ready(function () {
             if(e.keyCode===13)
                 $('#button-reset-mdp').click();
         });
-
-        $("#textarea-actualites,#textarea-mot-des-zifoys")
-            .each(function() {
-                $(this).keypress(function(e) {
-                    if (e.keyCode === 13)
-                        $("#button-mots-des-zifoys-actualites").click();
-                });
-            });
-        
     })();
 
     // Gestion des events
@@ -230,7 +300,11 @@ $(document).ready(function () {
                     db.UserData.update(transaction.UserName,
                         { Solde: Math.round((user.Solde + transaction.Montant)*100)/100 });
             }).then(function() {
-                db.HistoriqueTransactions.add(transaction).then(clearUi);
+                db.HistoriqueTransactions.add(transaction).then(function() {
+                    bargio.log(dateTimeNow() + ": " + transaction.Montant + " par " 
+                        + transaction.UserName + " (" + transaction.Commentaire + ")");
+                    clearUi();
+                });
                 $("#modal-zifoys-validation").modal('show');
             });
         });
@@ -245,10 +319,11 @@ $(document).ready(function () {
                 db.UserData.each(function(user) {
                     if (user.Solde < seuilHorsBabasse) {
                         db.HorsBabasse.put({ UserName: user.UserName }).catch(function(err) {
-                            console.error(err.stack || err);
+                            bargio.log(err.stack || err);
                         });
                     }
                 }).then(function() {
+                    bargio.log(dateTimeNow() + ": Hors babasse manuelle (seuil=" + seuilHorsBabasse + ")");
                     $("#modal-zifoys-validation").modal('show');
                 });
             });
@@ -257,9 +332,11 @@ $(document).ready(function () {
         // Remettre en babasse un compte
         $("#button-remettre-en-babasse").click(async function(e) {
             var userName = $("#input-remettre-en-babasse").val();
-            var user = db.HorsBabasse.where("UserName").equals(userName).delete().then(function () {
+            db.HorsBabasse.where("UserName").equals(userName).delete().catch(function(err) {
+                bargio.log(err.stack || err);
+            }).then(function () {
                 $("#modal-zifoys-validation").modal('show');
-                console.log(dateTimeNow() + ": " + userName + " a été remis en babasse manuellement.");
+                bargio.log(dateTimeNow() + ": " + userName + " a été remis en babasse manuellement.");
             });
         });
 
@@ -267,7 +344,10 @@ $(document).ready(function () {
         $("#button-mettre-hors-babasse").click(async function(e) {
             var userName = $("#input-mettre-hors-babasse").val();
             db.HorsBabasse.put({ UserName: userName }).catch(function(err) {
-                console.error(err.stack || err);
+                bargio.log(err.stack || err);
+            }).then(function(e) {
+                bargio.log(dateTimeNow() + userName + " a été mis hors babasse manuellement");
+                $("#modal-zifoys-validation").modal('show');
             });
         });
         
@@ -276,7 +356,27 @@ $(document).ready(function () {
             var userName = $("#input-remettre-en-foys").val();
             db.UserData.update(userName,
                 { HorsFoys: false }
-            ).then(function() {
+            ).catch(function(err) {
+                bargio.log(err.stack || err);
+            }).then(function() {
+                var fdata = new FormData();
+                var json = JSON.stringify({UserName: userName, HorsFoys: false});
+                fdata.append("json", json);
+                $.ajax({
+                    type: 'POST',
+                    url: '/Api/Foys/sethorsfoys',
+                    cache: false,
+                    data: fdata,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        bargio.log(dateTimeNow() + ": " + userName + " a été remis en foy's.");
+                    },
+                    error: function(xhr, error) {
+                        bargio.log(dateTimeNow() + ": La remise en foy's de " + userName + " n'a pas pu être synchronisée avec le serveur.");
+                    },
+                    timeout: 30000
+                });
                 $("#modal-zifoys-validation").modal('show');
             });
         });
@@ -286,7 +386,27 @@ $(document).ready(function () {
             var userName = $("#input-mettre-hors-foys").val();
             db.UserData.update(userName,
                 { HorsFoys: true }
-            ).then(function() {
+            ).catch(function(err) {
+                bargio.log(err.stack || err);
+            }).then(function() {
+                var fdata = new FormData();
+                var json = JSON.stringify({UserName: userName, HorsFoys: true});
+                fdata.append("json", json);
+                $.ajax({
+                    type: 'POST',
+                    url: '/Api/Foys/sethorsfoys',
+                    cache: false,
+                    data: fdata,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        bargio.log(dateTimeNow() + ": " + userName + " a été mis hors foy's.");
+                    },
+                    error: function(xhr, error) {
+                        bargio.log(dateTimeNow() + ": La mise hors foy's de " + userName + " n'a pas pu être synchronisée avec le serveur.");
+                    },
+                    timeout: 30000
+                });
                 $("#modal-zifoys-validation").modal('show');
             });
         });
@@ -313,6 +433,8 @@ $(document).ready(function () {
             }
             zifoysParams.MiseHorsBabasseHebdomadaireHeure = 
                 $("#timepicker-hors-babasse-hebdomadaire").datetimepicker("viewDate").format("HH:mm");
+
+            miseHorsBabasseAuto();
 
             uiPostAjax();
             $("#modal-zifoys-validation").modal('show');
@@ -353,6 +475,11 @@ $(document).ready(function () {
             
             uiPostAjax();
             $("#modal-zifoys-validation").modal('show');
+        });
+
+        // DL les logs
+        $("#button-telecharger-logs").click(function(e) {
+            bargio.downloadLogs();
         });
 
     })();

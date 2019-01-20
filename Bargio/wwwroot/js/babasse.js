@@ -9,7 +9,7 @@ var timerCallback = new Timer();
 var bucquageActuel = null;
 var seuilHorsBabasse = 0;
 var zifoysParams = {
-	MiseHorsBabasseAutoActivee: true,
+	MiseHorsBabasseAutoActivee: false,
 	MiseHorsBabasseSeuil: 0.0,
 	MiseHorsBabasseInstantanee: false,
 	MiseHorsBabasseQuotidienne: false,
@@ -22,11 +22,52 @@ var zifoysParams = {
     Actualites: ""
 };
 var bcrypt = dcodeIO.bcrypt;
+superLocal.settings.saveType = "greedy";
 
 // Retourne la date et l'heure au format dd-mm-yyyy HH:MM:ss
 function dateTimeNow() {
 	return dateFormat(new Date(), "dd-mm-yyyy HH:MM:ss");
 }
+
+// Bargio namespace, système de log
+var bargio = (function() {
+	var bargio = {};
+
+	bargio.sessionStarted = dateFormat(new Date(), "dd-mm-yyyy HH-MM-ss");
+
+	bargio.log = function(msg) {
+        if (typeof(msg) === "undefined") {
+			return;
+		}
+		console.log(msg);
+		var prev = superLocal.fetch(bargio.sessionStarted);
+		if (typeof(prev.data) !== 'undefined') {
+			msg = prev.data + msg;
+		}
+		superLocal.save(bargio.sessionStarted, msg + "\n");
+	};
+
+	bargio.downloadLogs = function() {
+		var zip = new JSZip();
+		var keys = Object.keys(superLocal.listAllCreated());
+
+		for (var i = 0; i < keys.length; i++) {
+			var log = superLocal.fetch(keys[i]);
+			zip.file(keys[i] + ".txt", log.data);
+		}
+	
+		zip.generateAsync({type:"blob"})
+			.then(function(content) {
+				saveAs(content, "bargio-logs.zip");
+			});
+	};
+
+    bargio.clearLogs = function() {
+		superLocal.clearAll();
+	}
+
+	return bargio;
+})();
 
 $( document ).ready(function() {
 	$.ajaxSetup({
@@ -70,7 +111,7 @@ $( document ).ready(function() {
 
     function setDesynchro(desync) {
         if (desync) {
-			console.log("Désynchronisation ! La babasse est-elle toujours connectée à internet ?");
+			bargio.log("Désynchronisation ! La babasse est-elle toujours connectée à internet ?");
 			$("#logo-footer-sync").hide();
 			$("#logo-footer-desync").show();
 		} else {
@@ -94,7 +135,7 @@ $( document ).ready(function() {
 			HorsBabasse: 'UserName'
 		});
 		db.open().catch(function(err) {
-			console.error('Failed to open db: ' + (err.stack || err));
+			bargio.log('Failed to open db: ' + (err.stack || err));
 		});
 	})();
 
@@ -157,7 +198,7 @@ $( document ).ready(function() {
 							});
 							derniereSynchro = dateTimeNow();
 							window.setTimeout(function() {
-									console.log(users.length +
+									bargio.log(users.length +
 										" utilisateurs ont été ajoutés" +
 										" à la BDD locale (GET initial).");
 									$("#ui-chargement").slideUp(200);
@@ -175,13 +216,12 @@ $( document ).ready(function() {
 			var fdata = new FormData();
 			db.HistoriqueTransactions.toArray().then(function (arr) {
 				if (arr.length === 0) {
-					console.log(dateTimeNow() + ": Pas de nouvelles modifications côté client à POST");
+					bargio.log(dateTimeNow() + ": Pas de nouvelles modifications côté client à POST");
 					timerCallback.reset();
 					return;
 				}
 				var json = JSON.stringify(arr);
 				fdata.append("json", json);
-				console.log(json);
 				$.ajax({
 					type: 'POST',
 					url: '/Api/Foys/history',
@@ -194,7 +234,7 @@ $( document ).ready(function() {
 						timerCallback.reset();
 					}, 
 					error: function(xhr, error) {
-						console.log(dateTimeNow() + ": Impossible de synchroniser (POST)\n\t-> Erreur: " 
+						bargio.log(dateTimeNow() + ": Impossible de synchroniser (POST)\n\t-> Erreur: " 
 							+ error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
 						timerCallback.reset();
 						setDesynchro(true);
@@ -213,23 +253,23 @@ $( document ).ready(function() {
                     // et son status, et on re-applique tout son historique
                     // de transaction local
                     if (response === null) {
-                        console.log(dateTimeNow() + ": Impossible de synchroniser\n\t-> Erreur: "
+                        bargio.log(dateTimeNow() + ": Impossible de synchroniser\n\t-> Erreur: "
                             + error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
                         timer.reset();
                     }
                     var arr = JSON.parse(response);
                     if (arr.length === 0) {
-                        console.log(dateTimeNow() + ": Pas de nouvelles modifications côté serveur");
+                        bargio.log(dateTimeNow() + ": Pas de nouvelles modifications côté serveur");
                     } else {
                         arr.forEach(function (user) {
-                            console.log("Modifications serveur sur l'utilisateur " + user.UserName);
+                            bargio.log(dateTimeNow() + ": Modifications serveur sur l'utilisateur " + user.UserName);
                             var modifSoldeLocal = 0;
                             db.HistoriqueTransactions
                                 .where("UserName")
                                 .equals(user.UserName)
                                 .each(
                                     function (transaction) {
-                                        console.log("\t -> " + transaction.Commentaire + ": " + transaction.Montant + "€");
+                                        bargio.log("\t -> " + transaction.Commentaire + ": " + transaction.Montant + "€");
                                         modifSoldeLocal += transaction.Montant;
                                     }
                                 ).then(function () {
@@ -249,7 +289,7 @@ $( document ).ready(function() {
                     foysApiPostUpdates();
                 },
                 error: function(xhr, error) {
-					console.log(dateTimeNow() + ": Impossible de synchroniser (GET)\n\t-> Erreur: " 
+					bargio.log(dateTimeNow() + ": Impossible de synchroniser (GET)\n\t-> Erreur: " 
 						+ error + "\n\t-> Dernière synchro réussie: " + derniereSynchro);
 					timerCallback.reset();
 					setDesynchro(true);
@@ -362,6 +402,9 @@ $( document ).ready(function() {
 		async function validerUtilisateur(proms) {
 			proms = proms.toLowerCase();
 			var username = $("#inputNumss").val() + proms;
+            if (username === "") {
+				return;
+			}
 			// On vérifie si c'est le compte admin, dans ce cas on 
 			// afficher le panneau d'administration
             if (username === "admin" + zifoysParams.MotDePasseZifoys) {
@@ -378,6 +421,7 @@ $( document ).ready(function() {
 			// On vérifie si il existe bien dans la BDD
 			var user = await db.UserData.get({ UserName: username });
 			if (username !== "admin" && typeof user === "undefined") {
+				bargio.log(dateTimeNow() + ": L'utilisateur " + username + " n'existe pas.");
 				$("#undefined-user-alert").slideDown(200);
 				window.setTimeout(function() {
 						$("#undefined-user-alert").slideUp(200);
@@ -507,6 +551,8 @@ $( document ).ready(function() {
 	function onKeydownCallbackBucquage(e) {
 		e = e || e.which;
 		if (e.keyCode === 27) { // ESC (annuler)
+			$("#message-hors-truc").text("");
+			$("#message-hors-truc").text("");
 			setInterfaceAccueil();
 		}
 		
@@ -518,6 +564,8 @@ $( document ).ready(function() {
 						{ Solde: Math.round((user.Solde + transaction.Montant)*100)/100 });
 				}).then(function() {
 					db.HistoriqueTransactions.add(transaction).then(function() {
+						bargio.log(dateTimeNow() + ": " + transaction.Montant + " par " 
+							+ transaction.UserName + " (" + transaction.Commentaire + ")");
 						$("#dernier-bucquage")
 							.text(transaction.Commentaire + " le " 
 								+ transaction.Date + " par " + transaction.UserName);

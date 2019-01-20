@@ -34,21 +34,54 @@ namespace Bargio
                 var config = host.Services.GetRequiredService<IConfiguration>();
                 // Set password with the Secret Manager tool.
                 // dotnet user-secrets set SeedUserPW <pw>
+                
 
+                #region Seed DB
+                var logger = services.GetRequiredService<ILogger<Program>>();
                 var testUserPw = config["SeedUserPW"];
                 try {
                     UserDataInitializer.SeedData(context).Wait();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message, "An error occurred seeding the UserData DB.");
+                }
+                try {
                     IdentityInitializer.SeedData(userManager, roleManager).Wait();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message, "An error occurred seeding the Identity DB.");
+                }
+                try {
                     PromsKeyboardShortcutInitializer.SeedData(context).Wait();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message, "An error occurred seeding the PromsKeyboardShortcut DB.");
+                }
+                try {
                     SystemParametersInitializer.SeedData(context).Wait();
-                    TransactionHistoryInitializer.SeedData(context).Wait();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message, "An error occurred seeding the SystemParameters DB.");
+                }
+                try {
                     ProductsInitializer.SeedData(context).Wait();
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex.Message, "An error occurred seeding the DB.");
+                    logger.LogError(ex.Message, "An error occurred seeding the ProductsInitializer DB.");
                 }
+                try {
+                    TransactionHistoryInitializer.SeedData(context).Wait();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message, "An error occurred seeding the TransactionHistory DB.");
+                }
+                #endregion
             }
 
             host.Run();

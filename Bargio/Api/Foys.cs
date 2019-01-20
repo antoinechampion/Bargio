@@ -77,11 +77,19 @@ namespace Bargio.Api
         [Route("history")]
         // Méthode post qui reçoit l'historique local de la babasse et le
         // fusionne avec celui du serveur
-        public void PostHistory(string json)
+        public JsonResult PostHistory(string json)
         {
             var dateTimeFormat = "dd-MM-yyyy HH:mm:ss"; // your datetime format
             var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = dateTimeFormat };
-            var transactionHistory = JsonConvert.DeserializeObject<List<TransactionHistory>>(json, dateTimeConverter);
+            List<TransactionHistory> transactionHistory;
+            // Gestion d'exception à améliorer
+            try {
+                transactionHistory =
+                    JsonConvert.DeserializeObject<List<TransactionHistory>>(json, dateTimeConverter);
+            }
+            catch (Exception) {
+                return Json(false);
+            }
 
             // On applique les transactions sur chaque utilisateur
             foreach (var transaction in transactionHistory)
@@ -96,6 +104,23 @@ namespace Bargio.Api
             _context.TransactionHistory.AddRange(transactionHistory);
 
             _context.SaveChanges();
+            
+            return Json(true);
+        }
+
+        [HttpPost]
+        [Route("sethorsfoys")]
+        public JsonResult SetHorsFoys(string json) {
+            dynamic p = JObject.Parse(json);
+            string userName = p.UserName;
+            var result = _context.UserData.SingleOrDefault(o => o.UserName == userName);
+            if (result != null) {
+                result.HorsFoys = p.HorsFoys;
+                result.DateDerniereModif = DateTime.Now;
+                _context.SaveChanges();
+                return Json(true);
+            }
+            return Json(false);
         }
 
         // Retourne les paramètres zifoy'ss de la babasse
@@ -122,11 +147,10 @@ namespace Bargio.Api
         // Retourne les paramètres zifoy'ss de la babasse
         [HttpPost]
         [Route("zifoysparams")]
-        public async Task SetZifoysParameters(string json) {
-            dynamic p = JsonConvert.DeserializeObject(json);
+        public async Task<JsonResult> SetZifoysParameters(string json) {
+            dynamic p = JObject.Parse(json);
             var parameters = _context.SystemParameters.First();
-
-            if (parameters.MotDePasseZifoys != p.MotDePasseZifoys) {
+            if (parameters.MotDePasseZifoys != (string)p.MotDePasseZifoys) {
                 var user = await _userManager.FindByIdAsync("admin");
                 if (user != null)
                 {
@@ -159,6 +183,8 @@ namespace Bargio.Api
             await systemParameters.AddAsync(parameters);
 
             await _context.SaveChangesAsync();
+
+            return Json(true);
         }
     }
 }

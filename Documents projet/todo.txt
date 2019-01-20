@@ -1,12 +1,7 @@
-﻿babasse zifoys : mettre hors babasse individuel
-faire un champs de bdd pour les commissions lydia (tx fixe + tx variable qui sont déduits au pg quand il aura rechargé)
+﻿faire un champs de bdd pour les commissions lydia (tx fixe + tx variable qui sont déduits au pg quand il aura rechargé)
 -> et expliquer sur page de rechargement
 
-passer api lydia en production
-mettre internet sur babasse foy's
-faire test 1 semaine
-
-faire mise hors babasse auto
+faire un seul compte zifoys
 
 pages admin en ligne
 update compteur consommations
@@ -18,3 +13,7 @@ easter eggs: appuyez sur f13, bucquage créateur
 
 tej les avertissements sur vs
 clean code
+
+passer api lydia en production
+mettre internet sur babasse foy's
+faire test 1 semaine

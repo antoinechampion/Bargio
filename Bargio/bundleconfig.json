@@ -54,6 +54,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/superlocal.min.js",
+    "inputFiles": [
+      "wwwroot/js/superlocal.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/import-db.min.js",
     "inputFiles": [
       "wwwroot/js/import-db.js"
