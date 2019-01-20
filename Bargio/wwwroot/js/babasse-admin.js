@@ -465,6 +465,23 @@ $(document).ready(function () {
             $("#modal-zifoys-validation").modal('show');
         });
 
+        // Changer mdp
+        $("#button-mdp-zifoys").click(function(e) {
+            var newPwd = $("#input-mdp-zifoys").val();
+            var newPwdConfirm = $("#input-mdp-zifoys-confirmer").val();
+
+            if (newPwd !== newPwdConfirm) {
+                $("#modal-zifoys-mdp-validation").modal('show');
+                return;
+            }
+
+            zifoysParams.MotDePasseZifoys = newPwd;
+            
+            uiPostAjax();
+            bargio.log(dateTimeNow() + ": Changement du mdp zifoy's");
+            $("#modal-zifoys-validation").modal('show');
+        });
+
         // Mot des zifoys / actualités
         $("#button-mots-des-zifoys-actualites").click(function(e) {
             zifoysParams.MotDesZifoys = $("#textarea-mot-des-zifoys").val();

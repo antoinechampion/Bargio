@@ -75,11 +75,13 @@ namespace Bargio
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
                 options.Conventions.AddAreaPageRoute("Identity", "/Account/Logout", "logout");
                 options.Conventions.AddAreaPageRoute("User", "/Dashboard", "pg");
+                options.Conventions.AddAreaPageRoute("User", "/Babasse", "babasse");
                 options.Conventions.AddPageRoute("/Error", "Error/{statusCode}");
                 options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
                 options.Conventions.AuthorizeAreaPage("Identity", "/Logout");
                 options.Conventions.AuthorizeAreaFolder("User", "/");
                 options.Conventions.AuthorizeAreaFolder("Admin", "/", "RequireAdministratorRole");
+                options.Conventions.AuthorizeAreaPage("User", "/Babasse", "RequireAdministratorRole");
             });
 
             services.ConfigureApplicationCookie(options =>

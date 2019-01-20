@@ -151,11 +151,10 @@ namespace Bargio.Api
             dynamic p = JObject.Parse(json);
             var parameters = _context.SystemParameters.First();
             if (parameters.MotDePasseZifoys != (string)p.MotDePasseZifoys) {
-                var user = await _userManager.FindByIdAsync("admin");
-                if (user != null)
-                {
-                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, p.MotDePasseZifoys);
-                    var result = await _userManager.UpdateAsync(user);
+                var user = await _userManager.FindByNameAsync("admin");
+                if (user != null) {
+                    var result = await _userManager.ChangePasswordAsync(user, parameters.MotDePasseZifoys,
+                        (string) p.MotDePasseZifoys);
                     if (!result.Succeeded)
                     {
                         parameters.MotDePasseZifoys = p.MotDePasseZifoys;
