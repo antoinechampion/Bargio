@@ -35,6 +35,21 @@
                 </div>
             </div>
             <div class="form-group">
+                <label asp-for="SystemParameters.CommissionLydiaVariable" class="control-label"></label>
+                <input asp-for="SystemParameters.CommissionLydiaVariable" class="form-control" />
+                <span asp-validation-for="SystemParameters.CommissionLydiaVariable" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemParameters.CommissionLydiaFixe" class="control-label"></label>
+                <input asp-for="SystemParameters.CommissionLydiaFixe" class="form-control" />
+                <span asp-validation-for="SystemParameters.CommissionLydiaFixe" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemParameters.MinimumRechargementLydia" class="control-label"></label>
+                <input asp-for="SystemParameters.MinimumRechargementLydia" class="form-control" />
+                <span asp-validation-for="SystemParameters.MinimumRechargementLydia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <div class="checkbox">
                     <label>
                         <input asp-for="SystemParameters.Maintenance" /> @Html.DisplayNameFor(model => model.SystemParameters.Maintenance)

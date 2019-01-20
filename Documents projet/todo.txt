@@ -1,7 +1,4 @@
-﻿faire un champs de bdd pour les commissions lydia (tx fixe + tx variable qui sont déduits au pg quand il aura rechargé)
--> et expliquer sur page de rechargement
-
-faire un seul compte zifoys
+﻿faire un seul compte zifoys
 
 pages admin en ligne
 update compteur consommations

@@ -30,6 +30,9 @@
                     <p class="bloc-titre text-center text-info">Solde actuel: @Model.SoldeActuel €</p>
                     <form id="lydiaForm" method="post">
                         <div asp-validation-summary="All" class="text-danger"></div>
+                        <input type="hidden" asp-for="CommissionLydiaVariable" id="commission-lydia-variable"/>
+                        <input type="hidden" asp-for="CommissionLydiaFixe" id="commission-lydia-fixe" />
+                        <input type="hidden" asp-for="MinimumRechargementLydia" id="minimum-rechargement-lydia" />
                         <div class="form-group text-box1">
                             <input class="form-control rechargement-input" asp-for="Telephone" type="text" autofocus>
                             <label asp-for="Telephone"></label>
@@ -37,9 +40,10 @@
 
 
                         <div class="form-group text-box1">
-                            <input class="form-control rechargement-input" asp-for="Montant" type="text">
+                            <input class="form-control rechargement-input" id="montant-rechargement" asp-for="Montant" type="text">
                             <label asp-for="Montant"></label><br>
                         </div>
+                        <p class="text-info text-center" id="montant-avec-commission"></p>
 
                         <a id="lydia-button" href="javascript:{}" onclick="document.getElementById('lydiaForm').submit();">
                             <img class="full-width" src="https://homologation.lydia-app.com/assets/img/paymentbutton.png" />
@@ -56,6 +60,22 @@
 @section Scripts {
     <script type="text/javascript">
         $("#navbar-rechargement").addClass("active");
+
+        $("#montant-rechargement").on("change", function () {
+            var commission_fixe = parseFloat($("#commission-lydia-fixe").val().replace(",", "."));
+            var commission_variable = parseFloat($("#commission-lydia-variable").val().replace(",", ".")) / 100;
+            var minimum_rechargement = parseFloat($("#minimum-rechargement-lydia").val().replace(",", "."));
+
+            console.log(minimum_rechargement);
+            var montant = Math.round(parseFloat($("#montant-rechargement").val()) * 100) / 100;
+
+            if (montant.isNaN || montant < minimum_rechargement) {
+                $("#montant-avec-commission").text("Minimum de rechargement : " + minimum_rechargement + "€");
+            } else {
+                var montant_avec_commission = (montant + commission_fixe) / (1 - commission_variable);
+                $("#montant-avec-commission").text("Avec la commission Lydia, tu paieras " + montant_avec_commission.toFixed(2) + "€.");
+            }
+        });
 
         $('.rechargement-input').keypress(function (e) {
             if (e.keyCode === 13)

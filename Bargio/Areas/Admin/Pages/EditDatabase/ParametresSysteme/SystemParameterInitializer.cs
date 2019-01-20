@@ -18,6 +18,9 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
                 DerniereConnexionBabasse = DateTime.Now,
                 BucquagesBloques = false,
                 LydiaBloque = false,
+                CommissionLydiaVariable = new decimal(1.5), // %
+                CommissionLydiaFixe = new decimal(0.10), // €
+                MinimumRechargementLydia = new decimal(10), // €
                 Maintenance = false,
                 MiseHorsBabasseAutoActivee = false,
                 MiseHorsBabasseInstantanee = false,

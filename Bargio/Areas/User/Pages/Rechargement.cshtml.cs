@@ -40,6 +40,11 @@ namespace Bargio.Areas.User.Pages
             _lydiaApiUrl = (env.IsDevelopment() || ForceTestApi)
                 ? "https://homologation.lydia-app.com/api/request/do.json"
                 : "https://lydia-app.com/api/request/do.json";
+
+            var systemParameters = _context.SystemParameters.First();
+            CommissionLydiaVariable = systemParameters.CommissionLydiaVariable;
+            CommissionLydiaFixe = systemParameters.CommissionLydiaFixe;
+            MinimumRechargementLydia = systemParameters.MinimumRechargementLydia;
         }
 
         [BindProperty]
@@ -63,6 +68,15 @@ namespace Bargio.Areas.User.Pages
 
         [BindProperty]
         public string ClasseTexteStatut { get; set; }
+
+        [BindProperty]
+        public decimal CommissionLydiaVariable { get; set; }
+
+        [BindProperty]
+        public decimal CommissionLydiaFixe { get; set; }
+
+        [BindProperty]
+        public decimal MinimumRechargementLydia { get; set; }
 
         private class LydiaRequestData
         {
@@ -118,7 +132,7 @@ namespace Bargio.Areas.User.Pages
         // Si succès, retourne (true, url_de_paiement), sinon retourne (false, msg_erreur)
         // Passage en prod : changer PublicTestToken en PublicToken, changer testApiUrl en apiUrl
         // https://homologation.lydia-app.com/index.php/backoffice/request/index
-        public async Task<(bool,string)> LydiaInitiatePayment(string id)
+        public async Task<(bool,string)> LydiaInitiatePayment(string id, decimal montantPaye)
         {
             var req = Url.ActionContext.HttpContext.Request;
             var absoluteUri = req.Scheme + "://" + req.Host;
@@ -127,7 +141,7 @@ namespace Bargio.Areas.User.Pages
             {
                 VendorToken = _lydiaVendorToken,
                 Recipient = Telephone,
-                Amount = Montant.ToString("0.##"),
+                Amount = montantPaye.ToString("0.##"),
                 OrderRef = id,
                 ConfirmUrl = absoluteUri + "/api/lydia/confirm",
                 CancelUrl = absoluteUri + "/api/lydia/cancel",
@@ -189,8 +203,14 @@ namespace Bargio.Areas.User.Pages
                 return Page();
             }
 
+            var minimumRechargement = _context.SystemParameters.First().MinimumRechargementLydia;
+            if (Montant < minimumRechargement) {
+                ModelState.AddModelError(string.Empty, "Le minimum de rechargement est de " + minimumRechargement + "€.");
+                return Page();
+            }
+            var montantPaye = (Montant + CommissionLydiaFixe) / (1 - (CommissionLydiaVariable/100));
             var id = await CreatePaymentRequest();
-            var (success, message) = await LydiaInitiatePayment(id);
+            var (success, message) = await LydiaInitiatePayment(id, montantPaye);
             if (success)
             {
                 return Redirect(message);

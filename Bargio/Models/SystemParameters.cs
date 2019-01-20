@@ -17,6 +17,13 @@ namespace Bargio.Models
         public bool BucquagesBloques { get; set; }
         [DisplayName("Bloquer les rechargements en ligne")]
         public bool LydiaBloque { get; set; }
+        [DisplayName("Taux de commission variable lydia (%)")]
+        [Range(0, 100, ErrorMessage = "On te demande un pourcentage trou de zizi")]
+        public decimal CommissionLydiaVariable { get; set; }
+        [DisplayName("Taux de commission fixe lydia (€)")]
+        public decimal CommissionLydiaFixe { get; set; }
+        [DisplayName("Minimum de rechargement en ligne (€)")]
+        public decimal MinimumRechargementLydia { get; set; }
         [DisplayName("Mode maintenance  -- /!\\ Cette page deviendra inaccessible")]
         public bool Maintenance { get; set; }
 
