@@ -50,3 +50,32 @@ hr {
     margin: 0;
     margin-top: -10px;
 }
+
+.nav {
+    margin-top: 10px;
+}
+
+.tab-pane {
+    padding: 20px;
+}
+
+table {
+    width: 100% !important;
+}
+
+.dataTables_scrollHeadInner{
+    width:100% !important;
+}
+
+.dataTables_scrollHeadInner table{
+    width:100% !important;
+}
+
+.clickable-table tr {
+    cursor: pointer;
+}
+
+.logo-bargio-admin {
+    position: absolute;
+    top: 5px;
+}

@@ -12,13 +12,17 @@
     @RenderSection("IncludeHead", required: false)
 }
 
-<img class="logo-bargio-admin" src="/images/logo_admin255.jpg" alt="Logal Bargio" />
+<div class="jumbotron">
+    <img class="logo-bargio-admin" src="/images/logo_admin255.png" height="50px" alt="Logal Bargio"/>
+    
+    @RenderBody()
 
-@RenderBody()
+    <p>
+        <a asp-area="Admin" asp-page="/Dashboard">Revenir vers l'accueil</a>
+    </p>
+</div>
 
-<p>
-    <a asp-area="User" asp-page="/Dashboard">Revenir vers l'index</a>
-</p>
+
 
 @section Scripts {
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>

@@ -5,13 +5,14 @@
   <title>Accueil - Foy'ss de Birse</title>
   <link rel="icon" href="../../Logo Bargio/favicon.ico">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
@@ -23,26 +24,43 @@
   <div class="jumbotron">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" >Accueil</a>
+        <a class="nav-link active" data-toggle="tab" href="#accueil" role="tab" >Accueil</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" >Modifier un compte</a>
+        <a class="nav-link" data-toggle="tab" href="#gestion-compte" role="tab" >Gestion des utilisateurs</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" >Contact</a>
+        <a class="nav-link" data-toggle="tab" href="#historique" role="tab" >Historique</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#pane-mode-archi" role="tab" >Mode Archi</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#liste-produits" role="tab" >Produits</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#parametres" role="tab" >Paramètres</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#modifier-bdd" role="tab" >Bases de données</a>
       </li>
     </ul>
 
     <div class="tab-content" id="myTabContent">
       <!-- Accueil -->
-      <div class="tab-pane fade show active" id="home" role="tabpanel">
+      <div class="tab-pane fade show active" id="accueil" role="tabpanel">
 
         <p class="lead">
           <a class="btn btn-primary btn-lg" href="#" role="button">Afficher la page de babasse</a>
         </p>
-
+        <br/>
+        <p class="lead">
+          <a class="btn btn-success" href="#" role="button">Modifier les raccourcis des prom's</a>
+        </p>
+        <br/>
+        <hr/>
         <p class="lead">Derniers bucquages</p>
-        <hr class="my-4">
+        <hr/>
 
         <div >
           <table id="table-derniers-bucquages" class="table-responsive-datatable display nowrap">
@@ -67,20 +85,32 @@
         </div>
 
       </div>
+
       <!-- Modifier un compte -->
-      <div class="tab-pane fade" id="profile" role="tabpanel">
+      <div class="tab-pane fade" id="gestion-compte" role="tabpanel">
+
         <div>
+          <p class="lead">
+            <a class="btn btn-success btn-sm" href="#" id="a-confirmer" role="button">Ajouter des comptes</a>
+          </p>
+
           <table id="table-modifier-compte" class="table-responsive-datatable display nowrap">
             <thead>
               <tr>
                 <th>
-                  Bucque
+                  Num's
                 </th>
                 <th>
                   Solde
                 </th>
                 <th>
-                  Dernier Changement
+                  Surnom
+                </th>
+                <th>
+                  Prénom
+                </th>
+                <th>
+                  Nom
                 </th>
               </tr>
             </thead>
@@ -99,15 +129,16 @@
                   <input type="number" class="form-control" id="bucquage-raison" />
                 </div>
                 <p class="lead">
-                  <a class="btn btn-success btn-sm" href="#" role="button">Faire un bucquage manuel</a>
+                  <a id="a-bucquage-manuel" href="#" class="btn btn-success btn-sm" role="button">Faire un bucquage manuel</a>
                 </p>
-
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" id="mode-archi" /> Mode Archi
-                  </label>
-                </div>
               </div>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="mode-archi" /> Mode Archi
+                </label>
+              </div>
+
               <div class="form-group">
                 <div class="checkbox">
                   <label>
@@ -128,6 +159,10 @@
                 <input type="text" class="form-control" id="surnom" />
               </div>
               <div class="form-group">
+                <label class="control-label">Num's</label>
+                <input type="text" class="form-control" id="nums" />
+              </div>
+              <div class="form-group">
                 <label class="control-label">TBK</label>
                 <input type="text" class="form-control" id="tbk" />
               </div>
@@ -137,17 +172,152 @@
               </div>
 
               <p class="lead">
-                <a class="btn btn-success btn-sm" role="button">Confirmer</a>
+                <a class="btn btn-success btn-sm" href="#" id="a-confirmer" role="button">Confirmer</a>
               </p>
 
               <p class="lead">
-                <a class="btn btn-primary btn-sm" role="button">Supprimer le mot de passe du compte</a>
+                <a class="btn btn-primary btn-sm" href="#" id="a-supprimer-mdp" role="button">Supprimer le mot de passe du compte</a>
+              </p>
+              <br/>
+
+              <p class="lead">
+                La mise hors babasse s'effectue directement sur la babasse du foy's.
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div class="tab-pane fade" id="contact" role="tabpanel">...</div>
+
+      <!-- Historique global -->
+      <div class="tab-pane fade" id="historique" role="tabpanel">
+
+        <label class="control-label">Depuis</label>
+        <div class="input-group date" id="timepicker-debut" data-target-input="nearest">
+          <div class="input-group-prepend" data-target="#timepicker-debut" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+          </div>
+          <input type="text" class="form-control datetimepicker-input" data-target="#timepicker-debut" />
+        </div>
+
+        <label class="control-label">Jusqu'à</label>
+        <div class="input-group date" id="timepicker-fin" data-target-input="nearest">
+          <div class="input-group-prepend" data-target="#timepicker-fin" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+          </div>
+          <input type="text" class="form-control datetimepicker-input" data-target="#timepicker-fin" />
+        </div>
+        <br/>
+        <p class="lead">
+          <a id="a-historique" href="#" class="btn btn-primary btn-sm" role="button">Confirmer</a>
+        </p>
+        <hr/>
+
+        <table id="table-historique" class="table-responsive-datatable display nowrap">
+          <thead>
+            <tr>
+              <th>
+                Date
+              </th>
+              <th>
+                Compte
+              </th>
+              <th>
+                Bucquage
+              </th>
+              <th>
+                Montant
+              </th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+      </div>
+
+      <!-- Mode archi -->
+      <div class="tab-pane fade" id="pane-mode-archi" role="tabpanel">
+        <div class="form-group">
+          <label class="control-label">Liste des prom's (séparer par des virgules)</label>
+          <input type="text" class="form-control" id="liste-proms-mode-archi" placeholer="Ex: li92,an67,ka210" />
+        </div>
+
+        <p class="lead">
+          <a class="btn btn-primary btn-sm" href="#" id="a-supprimer-mdp" role="button">Mettre ces prom's en mode archi</a>
+        </p>
+        <p class="lead">
+          <a class="btn btn-primary btn-sm" href="#" id="a-supprimer-mdp" role="button">Mettre toutes les prom's sauf celles-ci en mode archi</a>
+        </p>
+      </div>
+
+      <!-- Liste produits -->
+      <div class="tab-pane fade" id="liste-produits" role="tabpanel">
+        <!-- coller page index avec "modifier" dans chaque ligne -->
+      </div>
+
+      <div class="tab-pane fade" id="parametres" role="tabpanel">
+        <!-- coller page édition avec form -->
+      </div>
+
+      <div class="tab-pane fade" id="modifier-bdd" role="tabpanel">
+        <p class="lead">
+          <a class="btn btn-success" href="#" role="button">Importer base de donnée access (ancien logiciel)</a>
+        </p>
+        <hr/>
+        <p class="lead">
+          <a class="btn btn-primary" href="#" role="button">Utilisateurs</a>
+        </p>
+        <p class="lead">
+          <a class="btn btn-primary" href="#" role="button">Demandes de paiement</a>
+        </p>
+        <p class="lead">
+          <a class="btn btn-primary" href="#" role="button">Historique des transactions</a>
+        </p>
+        <p class="lead">
+          <a class="btn btn-primary" href="#" role="button">Paramètres systèmes</a>
+        </p>
+        <p class="lead">
+          <a class="btn btn-primary" href="#" role="button">Raccourcis promotions</a>
+        </p>
+        <p class="lead">
+          <a class="btn btn-primary" href="#" role="button">Produits</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal confirmation -->
+  <div class="modal fade" id="modal-succes" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 40%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Succès</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <label>Les changements ont été appliqués</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal erreur -->
+  <div class="modal fade" id="modal-erreur" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 40%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Erreur</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body text-danger">
+          <label>/!\ Erreur: <span id="modal-texte-erreur"></span></label>
+        </div>
+      </div>
     </div>
   </div>
 </body>

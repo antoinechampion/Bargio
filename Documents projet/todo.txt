@@ -1,10 +1,5 @@
-﻿dashboard admin
-pages admin en ligne
--- pages existantes
--- historique complet (entre telle date et telle date)
--- compteur consos
--- paramètres système
--- mode archi (sélectionner par prom'ss qui ne sont pas en mode archi et individuel)
+﻿cabler/supprimer reset mdp dans babasse
+bind raccourci proms
 
 easter eggs: appuyez sur f13, bucquage créateur
 

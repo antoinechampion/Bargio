@@ -50,7 +50,7 @@ namespace Bargio.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnGetAsync(string returnUrl = null) {
             if (User.Identity.IsAuthenticated) {
                 if (User.IsInRole("Admin")) {
-                    return Redirect("/Admin/Quicknav");
+                    return Redirect("/Admin/Dashboard");
                 }
                 else {
                     return Redirect("/pg");
@@ -87,7 +87,13 @@ namespace Bargio.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Nums, Input.Password, true, false);
                 if (result.Succeeded)
                 {
-                    return Redirect("/pg");
+                    
+                    if (User.IsInRole("Admin")) {
+                        return Redirect("/Admin/Dashboard");
+                    }
+                    else {
+                        return Redirect("/pg");
+                    }
                 }
                 else
                 {
