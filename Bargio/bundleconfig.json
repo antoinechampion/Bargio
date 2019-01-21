@@ -82,5 +82,11 @@
     "inputFiles": [
       "wwwroot/js/statistiques.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/admin-dashboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/admin-dashboard.js"
+    ]
   }
 ]
