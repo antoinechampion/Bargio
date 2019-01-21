@@ -38,7 +38,7 @@ namespace Bargio.Areas.User.Pages
         public async Task<IActionResult> OnGet()
         {
             if (User.IsInRole("Admin")) {
-                return Redirect("/Admin/Quicknav");
+                return Redirect("/Admin/Dashboard");
             }
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             UserData = await _context.UserData.FindAsync(identityUser.UserName);
