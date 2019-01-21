@@ -36,7 +36,7 @@ namespace Bargio.Api
         // Retourne la liste complète des utilisateurs, avec leur surnom, leur solde,
         // le hash de leur mot de passe et le salt, et si ils sont hors foy's
         public string Get() {
-            var userData = _context.UserData.Select(o => new {o.UserName, o.HorsFoys, o.Surnom,
+            var userData = _context.UserData.Select(o => new {o.UserName, o.HorsFoys, o.ModeArchi, o.Surnom,
                 o.Solde, o.FoysApiHasPassword, o.FoysApiPasswordHash, o.FoysApiPasswordSalt}).ToList();
             return JsonConvert.SerializeObject(userData);
         }
@@ -48,7 +48,7 @@ namespace Bargio.Api
             try {
                 var dateTime = DateTime.ParseExact(datetime, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 var userData = _context.UserData.Where(o => o.DateDerniereModif >= dateTime)
-                    .Select(o => new {o.UserName, o.HorsFoys, 
+                    .Select(o => new {o.UserName, o.HorsFoys, o.ModeArchi,
                         o.Solde, o.FoysApiHasPassword, o.FoysApiPasswordHash, o.FoysApiPasswordSalt}).ToList();
                 return JsonConvert.SerializeObject(userData);
             }

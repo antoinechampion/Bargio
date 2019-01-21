@@ -19,7 +19,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
                     Nums = "1",
                     TBK = "test",
                     Proms = "217",
-                    HorsFoys = true, 
+                    HorsFoys = false, 
                     Solde = 0,
                     DateDerniereModif = DateTime.Now
                 });
@@ -33,7 +33,8 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
                     Proms = "217",
                     HorsFoys = false,
                     Solde = -13,
-                    DateDerniereModif = DateTime.Now
+                    DateDerniereModif = DateTime.Now,
+                    ModeArchi = true
                 });
                #endif
             await context.SaveChangesAsync();

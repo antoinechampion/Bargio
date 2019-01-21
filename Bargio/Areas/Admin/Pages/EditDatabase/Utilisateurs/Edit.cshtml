@@ -32,6 +32,13 @@
                 </div>
             </div>
             <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="UserData.ModeArchi" /> @Html.DisplayNameFor(model => model.UserData.ModeArchi)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
                 <label asp-for="UserData.Surnom" class="control-label"></label>
                 <input asp-for="UserData.Surnom" class="form-control" />
                 <span asp-validation-for="UserData.Surnom" class="text-danger"></span>

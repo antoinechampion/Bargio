@@ -1,8 +1,6 @@
-﻿pages admin en ligne
-update compteur consommations
-conserve mise hors foyss et mode archi (sélectionner par prom'ss qui ne sont pas en mode archi et individuel)
-mode archi => si un bucquage fait passer en négat's -> impossible de se bucquer
-autorisations
+﻿dashboard admin
+pages admin en ligne
+mode archi (sélectionner par prom'ss qui ne sont pas en mode archi et individuel)
 
 easter eggs: appuyez sur f13, bucquage créateur
 

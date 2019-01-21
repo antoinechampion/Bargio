@@ -7,6 +7,7 @@ namespace Bargio.Models
     {
         public UserData() {
             DateDerniereModif = DateTime.Now;
+            ModeArchi = false;
         }
 
         [Key]
@@ -26,5 +27,6 @@ namespace Bargio.Models
         // To be hashed with Blowfish Crypt, rev 2B
         public string FoysApiPasswordHash { get; set; }
         public string FoysApiPasswordSalt { get; set; }
+        public bool ModeArchi { get; set; }
     }
 }

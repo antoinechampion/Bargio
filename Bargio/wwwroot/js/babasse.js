@@ -130,7 +130,14 @@ $( document ).ready(function() {
 		db.version(1).stores({
 			UserData: 'UserName,HorsFoys,Surnom,Solde,'
 				+ 'FoysApiHasPassword,FoysApiPasswordHash,'
-				+ 'FoysApiPasswordSalt',
+				+ 'FoysApiPasswordSalt,ModeArchi',
+			HistoriqueTransactions: '++,UserName,Date,Montant,IdProduits,Commentaire',
+			HorsBabasse: 'UserName'
+		});
+		db.version(2).stores({
+			UserData: 'UserName,HorsFoys,Surnom,Solde,'
+				+ 'FoysApiHasPassword,FoysApiPasswordHash,'
+				+ 'FoysApiPasswordSalt,ModeArchi',
 			HistoriqueTransactions: '++,UserName,Date,Montant,IdProduits,Commentaire',
 			HorsBabasse: 'UserName'
 		});
@@ -150,14 +157,16 @@ $( document ).ready(function() {
 	
     async function isHorsBabasse(user) {
 		var userHorsBabasse = await db.HorsBabasse.get({ UserName: user.UserName });
-		if (userHorsBabasse !== undefined) {
-			if (user.Solde > seuilHorsBabasse) {
-				// L'utilisateur n'est plus hors babasse
-				db.HorsBabasse.where("UserName").equals(user.UserName).delete();
-				return false;
-			} else {
-				return true;
-			}
+        if (userHorsBabasse !== undefined) {
+            if (user.Solde > seuilHorsBabasse) {
+                // L'utilisateur n'est plus hors babasse
+                db.HorsBabasse.where("UserName").equals(user.UserName).delete();
+                return false;
+            } else {
+                return true;
+            }
+        } else if (user.ModeArchi && user.Solde < 0) {
+			return true;
 		} else {
 			return false;
 		}
