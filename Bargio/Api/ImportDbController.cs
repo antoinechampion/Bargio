@@ -1,5 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿//          Bargio - ImportDbController.cs
+//  Copyright (c) Antoine Champion 2018-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,12 +25,11 @@ namespace Bargio.Api
     [Route("api/[controller]")]
     public class ImportDbController : Controller
     {
-        private ApplicationDbContext _context;
-        private UserManager<IdentityUserDefaultPwd> _userManager;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUserDefaultPwd> _userManager;
 
         public ImportDbController(ApplicationDbContext context,
-            UserManager<IdentityUserDefaultPwd> userManager)
-        {
+            UserManager<IdentityUserDefaultPwd> userManager) {
             _context = context;
             _userManager = userManager;
         }
@@ -46,27 +50,24 @@ namespace Bargio.Api
         //    <user_Prénom>veto</user_Prénom>
         //    <user_Blairal>06xxxxxxxx</user_Blairal>
         //</tbUser>
-        private UserData TryParseUserFromXElement(XElement o, ref string failedList)
-        {
+        private UserData TryParseUserFromXElement(XElement o, ref string failedList) {
             try {
-                return new UserData
-                {
-                    UserName = (string)o.Element("user_numss_Reel")
-                               + (string)o.Element("user_promss"),
-                    Solde = (decimal)o.Element("user_solde"),
-                    Nums = (string)o.Element("user_numss_Reel"),
-                    TBK = ((string)o.Element("user_promss")).Substring(0, 2),
-                    Proms = ((string)o.Element("user_promss")).Substring(2),
+                return new UserData {
+                    UserName = (string) o.Element("user_numss_Reel")
+                               + (string) o.Element("user_promss"),
+                    Solde = (decimal) o.Element("user_solde"),
+                    Nums = (string) o.Element("user_numss_Reel"),
+                    TBK = ((string) o.Element("user_promss")).Substring(0, 2),
+                    Proms = ((string) o.Element("user_promss")).Substring(2),
                     HorsFoys = false,
-                    Surnom = (string)o.Element("user_bucque") ?? "",
-                    Nom = (string)o.Element("user_Nom") ?? "",
-                    Prenom = (string)o.Element("user_Prénom") ?? "",
-                    Telephone = (string)o.Element("user_Blairal") ?? "",
+                    Surnom = (string) o.Element("user_bucque") ?? "",
+                    Nom = (string) o.Element("user_Nom") ?? "",
+                    Prenom = (string) o.Element("user_Prénom") ?? "",
+                    Telephone = (string) o.Element("user_Blairal") ?? "",
                     FoysApiHasPassword = false
                 };
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 failedList += " " + (string) o.Element("user_numss_Reel") + (string) o.Element("user_promss");
                 return null;
             }
@@ -92,50 +93,42 @@ namespace Bargio.Api
             _context.SystemParameters.First().Maintenance = true;
             _context.SaveChanges();
         }
+
         private void SetMaintainanceOff() {
             _context.SystemParameters.First().Maintenance = false;
             _context.SaveChanges();
         }
-        
+
         // POST api/<controller>
         [HttpPost]
-        public async Task<string> Post(List<IFormFile> xml_file, bool append_to_db)
-        {
+        public async Task<string> Post(List<IFormFile> xml_file, bool append_to_db) {
             var errorMessage = "";
             var result = string.Empty;
-            try
-            {
-                using (var reader = new StreamReader(xml_file[0].OpenReadStream()))
-                {
+            try {
+                using (var reader = new StreamReader(xml_file[0].OpenReadStream())) {
                     result = reader.ReadToEnd();
                 }
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 return "Echec de l'upload du fichier\n" + e;
             }
 
             XDocument xml;
-            try
-            {
+            try {
                 xml = XDocument.Parse(result);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 return "Fichier XML invalide\n" + e;
             }
 
             // Activation du mode maintenance
             SetMaintainanceOn();
-            
-            if (!append_to_db)
-            {
-                try
-                {
+
+            if (!append_to_db) {
+                try {
                     _context.Database.ExecuteSqlCommand("delete from UserData");
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     errorMessage += "Impossible de vider la DB UserData actuelle\n" + e;
                 }
 
@@ -146,18 +139,16 @@ namespace Bargio.Api
 
                     var identityResult = await _userManager.DeleteAsync(user);
                     if (!identityResult.Succeeded)
-                    {
                         errorMessage += "Impossible de supprimer l'utilisateur "
                                         + user.UserName + "\n-->" + string.Join(",",
                                             identityResult.Errors.Select(o => o.ToString()));
-                    }
                 }
+
                 var eraseContextError = await SaveContext();
                 if (!string.IsNullOrEmpty(eraseContextError)) {
                     SetMaintainanceOff();
                     return eraseContextError;
                 }
-                    
             }
 
             if (!string.IsNullOrEmpty(errorMessage)) {
@@ -165,14 +156,12 @@ namespace Bargio.Api
                 return "\n\n" + errorMessage;
             }
 
-            string failedList = "";
-            string duplicateList = "";
-            List<UserData> ud = new List<UserData>();
-            foreach (var elem in xml.Root.Elements("tbUser"))
-            {
+            var failedList = "";
+            var duplicateList = "";
+            var ud = new List<UserData>();
+            foreach (var elem in xml.Root.Elements("tbUser")) {
                 var parsed = TryParseUserFromXElement(elem, ref failedList);
-                if (parsed != null)
-                {
+                if (parsed != null) {
                     if (!ud.Select(o => o.UserName).Contains(parsed.UserName))
                         ud.Add(parsed);
                     else
@@ -183,22 +172,21 @@ namespace Bargio.Api
             if (!string.IsNullOrEmpty(failedList))
                 errorMessage = "TryParseUserFromXElement: Impossible d'ajouter les utilisateurs " + failedList;
             if (!string.IsNullOrEmpty(duplicateList))
-                errorMessage = "/!\\ Il existe des utilisateurs en double.<br/> Les doublons ont été ignorés : " + duplicateList;
+                errorMessage = "/!\\ Il existe des utilisateurs en double.<br/> Les doublons ont été ignorés : " +
+                               duplicateList;
 
             failedList = "";
             // Pas de AddRange pour avoir des erreurs détaillées
             foreach (var user in ud)
-            {
                 try {
                     if (_context.UserData.Any(o => o.UserName == user.UserName))
                         continue;
                     await _context.UserData.AddAsync(user);
                 }
-                catch
-                {
+                catch {
                     failedList += " \"" + user.UserName + " \"";
                 }
-            }
+
             var saveContextError = await SaveContext();
             if (!string.IsNullOrEmpty(saveContextError)) {
                 SetMaintainanceOff();
@@ -206,29 +194,26 @@ namespace Bargio.Api
             }
 
             if (!string.IsNullOrEmpty(failedList))
-                errorMessage += "<br/><br/>_context.UserData.AddAsync: Impossible d'ajouter les utilisateurs " + failedList;
+                errorMessage += "<br/><br/>_context.UserData.AddAsync: Impossible d'ajouter les utilisateurs " +
+                                failedList;
 
             failedList = "";
             var userDataEvaluated = _context.UserData.ToList();
-            foreach (var userData in userDataEvaluated)
-            {
+            foreach (var userData in userDataEvaluated) {
                 if (await _userManager.FindByNameAsync(userData.UserName) != null)
                     continue;
 
-                var user = new IdentityUserDefaultPwd
-                {
+                var user = new IdentityUserDefaultPwd {
                     UserName = userData.UserName
                 };
 
                 try {
                     var ir = await _userManager.CreateAsync(user, IdentityUserDefaultPwd.DefaultPassword);
-                    if (!ir.Succeeded)
-                    {
+                    if (!ir.Succeeded) {
                         failedList += " \"" + user.UserName + " \"";
                         _context.UserData.Remove(ud.First(o => o.UserName == user.UserName));
                     }
-                    else
-                    {
+                    else {
                         await _userManager.AddToRoleAsync(user,
                             "PG");
                     }
@@ -236,8 +221,8 @@ namespace Bargio.Api
                 catch (Exception e) {
                     errorMessage += "Erreur interne à Identity : " + e;
                 }
-                
             }
+
             saveContextError = await SaveContext();
             if (!string.IsNullOrEmpty(saveContextError)) {
                 SetMaintainanceOff();
@@ -245,8 +230,9 @@ namespace Bargio.Api
             }
 
             if (!string.IsNullOrEmpty(failedList))
-                errorMessage += "<br/><br/>Identity: Impossible de créer les comptes pour les utilisateurs " + failedList;
-                
+                errorMessage += "<br/><br/>Identity: Impossible de créer les comptes pour les utilisateurs " +
+                                failedList;
+
             SetMaintainanceOff();
             return "0" + errorMessage;
         }

@@ -6,7 +6,7 @@
 }
 
 @section IncludeHead {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
     <environment names="Development">
         <link rel="stylesheet" href="/css/style.css">
@@ -43,7 +43,7 @@
             <div class="card bloc-central my-2">
                 <div class="bloc-case">
                     <p class="bloc-titre text-center titre-stats">Combien j'ai consommé</p>
-                    <br />
+                    <br/>
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
                             <div class="form-check">
@@ -68,12 +68,14 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
-                            <br />
+                            <br/>
                             <div id="choix-date">
                                 <div class="input-group date" id="timepicker-conso" data-target-input="nearest">
-                                    <input type="text" class="form-control datetimepicker-input" data-target="#timepicker-conso" />
+                                    <input type="text" class="form-control datetimepicker-input" data-target="#timepicker-conso"/>
                                     <div class="input-group-append" data-target="#timepicker-conso" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        <div class="input-group-text">
+                                            <i class="far fa-clock"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -81,7 +83,7 @@
                     </div>
 
                     <p class="text-center solde-accueil"><span id="montant-total">0</span>€</p>
-                    <br />
+                    <br/>
                 </div>
             </div>
         </div>
@@ -90,7 +92,7 @@
             <div class="card bloc-central my-2">
                 <div class="bloc-case">
                     <p class="bloc-titre text-center titre-stats">Courbe d'alcoolisme</p>
-                    <br />
+                    <br/>
                     <canvas id="conso-chart" height="150"></canvas>
                 </div>
             </div>
@@ -101,21 +103,21 @@
             <div class="card bloc-central my-2">
                 <div class="bloc-case">
                     <p class="bloc-titre text-center titre-stats">Historique complet des consos</p>
-                    <br />
+                    <br/>
                     <div id="table-consos-total">
                         <table class="table-consos-total-datatable display nowrap">
                             <thead>
-                                <tr>
-                                    <th>
-                                        Date
-                                    </th>
-                                    <th>
-                                        Bucquage
-                                    </th>
-                                    <th>
-                                        Montant
-                                    </th>
-                                </tr>
+                            <tr>
+                                <th>
+                                    Date
+                                </th>
+                                <th>
+                                    Bucquage
+                                </th>
+                                <th>
+                                    Montant
+                                </th>
+                            </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
@@ -126,4 +128,3 @@
     </div>
 
 </div>
-

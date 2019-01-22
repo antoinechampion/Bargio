@@ -1,41 +1,45 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿//          Bargio - 20190102154210_update_SystemeParameters_snow.cs
+//  Copyright (c) Antoine Champion 2019-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bargio.Migrations
 {
     public partial class update_SystemeParameters_snow : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.AddColumn<string>(
-                name: "Actualites",
-                table: "SystemParameters",
+                "Actualites",
+                "SystemParameters",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "MotDesZifoys",
-                table: "SystemParameters",
+                "MotDesZifoys",
+                "SystemParameters",
                 nullable: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Snow",
-                table: "SystemParameters",
+                "Snow",
+                "SystemParameters",
                 nullable: false,
                 defaultValue: false);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropColumn(
-                name: "Actualites",
-                table: "SystemParameters");
+                "Actualites",
+                "SystemParameters");
 
             migrationBuilder.DropColumn(
-                name: "MotDesZifoys",
-                table: "SystemParameters");
+                "MotDesZifoys",
+                "SystemParameters");
 
             migrationBuilder.DropColumn(
-                name: "Snow",
-                table: "SystemParameters");
+                "Snow",
+                "SystemParameters");
         }
     }
 }

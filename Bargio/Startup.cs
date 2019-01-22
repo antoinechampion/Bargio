@@ -1,15 +1,21 @@
+//          Bargio - Startup.cs
+//  Copyright (c) Antoine Champion 2018-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
 using System.Linq;
 using Bargio.Areas.Identity;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Bargio.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,25 +23,21 @@ namespace Bargio
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
+        public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
+        public void ConfigureServices(IServiceCollection services) {
+            services.Configure<CookiePolicyOptions>(options => {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.Configure<IdentityOptions>(options =>
-            {
+            services.Configure<IdentityOptions>(options => {
                 // Default Password settings.
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
@@ -52,14 +54,12 @@ namespace Bargio
             services.AddIdentity<IdentityUserDefaultPwd, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAuthorization(options =>
-            {
+            services.AddAuthorization(options => {
                 options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Admin"));
             });
 
             services
-                .AddMvc(config =>
-                {
+                .AddMvc(config => {
                     // using Microsoft.AspNetCore.Mvc.Authorization;
                     // using Microsoft.AspNetCore.Authorization;
                     var policy = new AuthorizationPolicyBuilder()
@@ -68,43 +68,35 @@ namespace Bargio
                     config.Filters.Add(new AuthorizeFilter(policy));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddRazorPagesOptions(options => {
+                    options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
+                    options.Conventions.AddAreaPageRoute("Identity", "/Account/Logout", "logout");
+                    options.Conventions.AddAreaPageRoute("User", "/Dashboard", "pg");
+                    options.Conventions.AddAreaPageRoute("User", "/Babasse", "babasse");
+                    options.Conventions.AddPageRoute("/Error", "Error/{statusCode}");
+                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                    options.Conventions.AuthorizeAreaPage("Identity", "/Logout");
+                    options.Conventions.AuthorizeAreaFolder("User", "/");
+                    options.Conventions.AuthorizeAreaFolder("Admin", "/", "RequireAdministratorRole");
+                    options.Conventions.AuthorizeAreaPage("User", "/Babasse", "RequireAdministratorRole");
+                });
 
-
-                .AddRazorPagesOptions(options =>
-            {
-                options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
-                options.Conventions.AddAreaPageRoute("Identity", "/Account/Logout", "logout");
-                options.Conventions.AddAreaPageRoute("User", "/Dashboard", "pg");
-                options.Conventions.AddAreaPageRoute("User", "/Babasse", "babasse");
-                options.Conventions.AddPageRoute("/Error", "Error/{statusCode}");
-                options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
-                options.Conventions.AuthorizeAreaPage("Identity", "/Logout");
-                options.Conventions.AuthorizeAreaFolder("User", "/");
-                options.Conventions.AuthorizeAreaFolder("Admin", "/", "RequireAdministratorRole");
-                options.Conventions.AuthorizeAreaPage("User", "/Babasse", "RequireAdministratorRole");
-            });
-
-            services.ConfigureApplicationCookie(options =>
-            {
+            services.ConfigureApplicationCookie(options => {
                 options.LoginPath = "/Identity/Account/Login";
                 options.LogoutPath = "/Identity/Account/Logout";
                 options.AccessDeniedPath = "/Error/403";
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             UserManager<IdentityUserDefaultPwd> userManager,
-            RoleManager<IdentityRole> roleManager)
-        {
-            if (env.IsDevelopment())
-            {
+            RoleManager<IdentityRole> roleManager) {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
-            else
-            {
+            else {
                 app.UseHsts();
             }
 
@@ -115,8 +107,7 @@ namespace Bargio
             app.UseCookiePolicy();
 
             // Middleware to redirect in case of maintainance
-            app.Use(async (httpCtx, next) =>
-            {
+            app.Use(async (httpCtx, next) => {
                 var context = httpCtx.RequestServices.GetRequiredService<ApplicationDbContext>();
 
                 if (context.SystemParameters.First().Maintenance

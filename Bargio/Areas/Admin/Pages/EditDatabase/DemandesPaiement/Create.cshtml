@@ -9,28 +9,28 @@
 <h2>Create</h2>
 
 <h4>PaymentRequest</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="PaymentRequest.UserName" class="control-label"></label>
-                <input asp-for="PaymentRequest.UserName" class="form-control" />
+                <input asp-for="PaymentRequest.UserName" class="form-control"/>
                 <span asp-validation-for="PaymentRequest.UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PaymentRequest.Montant" class="control-label"></label>
-                <input asp-for="PaymentRequest.Montant" class="form-control" />
+                <input asp-for="PaymentRequest.Montant" class="form-control"/>
                 <span asp-validation-for="PaymentRequest.Montant" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PaymentRequest.DateDemande" class="control-label"></label>
-                <input asp-for="PaymentRequest.DateDemande" class="form-control" />
+                <input asp-for="PaymentRequest.DateDemande" class="form-control"/>
                 <span asp-validation-for="PaymentRequest.DateDemande" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default"/>
             </div>
         </form>
     </div>
@@ -41,5 +41,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

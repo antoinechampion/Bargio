@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//          Bargio - LydiaController.cs
+//  Copyright (c) Antoine Champion 2018-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
+using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Bargio.Data;
 using Bargio.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -18,17 +20,15 @@ namespace Bargio.Api
     [AllowAnonymous]
     public class LydiaController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public LydiaController(ApplicationDbContext context)
-        {
+        public LydiaController(ApplicationDbContext context) {
             _context = context;
         }
 
         [Route("api/[controller]/confirm")]
         [HttpPost]
-        public string Confirm(string order_ref)
-        {
+        public string Confirm(string order_ref) {
             var request = _context.PaymentRequest.Find(order_ref);
             if (request == null)
                 return "Cette demande de paiement (" + order_ref + ") n'existe pas";
@@ -40,8 +40,7 @@ namespace Bargio.Api
             user.Solde += request.Montant;
             user.DateDerniereModif = DateTime.Now;
 
-            _context.TransactionHistory.Add(new TransactionHistory
-            {
+            _context.TransactionHistory.Add(new TransactionHistory {
                 UserName = user.UserName,
                 Montant = request.Montant,
                 Commentaire = "Rechargement lydia en ligne"
@@ -56,8 +55,7 @@ namespace Bargio.Api
 
         [Route("api/[controller]/cancel")]
         [HttpPost]
-        public string Cancel(string order_ref)
-        {
+        public string Cancel(string order_ref) {
             var request = _context.PaymentRequest.Find(order_ref);
             if (request == null)
                 return "Cette demande de paiement (" + order_ref + ") n'existe pas";

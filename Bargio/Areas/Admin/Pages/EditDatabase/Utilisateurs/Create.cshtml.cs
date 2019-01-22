@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//          Bargio - Create.cshtml.cs
+//  Copyright (c) Antoine Champion 2018-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Bargio.Areas.Identity;
 using Bargio.Data;
 using Bargio.Models;
-using Bargio.Areas.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
 {
@@ -17,44 +21,36 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUserDefaultPwd> _userManager;
 
-        public CreateModel(ApplicationDbContext context, UserManager<IdentityUserDefaultPwd> userManager)
-        {
+        public CreateModel(ApplicationDbContext context, UserManager<IdentityUserDefaultPwd> userManager) {
             _context = context;
             _userManager = userManager;
         }
 
-        [BindProperty]
-        public UserData UserData { get; set; }
+        [BindProperty] public UserData UserData { get; set; }
 
-        [BindProperty]
-        public string ErrorMessage { get; set; }
-        [BindProperty]
-        public string SuccessMessage { get; set; }
+        [BindProperty] public string ErrorMessage { get; set; }
+
+        [BindProperty] public string SuccessMessage { get; set; }
 
         private async Task<bool> CreateIdentityUser(string userName) {
-            var user = new IdentityUserDefaultPwd { UserName = userName };
+            var user = new IdentityUserDefaultPwd {UserName = userName};
             var result = await _userManager.CreateAsync(user, IdentityUserDefaultPwd.DefaultPassword);
-            if (result.Succeeded)
-            {
+            if (result.Succeeded) {
                 await _userManager.AddToRoleAsync(user,
                     "PG");
                 return true;
             }
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
+
+            foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
             return false;
         }
 
-        public IActionResult OnGet()
-        {
+        public IActionResult OnGet() {
             // Valeurs par défaut pour le modèle
             var tbk = "Li";
             var proms = (200 + DateTime.Now.Year - 2000).ToString();
 
-            UserData = new UserData
-            {
+            UserData = new UserData {
                 TBK = tbk,
                 Proms = proms,
                 HorsFoys = false
@@ -67,11 +63,8 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
 
             UserData.UserName = UserData.Nums + UserData.TBK + UserData.Proms;
             UserData.FoysApiHasPassword = false;
-            
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+
+            if (!ModelState.IsValid) return Page();
 
             if (_context.UserData.Any(o => o.UserName == UserData.UserName)) {
                 ErrorMessage = "Cet utilisateur existe déjà !";
@@ -80,8 +73,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
 
             _context.UserData.Add(UserData);
             var success = await CreateIdentityUser(UserData.UserName);
-            if (!success)
-            {
+            if (!success) {
                 ErrorMessage = "Impossible de créer un utilisateur Identity...";
                 _context.UserData.Remove(UserData);
                 return Page();

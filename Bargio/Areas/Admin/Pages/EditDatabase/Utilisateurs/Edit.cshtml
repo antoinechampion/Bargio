@@ -9,42 +9,42 @@
 <h2>Edit</h2>
 
 <h4>UserData</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="AncienSolde" />
-            <input type="hidden" asp-for="UserData.UserName" />
-            <input type="hidden" asp-for="UserData.Nums" />
-            <input type="hidden" asp-for="UserData.TBK" />
-            <input type="hidden" asp-for="UserData.Proms" />
+            <input type="hidden" asp-for="AncienSolde"/>
+            <input type="hidden" asp-for="UserData.UserName"/>
+            <input type="hidden" asp-for="UserData.Nums"/>
+            <input type="hidden" asp-for="UserData.TBK"/>
+            <input type="hidden" asp-for="UserData.Proms"/>
             <div class="form-group">
                 <label asp-for="UserData.Solde" class="control-label"></label>
-                <input asp-for="UserData.Solde" class="form-control" />
+                <input asp-for="UserData.Solde" class="form-control"/>
                 <span asp-validation-for="UserData.Solde" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="UserData.HorsFoys" /> @Html.DisplayNameFor(model => model.UserData.HorsFoys)
+                        <input asp-for="UserData.HorsFoys"/> @Html.DisplayNameFor(model => model.UserData.HorsFoys)
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="UserData.ModeArchi" /> @Html.DisplayNameFor(model => model.UserData.ModeArchi)
+                        <input asp-for="UserData.ModeArchi"/> @Html.DisplayNameFor(model => model.UserData.ModeArchi)
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="UserData.Surnom" class="control-label"></label>
-                <input asp-for="UserData.Surnom" class="form-control" />
+                <input asp-for="UserData.Surnom" class="form-control"/>
                 <span asp-validation-for="UserData.Surnom" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default"/>
             </div>
         </form>
     </div>
@@ -55,5 +55,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

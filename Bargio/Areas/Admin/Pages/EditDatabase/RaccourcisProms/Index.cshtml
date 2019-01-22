@@ -13,19 +13,25 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PromsKeyboardShortcut[0].TBK)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PromsKeyboardShortcut[0].Proms)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PromsKeyboardShortcut[0].Raccourci)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PromsKeyboardShortcut[0].TBK)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PromsKeyboardShortcut[0].Proms)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.PromsKeyboardShortcut) {
+    @foreach (var item in Model.PromsKeyboardShortcut) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Raccourci)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TBK)
             </td>
@@ -33,11 +39,11 @@
                 @Html.DisplayFor(modelItem => item.Proms)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Raccourci">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Raccourci">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Raccourci">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

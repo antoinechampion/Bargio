@@ -1,5 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//          Bargio - AdminController.cs
+//  Copyright (c) Antoine Champion 2019-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +12,6 @@ using Bargio.Areas.Identity;
 using Bargio.Data;
 using Bargio.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -34,11 +38,11 @@ namespace Bargio.Api
             var linq = _context.TransactionHistory
                 .OrderByDescending(o => o.Date)
                 .Take(100)
-                .Select(o => new [] {
-                    o.Date.ToString(CultureInfo.CurrentCulture), 
-                    o.UserName, 
-                    o.Commentaire, 
-                    o.Montant.ToString(CultureInfo.CurrentCulture)
+                .Select(o => new[] {
+                    o.Date.ToString(CultureInfo.CurrentCulture),
+                    o.UserName,
+                    o.Commentaire,
+                    o.Montant.ToString(CultureInfo.CurrentCulture).Replace(",", ".")
                 });
             return JsonConvert.SerializeObject(new {data = linq});
         }
@@ -49,7 +53,7 @@ namespace Bargio.Api
                 .OrderBy(o => o.UserName)
                 .Select(o => new[] {
                     o.UserName,
-                    o.Solde.ToString(CultureInfo.CurrentCulture),
+                    o.Solde.ToString(CultureInfo.CurrentCulture).Replace(",", "."),
                     o.Surnom,
                     o.Prenom,
                     o.Nom
@@ -139,9 +143,9 @@ namespace Bargio.Api
                 var identityUser = await _userManager.FindByNameAsync(user.UserName);
                 await _userManager.RemovePasswordAsync(identityUser);
                 await _userManager.AddPasswordAsync(identityUser, IdentityUserDefaultPwd.DefaultPassword);
-                
-                    await _context.SaveChangesAsync();
-                    await _userManager.UpdateAsync(identityUser);
+
+                await _context.SaveChangesAsync();
+                await _userManager.UpdateAsync(identityUser);
             }
             catch (Exception e) {
                 return BadRequest(e.ToString());
@@ -170,7 +174,7 @@ namespace Bargio.Api
                         o.Date.ToString(CultureInfo.CurrentCulture),
                         o.UserName,
                         o.Commentaire,
-                        o.Montant.ToString(CultureInfo.CurrentCulture)
+                        o.Montant.ToString(CultureInfo.CurrentCulture).Replace(",", ".")
                     });
                 return Ok(JsonConvert.SerializeObject(new {data = linq}));
             }
@@ -183,22 +187,18 @@ namespace Bargio.Api
         public async Task<ActionResult> ModeArchi(string json) {
             try {
                 dynamic data = JObject.Parse(json);
-                var listeProms = ((string)data.proms).Split(",");
-                var exclusive = (bool)data.exclusive;
-                var remove = (bool)data.remove;
-                if (listeProms == null) {
-                    return BadRequest("Paramètres incorrects: proms");
-                }
+                var listeProms = ((string) data.proms).Split(",");
+                var exclusive = (bool) data.exclusive;
+                var remove = (bool) data.remove;
+                if (listeProms == null) return BadRequest("Paramètres incorrects: proms");
 
                 IQueryable<UserData> users;
                 if (exclusive)
                     users = _context.UserData.Where(o => listeProms.Any(proms => !o.UserName.Contains(proms)));
-                else 
+                else
                     users = _context.UserData.Where(o => listeProms.Any(proms => o.UserName.Contains(proms)));
 
-                foreach (var user in users) {
-                    user.ModeArchi = !remove;
-                }
+                foreach (var user in users) user.ModeArchi = !remove;
 
                 await _context.SaveChangesAsync();
             }
@@ -208,6 +208,5 @@ namespace Bargio.Api
 
             return Ok();
         }
-
     }
 }

@@ -1,9 +1,4 @@
-﻿cabler/supprimer reset mdp dans babasse
-bind raccourci proms
-somme panneau admin
-ajout deconnection admin mdr
-
-easter eggs: appuyez sur f13, bucquage créateur
+﻿easter eggs: appuyez sur f13, bucquage créateur
 
 tej les avertissements sur vs
 clean code

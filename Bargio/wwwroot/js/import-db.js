@@ -1,8 +1,8 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     upload_begin = false;
-    $("#sendXml").click(function (e) {
+    $("#sendXml").click(function(e) {
         if (upload_begin) return;
-        if ($('#fileInput').get(0).files.length === 0) return;
+        if ($("#fileInput").get(0).files.length === 0) return;
         upload_begin = true;
         $("#info-attente").addClass("d-none");
         $("#info-patience").removeClass("d-none");
@@ -10,16 +10,16 @@
         $("#sendXml").addClass("disabled");
         $("#fileInput").addClass("disabled");
 
-        var fdata = new FormData();
+        const fdata = new FormData();
         fdata.append("xml_file", $("#fileInput")[0].files[0]);
         fdata.append("append_to_db", $("#append").is(":checked"));
         $.ajax({
-            type: 'POST',
-            url: '/Api/ImportDb',
+            type: "POST",
+            url: "/Api/ImportDb",
             data: fdata,
             contentType: false,
             processData: false,
-            success: function (response) {
+            success: function(response) {
                 if (response.charAt(0) === "0") {
                     response = response.substr(1);
                     $("#info-migration").addClass("d-none");

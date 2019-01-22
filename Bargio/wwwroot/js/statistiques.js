@@ -1,9 +1,9 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     var chart = null;
 
     // unité: days, hours
     function updateChart(listeTransactions, unite) {
-        var data = [];
+        const data = [];
 
         if (listeTransactions.length === 0) {
             chart.data.datasets[0].data = [];
@@ -13,18 +13,18 @@
 
         var next = moment(listeTransactions[0][0]).add(1, unite);
         if (unite === "days")
-            next.set('hour', 0);
-        next.set('minute', 0);
+            next.set("hour", 0);
+        next.set("minute", 0);
 
         var montant = 0;
-        for (var i = 0; i < listeTransactions.length; i++) {
-            var bucquage = listeTransactions[i];
+        for (let i = 0; i < listeTransactions.length; i++) {
+            const bucquage = listeTransactions[i];
             if (moment(bucquage[0]).isAfter(next)) {
                 data.push({ x: moment(next).subtract(1, unite), y: -montant });
                 next = moment(bucquage[0]).add(1, unite);
                 if (unite === "days")
-                    next.set('hour', 0);
-                next.set('minute', 0);
+                    next.set("hour", 0);
+                next.set("minute", 0);
                 montant = bucquage[2];
             } else {
                 montant += bucquage[2];
@@ -37,7 +37,7 @@
 
     function updateMontant(data) {
         var montant = 0;
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             if (data[i][2] < 0) {
                 montant -= data[i][2];
             }
@@ -46,31 +46,31 @@
     }
 
     function refreshUi() {
-        if ($("#radio-conso-soiree").is(':checked')) {
+        if ($("#radio-conso-soiree").is(":checked")) {
             $("#choix-date").show();
-            $('#timepicker-conso').datetimepicker("destroy");
-            $('#timepicker-conso').datetimepicker({
-                format: 'DD/MMM/YYYY',
+            $("#timepicker-conso").datetimepicker("destroy");
+            $("#timepicker-conso").datetimepicker({
+                format: "DD/MMM/YYYY",
                 viewMode: "days"
             });
-        } else if ($("#radio-conso-mois").is(':checked')) {
-			$("#choix-date").show();
-            $('#timepicker-conso').datetimepicker("destroy");
-            $('#timepicker-conso').datetimepicker({
-                format: 'MM/YYYY',
+        } else if ($("#radio-conso-mois").is(":checked")) {
+            $("#choix-date").show();
+            $("#timepicker-conso").datetimepicker("destroy");
+            $("#timepicker-conso").datetimepicker({
+                format: "MM/YYYY",
                 viewMode: "months"
             });
-		} else if ($("#radio-conso-annee").is(':checked')) {
-			$("#choix-date").show();
-            $('#timepicker-conso').datetimepicker("destroy");
-            $('#timepicker-conso').datetimepicker({
+        } else if ($("#radio-conso-annee").is(":checked")) {
+            $("#choix-date").show();
+            $("#timepicker-conso").datetimepicker("destroy");
+            $("#timepicker-conso").datetimepicker({
                 format: "YYYY",
                 viewMode: "years"
             });
-		} else if ($("#radio-conso-tout").is(':checked')) {
-			$("#choix-date").hide();
-            $('#timepicker-conso').datetimepicker("destroy");
-            var table = $(".table-consos-total-datatable").DataTable();
+        } else if ($("#radio-conso-tout").is(":checked")) {
+            $("#choix-date").hide();
+            $("#timepicker-conso").datetimepicker("destroy");
+            const table = $(".table-consos-total-datatable").DataTable();
             table.clear();
             table.rows.add(transactions);
             table.draw();
@@ -78,81 +78,88 @@
             updateMontant(transactions);
         }
     }
-    
+
     // Initialisation des tables et du graph
     (() => {
         var table = $(".table-consos-total-datatable").DataTable({
             "scrollX": true,
             "language": {
-              "info": "_TOTAL_ bucquages au total",
-              "paginate": {
-                "previous": "<",
-                "next": ">"
-              },
-              "sLengthMenu": "_MENU_ transactions par page",
-              "sSearch": "Rechercher"
+                "info": "_TOTAL_ bucquages au total",
+                "paginate": {
+                    "previous": "<",
+                    "next": ">"
+                },
+                "sLengthMenu": "_MENU_ transactions par page",
+                "sSearch": "Rechercher"
             },
-            "columnDefs": [ {
-                "targets": 0,
-                "render": $.fn.dataTable.render.moment("DD/MM/YYYY HH:mm")
-            } ]
+            "columnDefs": [
+                {
+                    "targets": 0,
+                    "render": $.fn.dataTable.render.moment("DD/MM/YYYY HH:mm")
+                }
+            ]
         });
         table.clear();
         $("#choix-date").hide();
-        
+
         var ctx = document.getElementById("conso-chart");
         moment.locale("fr");
-        chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: [
-                    {
-                        data: [],
-                        borderColor: "forestgreen",
-                        fill: "origin"
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        time: {
-                            displayFormats: {
-                                'millisecond': 'DD/MM/YYYY HH:mm',
-                                'second': 'HH:mm',
-                                'minute': 'HH:mm',
-                                'hour': 'HH:mm',
-                                'day': 'DD/MM',
-                                'week': 'DD/MM',
-                                'month': 'MM/YYYY',
-                                'quarter': 'MM/YYYY',
-                                'year': 'MM/YYYY'
-                            }
+        chart = new Chart(ctx,
+            {
+                type: "line",
+                data: {
+                    datasets: [
+                        {
+                            data: [],
+                            borderColor: "forestgreen",
+                            fill: "origin"
                         }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        },
-                      scaleLabel: {
-                        display: true,
-                        labelString: 'Broüsoüfs dépensés (€)'
-                      }
-                    }]
+                    ]
                 },
-                elements: {
-                    line: {
-                        tension: 0 // disables bezier curves
+                options: {
+                    scales: {
+                        xAxes: [
+                            {
+                                type: "time",
+                                time: {
+                                    displayFormats: {
+                                        'millisecond': "DD/MM/YYYY HH:mm",
+                                        'second': "HH:mm",
+                                        'minute': "HH:mm",
+                                        'hour': "HH:mm",
+                                        'day': "DD/MM",
+                                        'week': "DD/MM",
+                                        'month': "MM/YYYY",
+                                        'quarter': "MM/YYYY",
+                                        'year': "MM/YYYY"
+                                    }
+                                }
+                            }
+                        ],
+                        yAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: "Broüsoüfs dépensés (€)"
+                                }
+                            }
+                        ]
+                    },
+                    elements: {
+                        line: {
+                            tension: 0 // disables bezier curves
+                        }
+                    },
+                    legend: {
+                        display: false
                     }
-                },
-                legend: {
-                    display: false
                 }
-            }
-        });
+            });
     })();
-    
+
     // On rentre les données dans l'historique complet
     (() => {
         transactions = $.map(transactions,
@@ -169,41 +176,41 @@
 
     // Gestion des event (plage de temps consommation)
     (() => {
-        $('#timepicker-conso').on("change.datetimepicker", function(e) {
-            var chosenDate = $("#timepicker-conso").datetimepicker("viewDate");
+        $("#timepicker-conso").on("change.datetimepicker",
+            function(e) {
+                var chosenDate = $("#timepicker-conso").datetimepicker("viewDate");
 
-            var timescale = "years";
-            if ($("#radio-conso-mois").is(":checked")) {
-                timescale = "months";
-            }
-            else if ($("#radio-conso-soiree").is(":checked")) {
-                timescale = "days";
-                chosenDate.set('hour', 15);
-            }
-
-            var data = $.grep(transactions,
-                function(val) {
-                    return chosenDate.isBefore(val[0]) && moment(chosenDate).add(1, timescale).isAfter(val[0]);
+                var timescale = "years";
+                if ($("#radio-conso-mois").is(":checked")) {
+                    timescale = "months";
+                } else if ($("#radio-conso-soiree").is(":checked")) {
+                    timescale = "days";
+                    chosenDate.set("hour", 15);
                 }
-            );
 
-            var table = $(".table-consos-total-datatable").DataTable();
-            table.clear();
-            table.rows.add(data);
-            table.draw();
+                const data = $.grep(transactions,
+                    function(val) {
+                        return chosenDate.isBefore(val[0]) && moment(chosenDate).add(1, timescale).isAfter(val[0]);
+                    }
+                );
 
-            var unite = "month";
-            if (timescale === "months") {
-                unite = "day";
-            } else if (timescale === "days") {
-                unite = "hour";
-            }
-            updateChart(data, unite);
+                const table = $(".table-consos-total-datatable").DataTable();
+                table.clear();
+                table.rows.add(data);
+                table.draw();
 
-            updateMontant(data);
-        });
+                var unite = "month";
+                if (timescale === "months") {
+                    unite = "day";
+                } else if (timescale === "days") {
+                    unite = "hour";
+                }
+                updateChart(data, unite);
 
-        $('input:radio').change(refreshUi);
+                updateMontant(data);
+            });
+
+        $("input:radio").change(refreshUi);
         refreshUi();
     })();
 

@@ -6,48 +6,50 @@
     Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
-    <h1 class="display-4">Importer une BDD depuis l'ancien logiciel</h1>
-    <hr class="my-4">
-    <p class="lead">Etape 1 : Ouvrir la BDD '.accdb' dans Access</p>
-    <p class="lead">Etape 2 : Clic droit sur la table 'tbUser' -> Exporter -> Fichier XML</p>
-    <p class="lead">Etape 3 : Sélectionner sur cette page le fichier XML</p>
-    <hr class="my-4">
-    <p id="info-patience" class="text-danger d-none">L'opération peut durer plus d'une heure. Ne quittez pas cette page pendant le transfert.</p>
-    <div class="input-group mb-3" style="width:300px;">
-        <div class="custom-file">
-            <input type="file" name="fileInput" class="form-control-file custom-file-input" id="fileInput">
-            <label id="file-picker-label" class="custom-file-label" for="fileInput">Choisissiez le fichier XML</label>
-        </div>
+<h1 class="display-4">Importer une BDD depuis l'ancien logiciel</h1>
+<hr class="my-4">
+<p class="lead">Etape 1 : Ouvrir la BDD '.accdb' dans Access</p>
+<p class="lead">Etape 2 : Clic droit sur la table 'tbUser' -> Exporter -> Fichier XML</p>
+<p class="lead">Etape 3 : Sélectionner sur cette page le fichier XML</p>
+<hr class="my-4">
+<p id="info-patience" class="text-danger d-none">L'opération peut durer plus d'une heure. Ne quittez pas cette page pendant le transfert.</p>
+<div class="input-group mb-3" style="width: 300px;">
+    <div class="custom-file">
+        <input type="file" name="fileInput" class="form-control-file custom-file-input" id="fileInput">
+        <label id="file-picker-label" class="custom-file-label" for="fileInput">Choisissiez le fichier XML</label>
     </div>
+</div>
 
-    <div style="margin-bottom: 20px;">
-        <input class="form-check-input" id="append" type="radio" value="1" name="append-db-radio" checked>
-        <label style="margin-left: 40px !important;" class="form-check-label" for="append">
-            Ajouter à la BDD actuelle
-        </label>
-        <input class="form-check-input" id="erase" type="radio" value="2" name="append-db-radio">
-        <label style="margin-left: 40px !important;" class="form-check-label" for="erase">
-            Ecraser la BDD actuelle
-        </label>
-    </div>
+<div style="margin-bottom: 20px;">
+    <input class="form-check-input" id="append" type="radio" value="1" name="append-db-radio" checked>
+    <label style="margin-left: 40px !important;" class="form-check-label" for="append">
+        Ajouter à la BDD actuelle
+    </label>
+    <input class="form-check-input" id="erase" type="radio" value="2" name="append-db-radio">
+    <label style="margin-left: 40px !important;" class="form-check-label" for="erase">
+        Ecraser la BDD actuelle
+    </label>
+</div>
 
-    <div class="row ">
-        <div class="col-2">
-            <p class="lead">
-                <button class="btn btn-info" id="sendXml" type="button">Envoyer</button>
-            </p>
-        </div>
-        <div class="col-6" style="padding-top:5px;">
-            <p id="info-attente" class="text-info">○ En attente...</p>
-            <p id="info-migration" class="text-warning d-none">○ Migration de la BDD en cours...</p>
-            <p id="info-echec" class="text-danger d-none">○ Echec de la migration.</p>
-            <p id="info-succes" class="text-success d-none">○ Migration terminée.</p>
-        </div>
+<div class="row ">
+    <div class="col-2">
+        <p class="lead">
+            <button class="btn btn-info" id="sendXml" type="button">Envoyer</button>
+        </p>
     </div>
+    <div class="col-6" style="padding-top: 5px;">
+        <p id="info-attente" class="text-info">○ En attente...</p>
+        <p id="info-migration" class="text-warning d-none">○ Migration de la BDD en cours...</p>
+        <p id="info-echec" class="text-danger d-none">○ Echec de la migration.</p>
+        <p id="info-succes" class="text-success d-none">○ Migration terminée.</p>
+    </div>
+</div>
 
-    <div class="row">
-        <p id="message-validation"><br /></p>
-    </div>
+<div class="row">
+    <p id="message-validation">
+        <br/>
+    </p>
+</div>
 
 @section Scripts {
     <environment names="Development">
@@ -56,4 +58,4 @@
     <environment names="Staging,Production">
         <script type="text/javascript" src="/js/import-db.min.js"></script>
     </environment>
-} 
+}

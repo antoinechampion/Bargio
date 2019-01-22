@@ -1,81 +1,85 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿//          Bargio - 20181212102426_update_SystemParameters_settings_zifoys.cs
+//  Copyright (c) Antoine Champion 2018-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bargio.Migrations
 {
     public partial class update_SystemParameters_settings_zifoys : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.AlterColumn<string>(
-                name: "IdProduits",
-                table: "TransactionHistory",
+                "IdProduits",
+                "TransactionHistory",
                 nullable: true,
                 oldClrType: typeof(long),
                 oldNullable: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "MiseHorsBabasseAutoActivee",
-                table: "SystemParameters",
+                "MiseHorsBabasseAutoActivee",
+                "SystemParameters",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<string>(
-                name: "MiseHorsBabasseHebdomadaireHeure",
-                table: "SystemParameters",
+                "MiseHorsBabasseHebdomadaireHeure",
+                "SystemParameters",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "MiseHorsBabasseHebdomadaireJours",
-                table: "SystemParameters",
+                "MiseHorsBabasseHebdomadaireJours",
+                "SystemParameters",
                 nullable: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "MiseHorsBabasseInstantanee",
-                table: "SystemParameters",
+                "MiseHorsBabasseInstantanee",
+                "SystemParameters",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "MiseHorsBabasseQuotidienne",
-                table: "SystemParameters",
+                "MiseHorsBabasseQuotidienne",
+                "SystemParameters",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<string>(
-                name: "MiseHorsBabasseQuotidienneHeure",
-                table: "SystemParameters",
+                "MiseHorsBabasseQuotidienneHeure",
+                "SystemParameters",
                 nullable: true);
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropColumn(
-                name: "MiseHorsBabasseAutoActivee",
-                table: "SystemParameters");
+                "MiseHorsBabasseAutoActivee",
+                "SystemParameters");
 
             migrationBuilder.DropColumn(
-                name: "MiseHorsBabasseHebdomadaireHeure",
-                table: "SystemParameters");
+                "MiseHorsBabasseHebdomadaireHeure",
+                "SystemParameters");
 
             migrationBuilder.DropColumn(
-                name: "MiseHorsBabasseHebdomadaireJours",
-                table: "SystemParameters");
+                "MiseHorsBabasseHebdomadaireJours",
+                "SystemParameters");
 
             migrationBuilder.DropColumn(
-                name: "MiseHorsBabasseInstantanee",
-                table: "SystemParameters");
+                "MiseHorsBabasseInstantanee",
+                "SystemParameters");
 
             migrationBuilder.DropColumn(
-                name: "MiseHorsBabasseQuotidienne",
-                table: "SystemParameters");
+                "MiseHorsBabasseQuotidienne",
+                "SystemParameters");
 
             migrationBuilder.DropColumn(
-                name: "MiseHorsBabasseQuotidienneHeure",
-                table: "SystemParameters");
+                "MiseHorsBabasseQuotidienneHeure",
+                "SystemParameters");
 
             migrationBuilder.AlterColumn<long>(
-                name: "IdProduits",
-                table: "TransactionHistory",
+                "IdProduits",
+                "TransactionHistory",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldNullable: true);

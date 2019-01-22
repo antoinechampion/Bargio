@@ -1,6 +1,6 @@
 ﻿input:not([type="button"]) {
-    height: 25px;
     font-size: 14px;
+    height: 25px;
     line-height: 14px;
     margin-left: 15px;
     margin-right: 15px;
@@ -12,28 +12,24 @@ label {
 }
 
 form {
-    text-align: center;
     display: inline-block;
+    text-align: center;
 }
 
-.dl-horizontal {
-    margin-left: 20px;
-}
+.dl-horizontal { margin-left: 20px; }
 
 h2, h4, a {
+    display: inline;
     margin-left: 25px;
     text-align: center;
-    display: inline;
 }
 
-h4 {
-    display: none;
-}
+h4 { display: none; }
 
 tr {
+    height: 10px;
     line-height: 10px;
     min-height: 10px;
-    height: 10px;
 }
 
 input[type="checkbox"] {
@@ -51,29 +47,17 @@ hr {
     margin-top: -10px;
 }
 
-.nav {
-    margin-top: 10px;
-}
+.nav { margin-top: 10px; }
 
-.tab-pane {
-    padding: 20px;
-}
+.tab-pane { padding: 20px; }
 
-table {
-    width: 100% !important;
-}
+table { width: 100% !important; }
 
-.dataTables_scrollHeadInner{
-    width:100% !important;
-}
+.dataTables_scrollHeadInner { width: 100% !important; }
 
-.dataTables_scrollHeadInner table{
-    width:100% !important;
-}
+.dataTables_scrollHeadInner table { width: 100% !important; }
 
-.clickable-table tr {
-    cursor: pointer;
-}
+.clickable-table tr { cursor: pointer; }
 
 .logo-bargio-admin {
     position: absolute;

@@ -1,28 +1,29 @@
-﻿using System;
+﻿//          Bargio - Index.cshtml.cs
+//  Copyright (c) Antoine Champion 2018-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Bargio.Data;
 using Bargio.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bargio.Areas.Admin.Pages.EditDatabase.HistoriqueTransactions
 {
     public class IndexModel : PageModel
     {
-        private readonly Bargio.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public IndexModel(Bargio.Data.ApplicationDbContext context)
-        {
+        public IndexModel(ApplicationDbContext context) {
             _context = context;
         }
 
-        public IList<TransactionHistory> TransactionHistory { get;set; }
+        public IList<TransactionHistory> TransactionHistory { get; set; }
 
-        public async Task OnGetAsync()
-        {
+        public async Task OnGetAsync() {
             TransactionHistory = await _context.TransactionHistory.ToListAsync();
         }
     }

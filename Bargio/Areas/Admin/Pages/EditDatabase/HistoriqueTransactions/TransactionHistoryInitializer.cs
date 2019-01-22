@@ -1,4 +1,10 @@
-﻿using System;
+﻿//          Bargio - TransactionHistoryInitializer.cs
+//  Copyright (c) Antoine Champion 2019-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,16 +21,13 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.HistoriqueTransactions
             return;
 #endif
 
-            if (!context.TransactionHistory.Any(o => o.UserName.ToLower() == "1test217"))
-            {
+            if (!context.TransactionHistory.Any(o => o.UserName.ToLower() == "1test217")) {
                 var r = new Random(1);
                 var transactions = new List<TransactionHistory>();
                 var date = DateTime.Now.AddYears(-1);
                 var products = context.Product.Select(o => o.Id).ToList();
-                while (date < DateTime.Now)
-                {
-                    transactions.Add(new TransactionHistory
-                    {
+                while (date < DateTime.Now) {
+                    transactions.Add(new TransactionHistory {
                         UserName = "1test217",
                         Date = date,
                         Montant = r.Next(-10, 5),
@@ -33,6 +36,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.HistoriqueTransactions
                     });
                     date = date.AddHours(6);
                 }
+
                 await context.TransactionHistory.AddRangeAsync(transactions);
             }
 

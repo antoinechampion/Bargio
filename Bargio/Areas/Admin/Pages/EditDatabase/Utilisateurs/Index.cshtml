@@ -13,36 +13,36 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserData[0].Solde)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserData[0].Nums)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserData[0].TBK)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserData[0].Proms)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserData[0].HorsFoys)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserData[0].ModeArchi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserData[0].Surnom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserData[0].DateDerniereModif)
-            </th>
-            <th></th><th></th><th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserData[0].Solde)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserData[0].Nums)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserData[0].TBK)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserData[0].Proms)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserData[0].HorsFoys)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserData[0].ModeArchi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserData[0].Surnom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserData[0].DateDerniereModif)
+        </th>
+        <th></th><th></th><th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.UserData) {
+    @foreach (var item in Model.UserData) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Solde)
@@ -78,6 +78,6 @@
                 <a asp-page="./Delete" asp-route-id="@item.UserName">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

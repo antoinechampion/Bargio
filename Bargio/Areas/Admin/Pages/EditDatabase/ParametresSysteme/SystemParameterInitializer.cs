@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿//          Bargio - SystemParameterInitializer.cs
+//  Copyright (c) Antoine Champion 2019-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
+using System;
 using System.Threading.Tasks;
 using Bargio.Data;
 using Bargio.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
 {
@@ -13,7 +15,6 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
     {
         public static async Task SeedData
             (ApplicationDbContext context) {
-
             var p = new SystemParameters {
                 DerniereConnexionBabasse = DateTime.Now,
                 BucquagesBloques = false,
@@ -32,8 +33,8 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
                 Snow = true,
                 MotDesZifoys = "L'endroit parfait pour caler des rhopses hyper ayat'sssssssss.",
                 Actualites = "Jeudi 8 Novembre - Zbeuuuuuuul\n"
-                    + "Vendredi 9 Novembre - Remise de fam'ss\n"
-                    + "WBP - fin'ss - ce genre de choses..."
+                             + "Vendredi 9 Novembre - Remise de fam'ss\n"
+                             + "WBP - fin'ss - ce genre de choses..."
             };
             var systemParameters = context.SystemParameters;
             foreach (var entity in systemParameters)

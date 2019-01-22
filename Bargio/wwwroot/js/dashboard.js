@@ -1,24 +1,24 @@
-﻿$(document).ready(function () {
-    var listeProduits = [];
-    var listeConsos = [];
+﻿$(document).ready(function() {
+    const listeProduits = [];
+    const listeConsos = [];
 
-    for (var produit in compteurConsos) {
+    for (let produit in compteurConsos) {
         if (compteurConsos.hasOwnProperty(produit)) {
             listeProduits.push(produit);
             listeConsos.push(compteurConsos[produit]);
         }
     }
 
-    var colors = ["#246421", "#2f832c", "#3ba537", "#46c041", "#71ce6d", "#8ed88b", "#aae2a8", "#c7ecc5", "d6f1d4"];
+    const colors = ["#246421", "#2f832c", "#3ba537", "#46c041", "#71ce6d", "#8ed88b", "#aae2a8", "#c7ecc5", "d6f1d4"];
     var ratio = Math.ceil(colors.length / listeProduits.length);
-    var sampledColors = colors.filter(function(value, index, arr) {
+    const sampledColors = colors.filter(function(value, index, arr) {
         return index % ratio === 0;
     });
 
     if (listeProduits.length !== 0) {
-        new Chart(document.getElementById("doughnut-chart").getContext('2d'),
+        new Chart(document.getElementById("doughnut-chart").getContext("2d"),
             {
-                type: 'doughnut',
+                type: "doughnut",
                 data: {
                     labels: listeProduits,
                     datasets: [
@@ -35,5 +35,5 @@
         $("#doughnut-chart-message").removeClass("d-none");
         $("#doughnut-chart").addClass("d-none");
     }
-            
+
 });

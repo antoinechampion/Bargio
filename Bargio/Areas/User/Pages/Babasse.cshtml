@@ -7,8 +7,8 @@
 }
 
 @section IncludeHead {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <environment names="Development">
         <link rel="stylesheet" href="/css/babasse.css">
     </environment>
@@ -39,18 +39,17 @@
         <script src="/js/superlocal.min.js"></script>
     </environment>
     <!-- On ne minifie pas babasse.js et babasse-admin.js car le package nuget
-        BuildBundleMinifier ne supporte pas les méthodes async (ECMAScript > 5) -->
+    BuildBundleMinifier ne supporte pas les méthodes async (ECMAScript > 5) -->
     <script src="/js/babasse.js"></script>
     <script src="/js/babasse-admin.js"></script>
 }
 
-<partial name="_ZifoysBabassePartial" />
+<partial name="_ZifoysBabassePartial"/>
 
 <div class="bloc-central">
     <div class="container">
         <ul class="list-inline list-header" id="ui-proms">
-            @foreach (var r in Model.RaccourcisProms)
-            {
+            @foreach (var r in Model.RaccourcisProms) {
                 <li class="list-inline-item font-weight-light raccourci-proms">@r.Raccourci</li>
                 <li class="list-inline-item font-weight-bold">@(r.TBK + r.Proms)</li>
             }
@@ -92,8 +91,7 @@
                 <div class="bloc-case" id="scroll-tarifs">
                     <p class="bloc-titre text-center">Tarifs</p>
                     <table class="table" id="table-tarifs">
-                        @foreach (var c in Model.Consommations)
-                        {
+                        @foreach (var c in Model.Consommations) {
                             <tr class="clickable-tr">
                                 <th class="conso-nom">@c.Nom</th>
                                 <td class="conso-raccourci">@(c.RaccourciClavier ?? "")</td>
@@ -210,13 +208,13 @@
 
             <div class="modal-body">
                 <div class="form-group">
-                    <h6 class="text-center" style="margin-top:30px;">Entrez le mot de passe</h6>
+                    <h6 class="text-center" style="margin-top: 30px;">Entrez le mot de passe</h6>
 
                     <input id="input-mdp" class="form-control input-lg mb-3" type="password" autofocus>
 
                     <label id="label-mdp-invalide" class="control-label text-danger" style="display: none;">Mot de passe invalide.</label>
 
-                    <button id="button-mdp" type="button" class="btn btn-primary" style="margin-top:30px;">Confirmer</button>
+                    <button id="button-mdp" type="button" class="btn btn-primary" style="margin-top: 30px;">Confirmer</button>
                 </div>
             </div>
         </div>

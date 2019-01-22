@@ -13,27 +13,27 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionHistory[0].UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionHistory[0].Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionHistory[0].Montant)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionHistory[0].IdProduits)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionHistory[0].Commentaire)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionHistory[0].UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionHistory[0].Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionHistory[0].Montant)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionHistory[0].IdProduits)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionHistory[0].Commentaire)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.TransactionHistory) {
+    @foreach (var item in Model.TransactionHistory) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
@@ -56,6 +56,6 @@
                 <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

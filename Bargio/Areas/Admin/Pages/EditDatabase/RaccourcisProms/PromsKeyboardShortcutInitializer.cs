@@ -1,4 +1,10 @@
-﻿using System.Linq;
+﻿//          Bargio - PromsKeyboardShortcutInitializer.cs
+//  Copyright (c) Antoine Champion 2018-2019.
+//  Distributed under the Boost Software License, Version 1.0.
+//     (See accompanying file LICENSE_1_0.txt or copy at
+//           http://www.boost.org/LICENSE_1_0.txt)
+
+using System.Linq;
 using System.Threading.Tasks;
 using Bargio.Data;
 using Bargio.Models;
@@ -82,7 +88,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.RaccourcisProms
                     TBK = "Li",
                     Proms = "208"
                 });
-            
+
             await context.SaveChangesAsync();
         }
     }

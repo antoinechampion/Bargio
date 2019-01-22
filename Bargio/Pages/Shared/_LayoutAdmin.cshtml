@@ -1,20 +1,21 @@
 ﻿@{
     Layout = "~/Pages/Shared/_LayoutNoNavbar.cshtml";
 }
+
 @section IncludeHead {
-    <environment names="Development">         
-        <link rel="stylesheet" href="/css/editdatabase.css">   
+    <environment names="Development">
+        <link rel="stylesheet" href="/css/editdatabase.css">
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="/css/editdatabase.min.css">
     </environment>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-    @RenderSection("IncludeHead", required: false)
+    @RenderSection("IncludeHead", false)
 }
 
 <div class="jumbotron">
     <img class="logo-bargio-admin" src="/images/logo_admin255.png" height="50px" alt="Logal Bargio"/>
-    
+
     @RenderBody()
 
     <p>
@@ -23,13 +24,12 @@
 </div>
 
 
-
 @section Scripts {
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <script type="text/javascript">
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('.table').DataTable();
-        } );
+        });
     </script>
-    @RenderSection("Scripts", required: false)
-} 
+    @RenderSection("Scripts", false)
+}

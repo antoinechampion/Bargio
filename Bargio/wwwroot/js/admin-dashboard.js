@@ -1,36 +1,40 @@
-$(document).ready(function () {
-    var admin = (function () {
+$(document).ready(function() {
+    const admin = (function() {
         var admin = {
             derniersBucquages: function() {
-                $("#table-derniers-bucquages").DataTable( {
-                    "ajax":  "/api/admin/derniersbucquages"
+                $("#table-derniers-bucquages").DataTable({
+                    "ajax": "/api/admin/derniersbucquages"
                 });
             },
 
             modifierCompte: function() {
                 $("#card-modif-utilisateur").hide();
-                var table = $("#table-modifier-compte").DataTable( {
-                    "ajax":  "/api/admin/modifiercompte"
+                var table = $("#table-modifier-compte").DataTable({
+                    "ajax": "/api/admin/modifiercompte",
+                    "drawCallback": function() {
+                        const api = this.api();
+                        $("#total-utilisateurs").text(api.column(1, { filter: "applied" }).data().sum().toFixed(2));
+                    }
                 });
-                $('#table-modifier-compte').on('click',
-                    'tbody tr',
+                $("#table-modifier-compte").on("click",
+                    "tbody tr",
                     function() {
-                        var userName = table.row(this).data()[0];
+                        const userName = table.row(this).data()[0];
                         admin.recupererInfosCompte(userName);
                     });
             },
 
             recupererInfosCompte: function(userName) {
                 $.ajax({
-                    type: 'GET',
-                    url: '/api/admin/recupererinfocompte/' + userName,
+                    type: "GET",
+                    url: `/api/admin/recupererinfocompte/${userName}`,
                     success: function(response) {
                         $("#card-modif-utilisateur").show();
 
                         $("#utilisateur-a-modifier").text(userName);
                         response = JSON.parse(response);
-                        $("#mode-archi").prop('checked', response.ModeArchi);
-                        $("#hors-foys").prop('checked', response.HorsFoys);
+                        $("#mode-archi").prop("checked", response.ModeArchi);
+                        $("#hors-foys").prop("checked", response.HorsFoys);
                         $("#prenom").val(response.Prenom);
                         $("#nom").val(response.Nom);
                         $("#surnom").val(response.Surnom);
@@ -39,40 +43,40 @@ $(document).ready(function () {
                         $("#proms").val(response.Proms);
                     },
                     error: function(xhr, error) {
-                        $("#modal-texte-erreur").text("(" + xhr.status + ") " + xhr.responseText);
-                        $("#modal-erreur").modal('show');
+                        $("#modal-texte-erreur").text(`(${xhr.status}) ${xhr.responseText}`);
+                        $("#modal-erreur").modal("show");
                     }
                 });
 
                 $("#a-bucquage-manuel").click(function() {
-                    var data = {
+                    const data = {
                         UserName: userName,
                         Montant: $("#bucquage-montant").val(),
                         Commentaire: $("#bucquage-raison").val()
                     };
-                    var json = JSON.stringify(data);
-                    var fdata = new FormData();
+                    const json = JSON.stringify(data);
+                    const fdata = new FormData();
                     fdata.append("json", json);
                     $.ajax({
-                        type: 'POST',
-                        url: '/api/admin/bucquagemanuel',
+                        type: "POST",
+                        url: "/api/admin/bucquagemanuel",
                         cache: false,
                         data: fdata,
                         contentType: false,
                         processData: false,
-                        success: function (response) {
-                            $("#modal-succes").modal('show');
+                        success: function(response) {
+                            $("#modal-succes").modal("show");
                         },
                         error: function(xhr, error) {
-                            $("#modal-texte-erreur").text("(" + xhr.status + ") " + xhr.responseText);
-                            $("#modal-erreur").modal('show');
+                            $("#modal-texte-erreur").text(`(${xhr.status}) ${xhr.responseText}`);
+                            $("#modal-erreur").modal("show");
                         }
                     });
                 });
 
                 $("#a-confirmer").click(function() {
                     console.log("go");
-                    var data = {
+                    const data = {
                         UserName: userName,
                         Prenom: $("#prenom").val(),
                         Nom: $("#nom").val(),
@@ -83,93 +87,97 @@ $(document).ready(function () {
                         ModeArchi: $("#mode-archi").is(":checked") || false,
                         HorsFoys: $("#hors-foys").is(":checked") || false
                     };
-                    var json = JSON.stringify(data);
+                    const json = JSON.stringify(data);
                     console.log(json);
-                    var fdata = new FormData();
+                    const fdata = new FormData();
                     fdata.append("json", json);
                     $.ajax({
-                        type: 'POST',
-                        url: '/api/admin/modifiercompte',
+                        type: "POST",
+                        url: "/api/admin/modifiercompte",
                         cache: false,
                         data: fdata,
                         contentType: false,
                         processData: false,
-                        success: function (response) {
-                            $("#modal-succes").modal('show');
+                        success: function(response) {
+                            $("#modal-succes").modal("show");
                         },
                         error: function(xhr, error) {
-                            $("#modal-texte-erreur").text("(" + xhr.status + ") " + xhr.responseText);
-                            $("#modal-erreur").modal('show');
+                            $("#modal-texte-erreur").text(`(${xhr.status}) ${xhr.responseText}`);
+                            $("#modal-erreur").modal("show");
                         }
                     });
                 });
 
                 $("#a-supprimer-mdp").click(function() {
-                    var data = {
+                    const data = {
                         UserName: userName
                     };
-                    var json = JSON.stringify(data);
+                    const json = JSON.stringify(data);
                     console.log(json);
-                    var fdata = new FormData();
+                    const fdata = new FormData();
                     fdata.append("json", json);
                     $.ajax({
-                        type: 'POST',
-                        url: '/api/admin/supprimermdp',
+                        type: "POST",
+                        url: "/api/admin/supprimermdp",
                         cache: false,
                         data: fdata,
                         contentType: false,
                         processData: false,
-                        success: function (response) {
-                            $("#modal-succes").modal('show');
+                        success: function(response) {
+                            $("#modal-succes").modal("show");
                         },
                         error: function(xhr, error) {
-                            $("#modal-texte-erreur").text("(" + xhr.status + ") " + xhr.responseText);
-                            $("#modal-erreur").modal('show');
+                            $("#modal-texte-erreur").text(`(${xhr.status}) ${xhr.responseText}`);
+                            $("#modal-erreur").modal("show");
                         }
                     });
                 });
             },
 
-            historique: function () {
-                $('#timepicker-debut').datetimepicker({
-                    format: 'DD-MM-YYYY HH:mm'
+            historique: function() {
+                $("#timepicker-debut").datetimepicker({
+                    format: "DD-MM-YYYY HH:mm"
                 });
-                $('#timepicker-fin').datetimepicker({
-                    format: 'DD-MM-YYYY HH:mm'
+                $("#timepicker-fin").datetimepicker({
+                    format: "DD-MM-YYYY HH:mm"
                 });
 
                 $("#a-historique").click(function() {
-                    var debut = $("#timepicker-debut").datetimepicker("viewDate").toISOString();
-                    var fin = $("#timepicker-fin").datetimepicker("viewDate").toISOString();
-                    $("#table-historique").DataTable( {
-                        "ajax":  "/api/admin/historique/" + debut + "/" + fin,
-                        "bDestroy": true
+                    const debut = $("#timepicker-debut").datetimepicker("viewDate").toISOString();
+                    const fin = $("#timepicker-fin").datetimepicker("viewDate").toISOString();
+                    $("#table-historique").DataTable({
+                        "ajax": `/api/admin/historique/${debut}/${fin}`,
+                        "bDestroy": true,
+                        "drawCallback": function() {
+                            const api = this.api();
+                            $("#total-historique").text(api.column(3, { filter: "applied" }).data().sum().toFixed(2));
+                        }
                     });
                 });
             },
 
             modeArchiPost: function(exclusive, remove) {
-                var data = {
+                const data = {
                     proms: $("#liste-proms-mode-archi").val(),
                     exclusive: exclusive,
                     remove: remove
                 };
-                var json = JSON.stringify(data);
-                var fdata = new FormData();
+                const json = JSON.stringify(data);
+                const fdata = new FormData();
                 fdata.append("json", json);
                 $.ajax({
-                    type: 'POST',
-                    url: '/api/admin/modearchi',
+                    type: "POST",
+                    url: "/api/admin/modearchi",
                     cache: false,
                     data: fdata,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
-                        $("#modal-succes").modal('show');
+                    success: function(response) {
+                        $("#modal-succes").modal("show");
                     },
                     error: function(xhr, error) {
-                        $("#modal-texte-erreur").text("(" + xhr.status + ") " + xhr.responseText);
-                        $("#modal-erreur").modal('show');
+                        $("#modal-texte-erreur").text(`(${xhr.status}) ${xhr.responseText}`);
+                        $("#modal-erreur").modal("show");
                     }
                 });
             },
@@ -194,7 +202,7 @@ $(document).ready(function () {
                 admin.modifierCompte();
                 admin.historique();
                 admin.modeArchi();
-                $('#modal-succes').on('hidden.bs.modal',
+                $("#modal-succes").on("hidden.bs.modal",
                     function(e) {
                         window.location.reload(true);
                     });
