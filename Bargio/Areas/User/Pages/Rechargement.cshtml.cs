@@ -141,7 +141,7 @@ namespace Bargio.Areas.User.Pages
                 return Page();
             }
 
-            var montantPaye = (Montant + CommissionLydiaFixe) / (1 - CommissionLydiaVariable / 100);
+            var montantPaye = (Montant + CommissionLydiaFixe * 1.2M) / (1 - 1.2M * CommissionLydiaVariable / 100);
             var id = await CreatePaymentRequest();
             var (success, message) = await LydiaInitiatePayment(id, montantPaye);
             if (success) return Redirect(message);
