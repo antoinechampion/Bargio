@@ -73,7 +73,7 @@
                 if (montant.isNaN || montant < minimum_rechargement) {
                     $("#montant-avec-commission").text(`Minimum de rechargement : ${minimum_rechargement}€`);
                 } else {
-                    const montant_avec_commission = (montant + commission_fixe) / (1 - commission_variable);
+                    const montant_avec_commission = (montant + 1.2 * commission_fixe) / (1 - 1.2 *commission_variable);
                     $("#montant-avec-commission")
                         .text(`Avec la commission Lydia, tu paieras ${montant_avec_commission.toFixed(2)}€.`);
                 }
