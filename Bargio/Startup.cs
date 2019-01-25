@@ -112,7 +112,7 @@ namespace Bargio
 
                 if (context.SystemParameters.First().Maintenance
                     && !httpCtx.Request.GetEncodedUrl().Contains("Error")) {
-                    httpCtx.Response.Redirect("/Error?statusCode/503");
+                    httpCtx.Response.Redirect("/Error/503");
                     return;
                 }
 
