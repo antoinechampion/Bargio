@@ -1,8 +1,5 @@
 ﻿easter eggs: appuyez sur f13, bucquage créateur
 
-tej les avertissements sur vs
-clean code
-
 passer api lydia en production
 mettre internet sur babasse foy's
 faire test 1 semaine
