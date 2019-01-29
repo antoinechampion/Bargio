@@ -36,5 +36,6 @@ namespace Bargio.Models
         public string FoysApiPasswordHash { get; set; }
         public string FoysApiPasswordSalt { get; set; }
         public bool ModeArchi { get; set; }
+        public bool CompteVerrouille { get; set; }
     }
 }

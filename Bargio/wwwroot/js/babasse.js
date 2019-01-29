@@ -172,7 +172,7 @@ $(document).ready(function() {
     }
 
     function isHorsFoys(user) {
-        return user.HorsFoys;
+        return user.HorsFoys || user.CompteVerrouille;
     }
 
     // Mises à jour asynchrones
@@ -291,6 +291,8 @@ $(document).ready(function() {
                                         {
                                             Solde: user.Solde + modifSoldeLocal,
                                             HorsFoys: user.HorsFoys,
+                                            CompteVerrouille: user.CompteVerrouille,
+                                            ModeArchi: user.ModeArchi,
                                             Surnom: user.Surnom,
                                             FoysApiHasPassword: user.FoysApiHasPassword,
                                             FoysApiPasswordHash: user.FoysApiPasswordHash,

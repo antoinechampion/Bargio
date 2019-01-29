@@ -20,14 +20,21 @@ namespace Bargio.Areas.Cron.Pages
             _iConfiguration = iConfiguration;
         }
 
-        public void OnGet()
+        [BindProperty] public string Debug { get; set; }
+
+        public IActionResult OnGet()
         {
             var connectionStringBuilder = new DbConnectionStringBuilder {
                 ConnectionString = _iConfiguration["ConnectionStrings:DefaultConnection"]
             };
-
+            Debug = connectionStringBuilder.ConnectionString + "\n\n\n\n";
+            return Page();
             var commandText = $@"BACKUP DATABASE [{connectionStringBuilder["Initial Catalog"]}] TO DISK = N'/db/' WITH NOFORMAT, INIT,'"
             + "NAME = N'bargio-{DateTime.Now}', SKIP, NOREWIND, NOUNLOAD,  STATS = 10";
+
+            Debug += commandText;
+
+            return Page();
 
             using (var connection = new SqlConnection(connectionStringBuilder.ConnectionString))
             {

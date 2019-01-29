@@ -1,0 +1,44 @@
+﻿@page
+@model Bargio.Areas.User.Pages.ParametresModel
+
+@{
+    ViewData["Title"] = "Paramètres";
+}
+
+@section IncludeHead {
+    <environment names="Development">
+        <link rel="stylesheet" href="/css/style.css">
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="/css/style.min.css">
+    </environment>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card bloc-central my-2" style="margin-top: 50px;">
+                <div class="bloc-case">
+                    <h5 class="bloc-titre text-center">Paramètres</h5>
+                    <form class="btn-connexion" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <p class="bloc-titre text-center text-info">Verrouiller le compte (empêcher les bucquages)</p>
+                        <div class="text-box1">
+                            <label asp-for="CompteVerrouille"></label>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary bg-success btn-block text-uppercase" type="submit">Confirmer</button>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#navbar-surnom").addClass("active");
+    </script>
+}
