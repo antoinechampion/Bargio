@@ -191,3 +191,7 @@ table { width: 100% !important; }
 .dataTables_scrollHeadInner table { width: 100% !important; }
 
 .titre-stats { font-size: 1.3rem !important; }
+
+.bold {
+    font-weight:bold;
+}

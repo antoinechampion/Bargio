@@ -47,6 +47,50 @@ namespace Bargio.Api
             return JsonConvert.SerializeObject(new {data = linq});
         }
 
+        private int IntTryParseOrDefault(string number, int defaultValue) {
+            number = number.Split("-")[0];
+            return int.TryParse(number, out int result) ? result : defaultValue;
+        }
+
+        [HttpGet("chargerproms/{proms}")]
+        public string ChargerProms(string proms) {
+            var linq = _context.UserData
+                .Where(o => o.UserName.Contains(proms))
+                .OrderBy(o => IntTryParseOrDefault(o.Nums, 0))
+                .Select(o => new[] {
+                    o.UserName,
+                    "0",
+                    o.Solde.ToString(CultureInfo.CurrentCulture).Replace(",", ".")
+                });
+            return JsonConvert.SerializeObject(new {data = linq});
+        }
+
+        [HttpPost("bucquermanip")]
+        public async Task<IActionResult> BucquerManip(string json) {
+            try {
+                dynamic bucquages = JObject.Parse(json);
+                foreach (var bucquage in bucquages.Historique) {
+                    string userName = bucquage.UserName;
+                    decimal montant = bucquage.Montant;
+                    string commentaire = bucquage.Manip;
+                    _context.UserData
+                        .First(o => o.UserName == userName)
+                        .Solde += montant;
+                    await _context.SaveChangesAsync();
+                    _context.TransactionHistory.Add(new TransactionHistory {
+                        Montant = montant, Commentaire = commentaire, Date = DateTime.Now, 
+                        IdProduits = null, UserName = userName
+                    });
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception e) {
+                return BadRequest(e.ToString());
+            }
+
+            return Ok();
+        }
+
         [HttpGet("modifiercompte")]
         public string ModifierCompte() {
             var linq = _context.UserData

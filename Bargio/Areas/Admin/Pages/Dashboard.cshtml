@@ -27,7 +27,10 @@
         <a class="nav-link active" data-toggle="tab" href="#accueil" role="tab">Accueil</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#gestion-compte" role="tab">Gestion des utilisateurs</a>
+        <a class="nav-link" data-toggle="tab" href="#gestion-compte" role="tab">Gestion comptes</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#manip" role="tab">Bucquage manip</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#historique" role="tab">Historique</a>
@@ -84,6 +87,61 @@
             </thead>
             <tbody></tbody>
         </table>
+    </div>
+
+</div>
+    
+<!-- Bucquage manip -->
+<div class="tab-pane fade show" id="manip" role="tabpanel">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="form-group">
+                <div class="form-group">
+                    <label class="control-label">Nom de la manip</label>
+                    <input type="text" class="form-control" id="manip-nom" />
+                    <label class="control-label">Prix unitaire</label>
+                    <input type="number" class="form-control" id="manip-prix" value="0" />
+                    <label class="control-label">Prom's</label>
+                    <input type="text" class="form-control" id="manip-proms" />
+                </div>
+            </div>
+
+            <p class="lead">
+                <a class="btn btn-success btn-sm" href="#" id="a-manip-proms-confirmer" role="button">Continuer</a>
+            </p>
+
+            <div id="manip-proms-panel">
+                <hr/>
+                <br/>
+                <table id="table-manip-proms" class="table-responsive-datatable clickable-table display nowrap">
+                    <thead>
+                        <tr>
+                            <th>
+                                Num's
+                            </th>
+                            <th>
+                                Bucquages
+                            </th>
+                            <th>
+                                Solde
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <p class="lead" style="font-size:1rem;">
+                    Choisissez un PG puis : <br/>
+                    - Entrée: Ajouter un bucquage<br/>
+                    - Retour: Annuler le dernier bucquage<br/>
+                </p>
+                <a class="btn btn-success btn-sm" id="a-manip-confirmer" role="button" style="color: white;">
+                    Confirmer tous les bucquages
+                </a>
+                <span id="bucquage-patience"> -- L'opération peut prendre un peu de temps</span>
+       
+            </div>
+        </div>
     </div>
 
 </div>
@@ -319,6 +377,7 @@
     </table>
 </div>
 
+<!-- Paramètres -->
 <div class="tab-pane fade" id="parametres" role="tabpanel">
     <div class="row">
         <div class="col-md-4">
@@ -437,6 +496,7 @@
     </div>
 </div>
 
+<!-- Bases de données -->
 <div class="tab-pane fade" id="modifier-bdd" role="tabpanel">
     <p class="lead">
         <a class="btn btn-success" asp-area="Admin" asp-page="/ImportDatabase" role="button">Importer base de donnée access (ancien logiciel)</a>
