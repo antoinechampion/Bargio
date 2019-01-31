@@ -54,6 +54,7 @@ namespace Bargio.Api
 
         [HttpGet("chargerproms/{proms}")]
         public string ChargerProms(string proms) {
+            proms = proms.ToLower();
             var linq = _context.UserData
                 .Where(o => o.UserName.Contains(proms))
                 .OrderBy(o => IntTryParseOrDefault(o.Nums, 0))
