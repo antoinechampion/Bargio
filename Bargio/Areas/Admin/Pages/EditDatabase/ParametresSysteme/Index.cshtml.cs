@@ -4,9 +4,12 @@
 //     (See accompanying file LICENSE_1_0.txt or copy at
 //           http://www.boost.org/LICENSE_1_0.txt)
 
+using System.Linq;
 using System.Threading.Tasks;
+using Bargio.Areas.Identity;
 using Bargio.Data;
 using Bargio.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +19,11 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUserDefaultPwd> _userManager;
 
-        public EditModel(ApplicationDbContext context) {
+        public EditModel(ApplicationDbContext context, UserManager<IdentityUserDefaultPwd> userManager) {
             _context = context;
+            _userManager = userManager;
         }
 
         [BindProperty] public SystemParameters SystemParameters { get; set; }
@@ -37,6 +42,20 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
             // Ca évite les comportements étranges et autres 
             // dbconcurrencyexception
             var systemParameters = _context.SystemParameters;
+            var old = systemParameters.First();
+
+            if (old.MotDePasseZifoys != SystemParameters.MotDePasseZifoys) {
+                var user = await _userManager.FindByNameAsync("admin");
+                var babasse = await _userManager.FindByNameAsync("babasse");
+                if (user != null) {
+                    var result = await _userManager.ChangePasswordAsync(user, old.MotDePasseZifoys,
+                        SystemParameters.MotDePasseZifoys);
+                    if (!result.Succeeded) SystemParameters.MotDePasseZifoys = old.MotDePasseZifoys;
+                    await _userManager.ChangePasswordAsync(babasse, old.MotDePasseZifoys,
+                        SystemParameters.MotDePasseZifoys);
+                }
+            }
+
             foreach (var entity in systemParameters)
                 systemParameters.Remove(entity);
             await _context.SaveChangesAsync();

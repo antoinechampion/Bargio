@@ -40,6 +40,8 @@ namespace Bargio.Areas.Identity.Pages.Account
             if (User.Identity.IsAuthenticated) {
                 if (User.IsInRole("Admin"))
                     return Redirect("/Admin/Dashboard");
+                if (User.IsInRole("Babasse"))
+                    return Redirect("/User/Babasse");
                 return Redirect("/pg");
             }
 
@@ -66,6 +68,8 @@ namespace Bargio.Areas.Identity.Pages.Account
                 if (result.Succeeded) {
                     if (User.IsInRole("Admin"))
                         return Redirect("/Admin/Dashboard");
+                    if (User.IsInRole("Babasse"))
+                        return Redirect("/User/Babasse");
                     return Redirect("/pg");
                 }
 

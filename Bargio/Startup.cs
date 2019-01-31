@@ -57,6 +57,9 @@ namespace Bargio
             services.AddAuthorization(options => {
                 options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Admin"));
             });
+            services.AddAuthorization(options => {
+                options.AddPolicy("RequireBabasseRole", policy => policy.RequireRole("Babasse"));
+            });
 
             services
                 .AddMvc(config => {
@@ -78,7 +81,7 @@ namespace Bargio
                     options.Conventions.AuthorizeAreaPage("Identity", "/Logout");
                     options.Conventions.AuthorizeAreaFolder("User", "/");
                     options.Conventions.AuthorizeAreaFolder("Admin", "/", "RequireAdministratorRole");
-                    options.Conventions.AuthorizeAreaPage("User", "/Babasse", "RequireAdministratorRole");
+                    options.Conventions.AuthorizeAreaPage("User", "/Babasse", "RequireBabasseRole");
                 });
 
             services.ConfigureApplicationCookie(options => {

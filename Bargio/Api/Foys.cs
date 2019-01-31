@@ -160,10 +160,13 @@ namespace Bargio.Api
             var parameters = _context.SystemParameters.First();
             if (parameters.MotDePasseZifoys != (string) p.MotDePasseZifoys) {
                 var user = await _userManager.FindByNameAsync("admin");
+                var babasse = await _userManager.FindByNameAsync("babasse");
                 if (user != null) {
                     var result = await _userManager.ChangePasswordAsync(user, parameters.MotDePasseZifoys,
                         (string) p.MotDePasseZifoys);
-                    if (!result.Succeeded) parameters.MotDePasseZifoys = p.MotDePasseZifoys;
+                    if (!result.Succeeded) p.MotDePasseZifoys = parameters.MotDePasseZifoys;
+                    await _userManager.ChangePasswordAsync(babasse, parameters.MotDePasseZifoys,
+                        (string) p.MotDePasseZifoys);
                 }
             }
 

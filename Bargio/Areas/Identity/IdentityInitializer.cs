@@ -62,6 +62,20 @@ namespace Bargio.Areas.Identity
                     await userManager.AddToRoleAsync(user,
                         "Admin");
             }
+
+            // Babasse
+            if (userManager.FindByNameAsync
+                    ("babasse").Result == null) {
+                var user = new IdentityUserDefaultPwd {
+                    UserName = "babasse"
+                };
+                var result = await userManager.CreateAsync
+                    (user, "zifoys");
+
+                if (result.Succeeded)
+                    await userManager.AddToRoleAsync(user,
+                        "Babasse");
+            }
         }
 
         public static async Task SeedRoles
@@ -81,6 +95,12 @@ namespace Bargio.Areas.Identity
             if (!await roleManager.RoleExistsAsync
                 ("Admin")) {
                 var role = new IdentityRole {Name = "Admin"};
+                var roleResult = await roleManager.CreateAsync(role);
+            }
+
+            if (!await roleManager.RoleExistsAsync
+                ("Babasse")) {
+                var role = new IdentityRole {Name = "Babasse"};
                 var roleResult = await roleManager.CreateAsync(role);
             }
         }

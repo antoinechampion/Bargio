@@ -40,7 +40,10 @@ namespace Bargio.Areas.User.Pages
         [BindProperty] public string Actualites { get; set; }
 
         public async Task<IActionResult> OnGet() {
-            if (User.IsInRole("Admin")) return Redirect("/Admin/Dashboard");
+            if (User.IsInRole("Admin")) 
+                return Redirect("/Admin/Dashboard");
+            if (User.IsInRole("Babasse"))
+                return Redirect("/User/Babasse");
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             UserData = await _context.UserData.FindAsync(identityUser.UserName);
             try {

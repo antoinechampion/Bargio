@@ -37,6 +37,8 @@ namespace Bargio.Areas.User.Pages
         }
 
         public IActionResult OnGet() {
+            if (!User.IsInRole("Babasse"))
+                return Redirect("/pg");
             RaccourcisProms = _context.PromsKeyboardShortcut.OrderBy(o => RaccourciToInt(o.Raccourci)).ToList();
             Consommations = _context.Product.OrderBy(o => RaccourciToInt(o.RaccourciClavier)).ToList();
 
