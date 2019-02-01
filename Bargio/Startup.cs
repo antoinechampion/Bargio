@@ -82,6 +82,7 @@ namespace Bargio
                     options.Conventions.AuthorizeAreaPage("Identity", "/Logout");
                     options.Conventions.AuthorizeAreaFolder("User", "/");
                     options.Conventions.AuthorizeAreaFolder("Admin", "/", "RequireAdministratorRole");
+                    options.Conventions.AuthorizeAreaFolder("Cron", "/", "RequireAdministratorRole");
                     options.Conventions.AuthorizeAreaPage("User", "/Babasse", "RequireBabasseRole");
                 });
 
@@ -106,7 +107,7 @@ namespace Bargio
                 app.UseHsts();
             }
 
-            app.UseStatusCodePagesWithReExecute("/Error", "?statusCode/{0}");
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
