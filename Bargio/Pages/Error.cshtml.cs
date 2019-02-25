@@ -27,6 +27,10 @@ namespace Bargio.Pages
                     ErrorMessage = "On fait une maintenance, "
                                    + "reviens plus tard";
                     break;
+                case 531:
+                    ErrorMessage = "Le rechargement en ligne est zoqué."
+                                    +" Contacte un zifoy's pour plus d'informations";
+                    break;
                 default:
                     ErrorMessage = "Une erreur " + statusCode + " a été rhopsée.";
                     break;

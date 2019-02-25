@@ -24,7 +24,7 @@ namespace Bargio.Areas.User.Pages
     public class RechargementModel : PageModel
     {
         // Active l'API de test de lydia même sur le site en ligne
-        private const bool ForceTestApi = true;
+        private const bool ForceTestApi = false;
         private readonly ApplicationDbContext _context;
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly string _lydiaApiUrl;
@@ -39,7 +39,7 @@ namespace Bargio.Areas.User.Pages
             // En fonction de l'environnement, on charge les donnees de test ou de production
             _lydiaVendorToken = env.IsDevelopment() || ForceTestApi
                 ? "5bd083bec025c852794717"
-                : "5bd083bec025c852794717";
+                : "5774f7d9df76f082807252";
             _lydiaApiUrl = env.IsDevelopment() || ForceTestApi
                 ? "https://homologation.lydia-app.com/api/request/do.json"
                 : "https://lydia-app.com/api/request/do.json";
@@ -114,7 +114,10 @@ namespace Bargio.Areas.User.Pages
             return paymentRequest.ID;
         }
 
-        public async Task OnGet(string statut) {
+        public async Task<IActionResult> OnGet(string statut) {
+            if (_context.SystemParameters.First().LydiaBloque) {
+                return Redirect("/Error/531");
+            }
             if (statut == "succes") {
                 ClasseTexteStatut = "text-success";
                 StatutPaiement = "Paiement effectué";
@@ -129,9 +132,13 @@ namespace Bargio.Areas.User.Pages
 
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             SoldeActuel = _context.UserData.Find(identityUser.UserName).Solde;
+            return Page();
         }
 
         public async Task<IActionResult> OnPost() {
+            if (_context.SystemParameters.First().LydiaBloque) {
+                return Redirect("/Error/531");
+            }
             if (!ModelState.IsValid) return Page();
 
             var minimumRechargement = _context.SystemParameters.First().MinimumRechargementLydia;

@@ -91,8 +91,6 @@ namespace Bargio
                 options.LogoutPath = "/Identity/Account/Logout";
                 options.AccessDeniedPath = "/Error/403";
             });
-
-            services.AddResponseCaching();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,8 +111,6 @@ namespace Bargio
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseResponseCaching();
-
             // Middleware to redirect in case of maintainance
             app.Use(async (httpCtx, next) => {
                 var context = httpCtx.RequestServices.GetRequiredService<ApplicationDbContext>();
@@ -124,13 +120,7 @@ namespace Bargio
                     httpCtx.Response.Redirect("/Error/503");
                     return;
                 }
-
-                httpCtx.Response.GetTypedHeaders().CacheControl = 
-                    new Microsoft.Net.Http.Headers.CacheControlHeaderValue
-                    {
-                        Public = true,
-                        MaxAge = TimeSpan.FromDays(30)
-                    };
+                
 
                 await next();
             });

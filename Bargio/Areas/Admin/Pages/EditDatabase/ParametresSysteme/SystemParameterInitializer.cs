@@ -17,7 +17,6 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
             (ApplicationDbContext context) {
             var p = new SystemParameters {
                 DerniereConnexionBabasse = DateTime.Now,
-                BucquagesBloques = false,
                 LydiaBloque = false,
                 CommissionLydiaVariable = new decimal(1.5), // %
                 CommissionLydiaFixe = new decimal(0.10), // €

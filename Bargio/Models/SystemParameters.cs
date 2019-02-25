@@ -16,9 +16,7 @@ namespace Bargio.Models
 
         [DisplayName("Dernière connexion à la babasse")]
         public DateTime DerniereConnexionBabasse { get; set; }
-
-        [DisplayName("Bloquer les bucquages")] public bool BucquagesBloques { get; set; }
-
+        
         [DisplayName("Bloquer les rechargements en ligne")]
         public bool LydiaBloque { get; set; }
 

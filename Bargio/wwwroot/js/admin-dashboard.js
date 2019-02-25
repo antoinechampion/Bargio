@@ -3,14 +3,17 @@ $(document).ready(function() {
         var admin = {
             derniersBucquages: function() {
                 $("#table-derniers-bucquages").DataTable({
-                    "ajax": "/api/admin/derniersbucquages"
+                    "ajax": "/api/admin/derniersbucquages",
+                    "bDestroy": true
                 });
             },
 
             modifierCompte: function() {
+                console.log("go");
                 $("#card-modif-utilisateur").hide();
                 var table = $("#table-modifier-compte").DataTable({
                     "ajax": "/api/admin/modifiercompte",
+                    "bDestroy": true,
                     "drawCallback": function() {
                         const api = this.api();
                         $("#total-utilisateurs").text(api.column(1, { filter: "applied" }).data().sum().toFixed(2));
@@ -277,6 +280,7 @@ $(document).ready(function() {
             },
 
             init: () => {
+                $.ajaxSetup({ cache: false });
                 admin.derniersBucquages();
                 admin.modifierCompte();
                 admin.bucquageManip();

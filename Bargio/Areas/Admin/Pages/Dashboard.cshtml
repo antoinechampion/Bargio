@@ -27,7 +27,7 @@
         <a class="nav-link active" data-toggle="tab" href="#accueil" role="tab">Accueil</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#gestion-compte" role="tab">Gestion comptes</a>
+        <a id="nav-gestion-comptes" class="nav-link" data-toggle="tab" href="#gestion-compte" role="tab">Gestion comptes</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#manip" role="tab">Bucquage manip</a>
@@ -385,13 +385,6 @@
                     <label asp-for="SystemParameters.DerniereConnexionBabasse" class="control-label"></label>
                     <input asp-for="SystemParameters.DerniereConnexionBabasse" class="form-control"/>
                     <span asp-validation-for="SystemParameters.DerniereConnexionBabasse" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label>
-                            <input asp-for="SystemParameters.BucquagesBloques"/> @Html.DisplayNameFor(model => model.SystemParameters.BucquagesBloques)
-                        </label>
-                    </div>
                 </div>
                 <div class="form-group">
                     <div class="checkbox">
