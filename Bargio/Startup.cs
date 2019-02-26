@@ -62,6 +62,8 @@ namespace Bargio
                 options.AddPolicy("RequireBabasseRole", policy => policy.RequireRole("Babasse"));
             });
 
+            services.AddHttpClient();
+
             services
                 .AddMvc(config => {
                     // using Microsoft.AspNetCore.Mvc.Authorization;
@@ -120,8 +122,6 @@ namespace Bargio
                     httpCtx.Response.Redirect("/Error/503");
                     return;
                 }
-                
-
                 await next();
             });
 

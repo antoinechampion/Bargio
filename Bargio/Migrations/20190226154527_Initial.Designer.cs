@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bargio.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190225214718_remove_SystemParameters_bucquagesbloques")]
-    partial class remove_SystemParameters_bucquagesbloques
+    [Migration("20190226154527_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

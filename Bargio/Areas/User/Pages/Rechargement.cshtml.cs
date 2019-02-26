@@ -4,11 +4,13 @@
 //     (See accompanying file LICENSE_1_0.txt or copy at
 //           http://www.boost.org/LICENSE_1_0.txt)
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Bargio.Areas.Identity;
 using Bargio.Data;
@@ -24,23 +26,24 @@ namespace Bargio.Areas.User.Pages
     public class RechargementModel : PageModel
     {
         // Active l'API de test de lydia même sur le site en ligne
-        private const bool ForceTestApi = false;
+        private const bool ForceProductionApi = true;
         private readonly ApplicationDbContext _context;
-        private readonly HttpClient _httpClient = new HttpClient();
+        private readonly IHttpClientFactory _clientFactory;
         private readonly string _lydiaApiUrl;
 
         private readonly string _lydiaVendorToken;
         private readonly UserManager<IdentityUserDefaultPwd> _userManager;
 
         public RechargementModel(ApplicationDbContext context, UserManager<IdentityUserDefaultPwd> userManager,
-            IHostingEnvironment env) {
+            IHostingEnvironment env, IHttpClientFactory clientFactory) {
+            _clientFactory = clientFactory;
             _context = context;
             _userManager = userManager;
             // En fonction de l'environnement, on charge les donnees de test ou de production
-            _lydiaVendorToken = env.IsDevelopment() || ForceTestApi
+            _lydiaVendorToken = env.IsDevelopment() && !ForceProductionApi
                 ? "5bd083bec025c852794717"
                 : "5774f7d9df76f082807252";
-            _lydiaApiUrl = env.IsDevelopment() || ForceTestApi
+            _lydiaApiUrl = env.IsDevelopment() & !ForceProductionApi
                 ? "https://homologation.lydia-app.com/api/request/do.json"
                 : "https://lydia-app.com/api/request/do.json";
 
@@ -79,29 +82,40 @@ namespace Bargio.Areas.User.Pages
         // Passage en prod : changer PublicTestToken en PublicToken, changer testApiUrl en apiUrl
         // https://homologation.lydia-app.com/index.php/backoffice/request/index
         public async Task<(bool, string)> LydiaInitiatePayment(string id, decimal montantPaye) {
-            var req = Url.ActionContext.HttpContext.Request;
-            var absoluteUri = req.Scheme + "://" + req.Host;
+            var msg = "";
+            try {
+                var req = Url.ActionContext.HttpContext.Request;
+                var absoluteUri = req.Scheme + "://" + req.Host;
 
-            var postData = new LydiaRequestData {
-                VendorToken = _lydiaVendorToken,
-                Recipient = Telephone,
-                Amount = montantPaye.ToString("0.##", new CultureInfo("en-US")),
-                OrderRef = id,
-                ConfirmUrl = absoluteUri + "/api/lydia/confirm",
-                CancelUrl = absoluteUri + "/api/lydia/cancel",
-                ExpireUrl = absoluteUri + "/api/lydia/cancel",
-                EndMobileUrl = absoluteUri + "/user/rechargement?statut=succes",
-                BrowserSuccessUrl = absoluteUri + "/user/rechargement?statut=succes",
-                BrowserFailUrl = absoluteUri + "/user/rechargement?statut=echec"
-            };
-            var json = JsonConvert.SerializeObject(postData);
-            var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-            var content = new FormUrlEncodedContent(dict);
-            var resp = await _httpClient.PostAsync(_lydiaApiUrl, content);
-            dynamic o = JsonConvert.DeserializeObject(await resp.Content.ReadAsStringAsync());
-            if (o.error == "0")
-                return (true, o.mobile_url);
-            return (false, o.message);
+                var postData = new LydiaRequestData {
+                    VendorToken = _lydiaVendorToken,
+                    Recipient = Telephone,
+                    Amount = montantPaye.ToString("0.##", new CultureInfo("en-US")),
+                    OrderRef = id,
+                    ConfirmUrl = absoluteUri + "/api/lydia/confirm",
+                    CancelUrl = absoluteUri + "/api/lydia/cancel",
+                    ExpireUrl = absoluteUri + "/api/lydia/cancel",
+                    EndMobileUrl = absoluteUri + "/user/rechargement?statut=succes",
+                    BrowserSuccessUrl = absoluteUri + "/user/rechargement?statut=succes",
+                    BrowserFailUrl = absoluteUri + "/user/rechargement?statut=echec"
+                };
+                var json = JsonConvert.SerializeObject(postData);
+                var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                var content = new FormUrlEncodedContent(dict);
+                var client = new HttpClient(new WinHttpHandler()
+                    {WindowsProxyUsePolicy = WindowsProxyUsePolicy.UseWinInetProxy});
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var resp = await client.PostAsync(_lydiaApiUrl, content);
+                msg += "Got resp\n";
+                dynamic o = JsonConvert.DeserializeObject(await resp.Content.ReadAsStringAsync());
+                msg += "deserialized\n";
+                if (o.error == "0")
+                    return (true, o.mobile_url);
+                return (false, o.message);
+            }
+            catch (Exception e) {
+                return (false, e.ToString());
+            }
         }
 
         public async Task<string> CreatePaymentRequest() {
