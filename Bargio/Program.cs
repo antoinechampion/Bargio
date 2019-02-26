@@ -97,8 +97,7 @@ namespace Bargio
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) {
             return WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseKestrel(o => { o.Limits.KeepAliveTimeout = TimeSpan.FromDays(1); });
+                .UseStartup<Startup>();
         }
     }
 }
