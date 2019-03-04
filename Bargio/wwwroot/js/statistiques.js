@@ -19,17 +19,17 @@
         var montant = 0;
         for (let i = 0; i < listeTransactions.length; i++) {
             const bucquage = listeTransactions[i];
-            if (bucquage[2] < 0)
-                continue;
-            if (moment(bucquage[0]).isAfter(next)) {
-                data.push({ x: moment(next).subtract(1, unite), y: -montant });
-                next = moment(bucquage[0]).add(1, unite);
-                if (unite === "days")
-                    next.set("hour", 0);
-                next.set("minute", 0);
-                montant = bucquage[2];
-            } else {
-                montant += bucquage[2];
+            if (bucquage[2] < 0) {
+                if (moment(bucquage[0]).isAfter(next)) {
+                    data.push({ x: moment(next).subtract(1, unite), y: -montant });
+                    next = moment(bucquage[0]).add(1, unite);
+                    if (unite === "days")
+                        next.set("hour", 0);
+                    next.set("minute", 0);
+                    montant = bucquage[2];
+                } else {
+                    montant += bucquage[2];
+                }
             }
         }
         data.push({ x: moment(next).subtract(1, unite), y: -montant });
