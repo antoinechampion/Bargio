@@ -32,7 +32,7 @@ namespace Bargio.Areas.User.Pages
         public async Task<IActionResult> OnGetAsync() {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             Transactions = _context.TransactionHistory
-                .Where(o => o.UserName == user.UserName)
+                .Where(o => o.UserName == user.UserName && o.IdProduits != null)
                 .OrderBy(o => o.Date)
                 .Select(o => new TransactionAffichage {
                     commentaire = o.Commentaire ?? "",
