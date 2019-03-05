@@ -157,14 +157,14 @@ $(document).ready(function() {
     async function isHorsBabasse(user) {
         const userHorsBabasse = await db.HorsBabasse.get({ UserName: user.UserName });
         if (userHorsBabasse !== undefined) {
-            if (user.Solde > seuilHorsBabasse) {
+            if (user.Solde >= seuilHorsBabasse) {
                 // L'utilisateur n'est plus hors babasse
                 db.HorsBabasse.where("UserName").equals(user.UserName).delete();
                 return false;
             } else {
                 return true;
             }
-        } else if (user.ModeArchi && user.Solde < 0) {
+        } else if (user.ModeArchi && user.Solde <= 0) {
             return true;
         } else {
             return false;

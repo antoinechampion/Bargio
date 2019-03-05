@@ -30,7 +30,7 @@ namespace Bargio.Models
         [DisplayName("Minimum de rechargement en ligne (€)")]
         public decimal MinimumRechargementLydia { get; set; }
 
-        [DisplayName("Mode maintenance  -- /!\\ Cette page deviendra inaccessible")]
+        [DisplayName("Mode maintenance  -- /!\\ Le site deviendra inaccessible : redémarrer le serveur pour enlever le mode maintenance")]
         public bool Maintenance { get; set; }
 
         /* Paramètre zifoy'ss de la babasse */
