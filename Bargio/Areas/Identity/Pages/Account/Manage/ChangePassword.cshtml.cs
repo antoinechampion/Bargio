@@ -60,7 +60,7 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             if (user == null) return NotFound($"Ne peut pas charger le num's '{_userManager.GetUserId(User)}'.");
 
             var changePasswordResult =
-                await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+                await _userManager.ChangePasswordAsync(user, Input.OldPassword.ToLower(), Input.NewPassword.ToLower());
             if (!changePasswordResult.Succeeded) {
                 foreach (var error in changePasswordResult.Errors)
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -71,18 +71,18 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             var userData = _context.UserData.Find(user.UserName);
             if (userData == null) {
                 changePasswordResult =
-                    await _userManager.ChangePasswordAsync(user, Input.NewPassword, Input.OldPassword);
+                    await _userManager.ChangePasswordAsync(user, Input.NewPassword.ToLower(), Input.OldPassword.ToLower());
                 ModelState.AddModelError(string.Empty, "Impossible de trouver l'utilisateur dans la BDD UserData.");
                 foreach (var error in changePasswordResult.Errors)
                     ModelState.AddModelError(string.Empty, error.Description);
                 return Page();
             }
 
-            userData.FoysApiHasPassword = Input.NewPassword != IdentityUserDefaultPwd.DefaultPassword;
-            ;
+            userData.FoysApiHasPassword = Input.NewPassword.ToLower() != IdentityUserDefaultPwd.DefaultPassword;
+            
             userData.DateDerniereModif = DateTime.Now;
             userData.FoysApiPasswordSalt = BCryptHelper.GenerateSalt();
-            userData.FoysApiPasswordHash = BCryptHelper.HashPassword(Input.NewPassword, userData.FoysApiPasswordSalt);
+            userData.FoysApiPasswordHash = BCryptHelper.HashPassword(Input.NewPassword.ToLower(), userData.FoysApiPasswordSalt);
             _context.Attach(userData).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 

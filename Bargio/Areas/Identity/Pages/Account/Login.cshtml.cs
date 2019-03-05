@@ -64,7 +64,7 @@ namespace Bargio.Areas.Identity.Pages.Account
             if (string.IsNullOrEmpty(Input.Password)) Input.Password = IdentityUserDefaultPwd.DefaultPassword;
 
             if (ModelState.IsValid) {
-                var result = await _signInManager.PasswordSignInAsync(Input.Nums, Input.Password, true, false);
+                var result = await _signInManager.PasswordSignInAsync(Input.Nums, Input.Password.ToLower(), true, false);
                 if (result.Succeeded) {
                     if (User.IsInRole("Admin"))
                         return Redirect("/Admin/Dashboard");

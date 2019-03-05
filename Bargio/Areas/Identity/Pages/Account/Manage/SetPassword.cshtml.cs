@@ -50,7 +50,7 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             if (user == null) NotFound($"Ne peut pas charger le num's '{_userManager.GetUserId(User)}'.");
 
             var addPasswordResult =
-                await _userManager.ChangePasswordAsync(user, IdentityUserDefaultPwd.DefaultPassword, Input.NewPassword);
+                await _userManager.ChangePasswordAsync(user, IdentityUserDefaultPwd.DefaultPassword, Input.NewPassword.ToLower());
             if (!addPasswordResult.Succeeded) {
                 foreach (var error in addPasswordResult.Errors)
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -61,7 +61,7 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
             var userData = _context.UserData.Find(user.UserName);
             if (userData == null) {
                 addPasswordResult =
-                    await _userManager.ChangePasswordAsync(user, Input.NewPassword,
+                    await _userManager.ChangePasswordAsync(user, Input.NewPassword.ToLower(),
                         IdentityUserDefaultPwd.DefaultPassword);
                 ModelState.AddModelError(string.Empty, "Impossible de trouver l'utilisateur dans la BDD UserData.");
                 foreach (var error in addPasswordResult.Errors)
@@ -71,7 +71,7 @@ namespace Bargio.Areas.Identity.Pages.Account.Manage
 
             userData.DateDerniereModif = DateTime.Now;
             userData.FoysApiPasswordSalt = BCryptHelper.GenerateSalt();
-            userData.FoysApiPasswordHash = BCryptHelper.HashPassword(Input.NewPassword, userData.FoysApiPasswordSalt);
+            userData.FoysApiPasswordHash = BCryptHelper.HashPassword(Input.NewPassword.ToLower(), userData.FoysApiPasswordSalt);
             userData.FoysApiHasPassword = true;
             _context.Attach(userData).State = EntityState.Modified;
             await _context.SaveChangesAsync();

@@ -45,13 +45,19 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.ParametresSysteme
             var old = systemParameters.First();
 
             if (old.MotDePasseZifoys != SystemParameters.MotDePasseZifoys) {
+                SystemParameters.MotDePasseZifoys = SystemParameters.MotDePasseZifoys.ToLower();
+                await _context.SaveChangesAsync();
+
                 var user = await _userManager.FindByNameAsync("admin");
                 var babasse = await _userManager.FindByNameAsync("babasse");
                 if (user != null) {
-                    var result = await _userManager.ChangePasswordAsync(user, old.MotDePasseZifoys,
+                    var result = await _userManager.ChangePasswordAsync(user, old.MotDePasseZifoys.ToLower(),
                         SystemParameters.MotDePasseZifoys);
-                    if (!result.Succeeded) SystemParameters.MotDePasseZifoys = old.MotDePasseZifoys;
-                    await _userManager.ChangePasswordAsync(babasse, old.MotDePasseZifoys,
+                    if (!result.Succeeded) {
+                        SystemParameters.MotDePasseZifoys = old.MotDePasseZifoys;
+                        await _context.SaveChangesAsync();
+                    }
+                    await _userManager.ChangePasswordAsync(babasse, old.MotDePasseZifoys.ToLower(),
                         SystemParameters.MotDePasseZifoys);
                 }
             }
