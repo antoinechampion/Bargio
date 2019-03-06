@@ -58,7 +58,7 @@ namespace Bargio.Areas.User.Pages
         [Range(1, double.PositiveInfinity, ErrorMessage = "Veuillez entrer un solde correct")]
         [DataType(DataType.Currency, ErrorMessage = "Veuillez entrer un solde correct")]
         [Display(Name = "Montant en €")]
-        public decimal Montant { get; set; }
+        public string Montant { get; set; }
 
         [BindProperty]
         [Required]
@@ -116,9 +116,14 @@ namespace Bargio.Areas.User.Pages
             }
         }
 
+        private decimal StringCurrencyToDecimalCultureInvariant(string value)
+        {
+            return decimal.Parse(value.Replace(",", "."), new CultureInfo("en-US"));
+        }
+
         public async Task<string> CreatePaymentRequest() {
             var paymentRequest = new PaymentRequest {
-                Montant = Montant,
+                Montant = StringCurrencyToDecimalCultureInvariant(Montant),
                 UserName = _userManager.GetUserName(User)
             };
             _context.PaymentRequest.Add(paymentRequest);
@@ -153,14 +158,16 @@ namespace Bargio.Areas.User.Pages
             }
             if (!ModelState.IsValid) return Page();
 
+            var decimalMontant = StringCurrencyToDecimalCultureInvariant(Montant);
+
             var minimumRechargement = _context.SystemParameters.First().MinimumRechargementLydia;
-            if (Montant < minimumRechargement) {
+            if (decimalMontant < minimumRechargement) {
                 ModelState.AddModelError(string.Empty,
                     "Le minimum de rechargement est de " + minimumRechargement + "€.");
                 return Page();
             }
 
-            var montantPaye = (Montant + CommissionLydiaFixe * 1.2M) / (1 - 1.2M * CommissionLydiaVariable / 100);
+            var montantPaye = (decimalMontant + CommissionLydiaFixe * 1.2M) / (1 - 1.2M * CommissionLydiaVariable / 100);
             var id = await CreatePaymentRequest();
             var (success, message) = await LydiaInitiatePayment(id, montantPaye);
             if (success) return Redirect(message);

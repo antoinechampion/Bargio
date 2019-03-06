@@ -640,4 +640,11 @@ $(document).ready(function() {
                 onKeydownCallbackBucquage(e);
         });
 
+    // Bugfix temporaire (qui va probablement être définitive mdr)
+    // fermer la modal entrer mdp
+    // ça ne fonctionne pas via bootstrap (data-dismiss)
+    $("#dismiss-modal-mdp").on("click", function (e) {
+        $("#modal-mdp").modal("hide");
+    });
+
 });
