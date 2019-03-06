@@ -146,6 +146,15 @@ $(document).ready(function() {
         });
     })();
 
+    // Retourne True si la touche est condamnée
+    // Ex: backspace et le champ d'entrée n'est pas focus
+    function isKeyForbidden(keycode) {
+        if (keycode === 8 && !$("input").is(":focus")  ) {
+            return true;
+        }
+        return false;
+    }
+
     // Retourne une chaîne de caractère correspondant
     // à la touche passée en paramètre
     function keycodeToShortcut(keycode) {
@@ -380,9 +389,14 @@ $(document).ready(function() {
     function onKeydownCallbackAccueil(e) {
         // On retrouve l'identifiant du PG à travers le DOM
         e = e || e.which;
+        if (isKeyForbidden(e.keyCode)) {
+            e.preventDefault();
+            return;
+        }
+            
         var keyPressed = keycodeToShortcut(e.keyCode);
         if (keyPressed === null)
-            return;
+            return;        
 
         async function changerInterface(user) {
             $("#username").text(user.UserName);
