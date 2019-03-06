@@ -184,16 +184,17 @@
     }
 
     function clearUi() {
+        bargio.log("mabite");
         $("#input-mdp-zifoys").val("");
         $("#input-mdp-zifoys-confirmer").val("");
         $("#input-username-rechargement-manuel").val("");
         $("#input-montant-rechargement-manuel").val("0.00");
         $("#input-commentaire-rechargement-manuel").val("bucquage manuel par zifoy'ss");
         $("#validation-rechargement-manuel").text("");
-        $("#input-mettre-hors-babasse").text("");
-        $("#input-remettre-en-babasse").text("");
-        $("#input-mettre-hors-foys").text("");
-        $("#input-remettre-en-foys").text("");
+        $("#input-mettre-hors-babasse").val("");
+        $("#input-remettre-en-babasse").val("");
+        $("#input-mettre-hors-foys").val("");
+        $("#input-remettre-en-foys").val("");
         $("#input-username-reset-mdp").val("");
     }
 
@@ -275,7 +276,7 @@
         var imageHorsBabassePath = "";
         // On met la nouvelle image hors babasse en preview
         $("#input-file-hors-babasse").change(function(e) {
-            imageHorsBabassePath = URL.createObjectURL(event.target.files[0]);
+            imageHorsBabassePath = URL.createObjectURL(e.target.files[0]);
             $(".bloc-case-rouge-test").css("background-image", `url(${imageHorsBabassePath})`);
         });
 
@@ -550,6 +551,11 @@
         // DL les logs
         $("#button-telecharger-logs").click(function(e) {
             bargio.downloadLogs();
+        });
+
+        // On clear l'interface à chaque fermeture de la modal
+        $("#modal-zifoys").on("hidden.bs.modal", function () {
+            clearUi();
         });
 
     })();
