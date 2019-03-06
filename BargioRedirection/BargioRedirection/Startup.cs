@@ -47,12 +47,6 @@ namespace BargioRedirection
                 app.UseExceptionHandler("/Error");
             }
 
-            // Middleware to redirect in case of maintainance
-            app.Use(async (httpCtx, next) => {
-                httpCtx.Response.Redirect("http://foys.a2hosted.com");
-                await next();
-            });
-
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

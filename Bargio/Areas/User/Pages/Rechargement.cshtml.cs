@@ -102,9 +102,7 @@ namespace Bargio.Areas.User.Pages
                 var json = JsonConvert.SerializeObject(postData);
                 var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
                 var content = new FormUrlEncodedContent(dict);
-                var client = new HttpClient(new WinHttpHandler()
-                    {WindowsProxyUsePolicy = WindowsProxyUsePolicy.UseWinInetProxy});
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var client = new HttpClient();
                 var resp = await client.PostAsync(_lydiaApiUrl, content);
                 msg += "Got resp\n";
                 dynamic o = JsonConvert.DeserializeObject(await resp.Content.ReadAsStringAsync());

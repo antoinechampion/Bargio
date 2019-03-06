@@ -384,6 +384,7 @@ $(document).ready(function() {
             return;
 
         async function changerInterface(user) {
+            console.log("mabite3");
             $("#username").text(user.UserName);
             $("#surnom").text(user.Surnom);
             $("#solde-actuel").text(user.Solde.toFixed(2).replace(".", ",") + "€");
@@ -399,7 +400,7 @@ $(document).ready(function() {
                     type: "GET",
                     url: `/Api/Foys/userhistory/${user.UserName}`,
                     cache: false,
-                    success: function(response) {
+                    success: function (response) {
                         JSON.parse(response).forEach(function(bucquage) {
                             if (bucquage.Montant > 0) {
                                 bucquage.Montant = `+${bucquage.Montant.toFixed(2)}`;
@@ -407,12 +408,11 @@ $(document).ready(function() {
                                 bucquage.Montant = bucquage.Montant.toFixed(2);
                             } else {
                                 return;
-                            }
-
+                            }                            
+                            var nouvelleEntree = `<tr><td>${bucquage.Commentaire}</td><td>${bucquage.Montant}</td><td>${bucquage.Date
+                                }</td></tr>`;
                             $("#table-historique-consos")
-                                .append(
-                                    `<tr><td>${bucquage.Commentaire}</td><td>${bucquage.Montant}</td><td>${bucquage.Date
-                                    }</td></tr>`);
+                                .append(nouvelleEntree);
                         });
                     }
                 });
@@ -479,18 +479,18 @@ $(document).ready(function() {
                 // Si il a un mdp, on lui demande de l'entrer et on compare
                 if (user.FoysApiHasPassword) {
                     // attente de 100ms pour éviter le double input de touches
-                    window.setTimeout(function() {
+                    window.setTimeout(function () {
                             $("#modal-mdp").modal("show");
                             window.setTimeout(function() {
                                     $("#input-mdp").focus();
                                 },
                                 100);
 
-                            $("#modal-mdp").on("keyup keypress",
-                                function(e) {
+                            $("#modal-mdp").unbind().on("keypress",
+                                function (e) {
                                     const keyCode = e.keyCode || e.which;
                                     if (keyCode === 13) {
-                                        $("#button-mdp").click();
+                                        $("#button-mdp").click();                                       
                                         e.preventDefault();
                                     }
                                 });
@@ -502,7 +502,7 @@ $(document).ready(function() {
                                     $("#input-mdp").val("");
                                 }
                             );
-                            $("#button-mdp").click(function(e) {
+                            $("#button-mdp").unbind().click(function(e) {
                                 const pwd = $("#input-mdp").val();
                                 bcrypt.compare(pwd,
                                     user.FoysApiPasswordHash,
@@ -551,7 +551,7 @@ $(document).ready(function() {
                 $("#input-modal-proms").attr("type", "password");
             }
 
-            $("#modal-autre-proms").on("keyup keypress",
+            $("#modal-autre-proms").on("keyup",
                 function(e) {
                     const keyCode = e.keyCode || e.which;
                     if (keyCode === 13) {
