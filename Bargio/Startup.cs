@@ -48,6 +48,7 @@ namespace Bargio
                 options.Password.RequiredUniqueChars = 1;
             });
 
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -89,10 +90,14 @@ namespace Bargio
                 });
 
             services.ConfigureApplicationCookie(options => {
+                options.ExpireTimeSpan = TimeSpan.FromDays(300);
                 options.LoginPath = "/Identity/Account/Login";
                 options.LogoutPath = "/Identity/Account/Logout";
                 options.AccessDeniedPath = "/Error/403";
             });
+
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            options.ValidationInterval = TimeSpan.FromDays(300));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
