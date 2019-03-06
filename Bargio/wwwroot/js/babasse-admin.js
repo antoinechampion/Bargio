@@ -282,7 +282,11 @@
         // Rechargement manuel
         $("#button-rechargement-manuel").click(async function() {
             const userName = $("#input-username-rechargement-manuel").val();
-            const montant = parseFloat($("#input-montant-rechargement-manuel").val());
+            const montant = parseFloat($("#input-montant-rechargement-manuel").val().replace(",", "."));
+            if (isNaN(montant) || montant === undefined) {
+                $("#modal-zifoys-erreur").modal("show");
+                return;
+            }
             const commentaire = $("#input-commentaire-rechargement-manuel").val();
 
             const user = await db.UserData.get({ UserName: userName });
@@ -322,7 +326,8 @@
         // Hors babasse manuelle
         $("#button-hors-babasse-manuelle").click(function() {
             seuilHorsBabasse = parseFloat($("#input-seuil-hors-babasse-manuelle").val().replace(",", "."));
-            if (seuilHorsBabasse === undefined) {
+            if (isNaN(seuilHorsBabasse) || seuilHorsBabasse === undefined) {
+                $("#modal-zifoys-erreur").modal("show");
                 return;
             }
             db.transaction("rw",
@@ -434,7 +439,12 @@
         $("#button-hors-babasse-auto").click(function() {
             zifoysParams.MiseHorsBabasseAutoActivee = $("#checkbox-hors-babasse-auto").is(":checked");
             zifoysParams.MiseHorsBabasseSeuil =
-                parseFloat($("#input-seuil-hors-babasse-auto").val().replace(",", ".")) || 0.0;
+                parseFloat($("#input-seuil-hors-babasse-auto").val().replace(",", "."));
+            if (isNaN(zifoysParams.MiseHorsBabasseSeuil) || zifoysParams.MiseHorsBabasseSeuil === undefined) {
+                zifoysParams.MiseHorsBabasseSeuil = 0;
+                $("#modal-zifoys-erreur").modal("show");
+                return;
+            }
             zifoysParams.MiseHorsBabasseInstantanee = $("#radio-instantanee").is(":checked") || false;
             zifoysParams.MiseHorsBabasseQuotidienne = $("#radio-quotidienne").is(":checked") || false;
             zifoysParams.MiseHorsBabasseQuotidienneHeure =
