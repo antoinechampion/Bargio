@@ -229,6 +229,7 @@ $(document).ready(function() {
                     return;
                 }
                 const json = JSON.stringify(arr);
+                bargio.log(dateTimeNow() + "Envoi des données suivantes au serveur : " + json);
                 fdata.append("json", json);
                 $.ajax({
                     type: "POST",
@@ -384,7 +385,6 @@ $(document).ready(function() {
             return;
 
         async function changerInterface(user) {
-            console.log("mabite3");
             $("#username").text(user.UserName);
             $("#surnom").text(user.Surnom);
             $("#solde-actuel").text(user.Solde.toFixed(2).replace(".", ",") + "€");
