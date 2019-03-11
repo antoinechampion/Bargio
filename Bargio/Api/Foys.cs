@@ -23,9 +23,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Bargio.Api
 {
-#if DEBUG
     [AllowAnonymous]
-#endif
     [Route("api/[controller]")]
     public class FoysController : Controller
     {
