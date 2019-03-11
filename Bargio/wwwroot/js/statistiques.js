@@ -48,30 +48,38 @@
     }
 
     function refreshUi() {
+        var date = null;
         if ($("#radio-conso-soiree").is(":checked")) {
             $("#choix-date").show();
+            date = moment($('#Entry_EntryDate').val(), 'YYYY-MM-DD hh:mm a').toDate();
             $("#timepicker-conso").datetimepicker("destroy");
             $("#timepicker-conso").datetimepicker({
                 format: "DD/MMM/YYYY",
-                viewMode: "days"
+                viewMode: "days",
+                date: date
             });
         } else if ($("#radio-conso-mois").is(":checked")) {
             $("#choix-date").show();
+            date = moment($('#Entry_EntryDate').val(), 'YYYY-MM-DD hh:mm a').toDate();
             $("#timepicker-conso").datetimepicker("destroy");
             $("#timepicker-conso").datetimepicker({
                 format: "MM/YYYY",
-                viewMode: "months"
+                viewMode: "months",
+                date: date
             });
         } else if ($("#radio-conso-annee").is(":checked")) {
             $("#choix-date").show();
+            date = moment($('#Entry_EntryDate').val(), 'YYYY-MM-DD hh:mm a').toDate();
             $("#timepicker-conso").datetimepicker("destroy");
             $("#timepicker-conso").datetimepicker({
                 format: "YYYY",
-                viewMode: "years"
+                viewMode: "years",
+                date: date
             });
         } else if ($("#radio-conso-tout").is(":checked")) {
             $("#choix-date").hide();
             $("#timepicker-conso").datetimepicker("destroy");
+            date = moment($('#Entry_EntryDate').val(), 'YYYY-MM-DD hh:mm a').toDate();
             const table = $(".table-consos-total-datatable").DataTable();
             table.clear();
             table.rows.add(transactions);
