@@ -4,7 +4,8 @@ $(document).ready(function() {
             derniersBucquages: function() {
                 $("#table-derniers-bucquages").DataTable({
                     "ajax": "/api/admin/derniersbucquages",
-                    "bDestroy": true
+                    "bDestroy": true,
+                    "order": []
                 });
             },
 
@@ -157,7 +158,6 @@ $(document).ready(function() {
                 });
 
                 $("#a-confirmer").click(function() {
-                    console.log("go");
                     const data = {
                         UserName: userName,
                         Prenom: $("#prenom").val(),
