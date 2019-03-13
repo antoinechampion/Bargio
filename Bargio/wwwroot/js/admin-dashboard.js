@@ -10,7 +10,6 @@ $(document).ready(function() {
             },
 
             modifierCompte: function() {
-                console.log("go");
                 $("#card-modif-utilisateur").hide();
                 var table = $("#table-modifier-compte").DataTable({
                     "ajax": "/api/admin/modifiercompte",
@@ -42,7 +41,6 @@ $(document).ready(function() {
                     var proms = $("#manip-proms").val();
                     table = $("#table-manip-proms").DataTable({
                         "ajax": `/api/admin/chargerproms/${proms}`,
-                        "bDestroy": true,
                         "select": true,
                         "order": []
                     });
@@ -57,6 +55,8 @@ $(document).ready(function() {
 
                 $(document).on("keydown", function(e) {
                     if (!$("#manip").hasClass("active") || selectedUserData === null)
+                        return;
+                    if ($("input").is(":focus"))
                         return;
                     if (e.keyCode === 13) {
                         selectedUserData[1] = "" + (parseInt(selectedUserData[1]) + 1);
@@ -74,7 +74,6 @@ $(document).ready(function() {
                             });
                         var newData = row.data()[0];
                         newData[1] = "" + (parseInt(newData[1]) - 1);
-                        console.log(newData);
                         table.row(row).data(newData);
                     }
                 });

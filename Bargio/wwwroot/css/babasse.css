@@ -19,7 +19,7 @@ nav { height: 50px; }
     --input-padding-y: .75rem;
 }
 
-body { background-color: white; }
+body { background-color: #eaeaea; }
 
 .bloc-central {
     border-radius: 0.25rem;
@@ -42,7 +42,14 @@ body { background-color: white; }
     margin-top: 1rem;
 }
 
-.bloc-central .bloc-case { padding: 2rem; }
+.bloc-central .bloc-case { 
+    padding: 2rem; 
+    background-color: #f4f4f4;
+}
+
+input {
+    background: #fafafa;
+}
 
 .bloc-case-rouge, .bloc-case-rouge-test {
     background-image: url("/images/chat_hors_babasse.jpg");
@@ -202,4 +209,14 @@ img.centrage2 {
 .modal-body-zifoys {
     height: 600px;
     overflow-y: auto;
+}
+
+#dernier-bucquage {
+    font-size:1.5rem;
+}
+
+#ui-proms {
+    font-size: 1.2rem;
+    margin-left: -50px !important;
+    margin-right: -50px !important;
 }

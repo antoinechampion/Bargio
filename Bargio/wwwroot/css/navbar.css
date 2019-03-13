@@ -59,3 +59,9 @@ nav { height: 50px; }
     outline: inherit;
     text-decoration: none;
 }
+
+.img-bucquages {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

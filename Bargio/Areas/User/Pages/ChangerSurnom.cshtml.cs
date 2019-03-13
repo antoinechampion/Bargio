@@ -42,9 +42,9 @@ namespace Bargio.Areas.User.Pages
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var userData = _context.UserData.First(o => o.UserName == user.UserName);
-            AncienSurnom = NouveauSurnom ?? AncienSurnom;
-            AncienSurnom = AncienSurnom.Length > 25 ? AncienSurnom : AncienSurnom.Substring(0, 25);
-            userData.Surnom = AncienSurnom;
+            NouveauSurnom = NouveauSurnom ?? AncienSurnom;
+            NouveauSurnom = NouveauSurnom.Length <= 25 ? NouveauSurnom : AncienSurnom.Substring(0, 25);
+            userData.Surnom = NouveauSurnom;
             userData.DateDerniereModif = DateTime.Now; // Pour la synchro sur la babasse
 
             _context.Attach(userData).State = EntityState.Modified;
