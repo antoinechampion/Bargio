@@ -57,16 +57,18 @@
                     });
                 });
         };
-
+        var temps = null;
         if (zifoysParams.MiseHorsBabasseAutoActivee && zifoysParams.MiseHorsBabasseQuotidienne) {
+            temps = zifoysParams.MiseHorsBabasseQuotidienneHeure.split(":");
             runAt(null,
-                $("#timepicker-hors-babasse-quotidienne").datetimepicker("viewDate").get("hour"),
-                $("#timepicker-hors-babasse-quotidienne").datetimepicker("viewDate").get("minute"),
+                parseInt(temps[0]),
+                parseInt(temps[1]),
                 callback);
         } else if (zifoysParams.MiseHorsBabasseAutoActivee) {
+            temps = zifoysParams.MiseHorsBabasseHebdomadaireHeure.split(":");
             runAt(zifoysParams.MiseHorsBabasseHebdomadaireJours,
-                $("#timepicker-hors-babasse-hebdomadaire").datetimepicker("viewDate").get("hour"),
-                $("#timepicker-hors-babasse-hebdomadaire").datetimepicker("viewDate").get("minute"),
+                parseInt(temps[0]),
+                parseInt(temps[1]),
                 callback);
         } else if (horsBabasseTimer !== null) {
             horsBabasseTimer.clear();
@@ -101,10 +103,9 @@
                     newZifoysParams.MiseHorsBabasseQuotidienne !== zifoysParams.MiseHorsBabasseQuotidienne ||
                     newZifoysParams.MiseHorsBabasseQuotidienneHeure !== zifoysParams.MiseHorsBabasseQuotidienneHeure) {
                     initialGet = false;
-                    zifoysParams = newZifoysParams;
-                    miseHorsBabasseAuto();
                 }
                 zifoysParams = newZifoysParams;
+                miseHorsBabasseAuto();
 
                 $("#checkbox-hors-babasse-auto").prop("checked", zifoysParams.MiseHorsBabasseAutoActivee);
                 $("#input-seuil-hors-babasse-auto").val(zifoysParams.MiseHorsBabasseSeuil.toFixed(2));
@@ -121,21 +122,23 @@
                 $("#p-mot-des-zifoys").text(zifoysParams.MotDesZifoys);
                 $("#p-actualites").text(zifoysParams.Actualites);
 
+                $("#timepicker-hors-babasse-hebdomadaire")
+                    .datetimepicker("date", zifoysParams.MiseHorsBabasseHebdomadaireHeure);
                 if (zifoysParams.MiseHorsBabasseHebdomadaireJours !== null) {
                     if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("lundi"))
-                        $("#checkbox-hors-babasse-lundi").button("toggle");
+                        $("#checkbox-hors-babasse-lundi").addClass("active");
                     if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("mardi"))
-                        $("#checkbox-hors-babasse-mardi").button("toggle");
+                        $("#checkbox-hors-babasse-mardi").addClass("active");
                     if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("mercredi"))
-                        $("#checkbox-hors-babasse-mercredi").button("toggle");
+                        $("#checkbox-hors-babasse-mercredi").addClass("active");
                     if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("jeudi"))
-                        $("#checkbox-hors-babasse-jeudi").button("toggle");
+                        $("#checkbox-hors-babasse-jeudi").addClass("active");
                     if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("vendredi"))
-                        $("#checkbox-hors-babasse-vendredi").button("toggle");
+                        $("#checkbox-hors-babasse-vendredi").addClass("active");
                     if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("samedi"))
-                        $("#checkbox-hors-babasse-samedi").button("toggle");
+                        $("#checkbox-hors-babasse-samedi").addClass("active");
                     if (zifoysParams.MiseHorsBabasseHebdomadaireJours.includes("dimanche"))
-                        $("#checkbox-hors-babasse-dimanche").button("toggle");
+                        $("#checkbox-hors-babasse-dimanche").addClass("active");
                 }
 
                 if (zifoysParams.Snow) {
