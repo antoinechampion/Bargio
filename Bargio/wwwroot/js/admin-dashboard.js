@@ -130,7 +130,7 @@ $(document).ready(function() {
                     }
                 });
 
-                $("#a-bucquage-manuel").click(function() {
+                $("#a-bucquage-manuel").off("click").click(function() {
                     const data = {
                         UserName: userName,
                         Montant: $("#bucquage-montant").val(),
@@ -156,7 +156,7 @@ $(document).ready(function() {
                     });
                 });
 
-                $("#a-confirmer").click(function() {
+                $("#a-confirmer").off("click").click(function() {
                     const data = {
                         UserName: userName,
                         Prenom: $("#prenom").val(),
@@ -189,7 +189,7 @@ $(document).ready(function() {
                     });
                 });
 
-                $("#a-supprimer-mdp").click(function() {
+                $("#a-supprimer-mdp").off("click").click(function() {
                     const data = {
                         UserName: userName
                     };
@@ -223,7 +223,7 @@ $(document).ready(function() {
                     format: "DD-MM-YYYY HH:mm"
                 });
 
-                $("#a-historique").click(function() {
+                $("#a-historique").off("click").click(function() {
                     const debut = $("#timepicker-debut").datetimepicker("viewDate").toISOString();
                     const fin = $("#timepicker-fin").datetimepicker("viewDate").toISOString();
                     $("#table-historique").DataTable({

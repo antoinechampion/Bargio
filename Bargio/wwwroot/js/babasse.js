@@ -404,7 +404,11 @@ $(document).ready(function() {
 
         async function changerInterface(user) {
             $("#username").text(user.UserName);
-            $("#surnom").text(user.Surnom);
+            if (user.Surnom === undefined) {
+                $("#surnom").text("");
+            } else {
+                $("#surnom").text(user.Surnom);
+            }
             $("#solde-actuel").text(user.Solde.toFixed(2).replace(".", ",") + "€");
             $("#solde-en-cours").text("0€");
             bucquageActuel = nouveauBucquage(user);
