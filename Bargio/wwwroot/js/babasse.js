@@ -24,16 +24,16 @@ var zifoysParams = {
 var bcrypt = dcodeIO.bcrypt;
 superLocal.settings.saveType = "greedy";
 
-// Retourne la date et l'heure au format dd-mm-yyyy HH:MM:ss
+// Retourne la date et l'heure au format dd-mm-yyyy-HH-MM-ss
 function dateTimeNow() {
-    return dateFormat(new Date(), "dd-mm-yyyy HH:MM:ss");
+    return dateFormat(new Date(), "dd-mm-yyyy-HH-MM-ss");
 }
 
 // Bargio namespace, système de log
 var bargio = (function() {
     var bargio = {};
 
-    bargio.sessionStarted = dateFormat(new Date(), "dd-mm-yyyy HH-MM-ss");
+    bargio.sessionStarted = dateFormat(new Date(), "dd-mm-yyyy-HH-MM-ss");
 
     bargio.log = function(msg) {
         if (typeof(msg) === "undefined") {

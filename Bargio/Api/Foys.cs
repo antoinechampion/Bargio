@@ -49,10 +49,10 @@ namespace Bargio.Api
 
         [HttpGet("{datetime}")]
         // Retourne la liste des utilisateurs depuis une date indiquée en paramètre
-        // au format dd-MM-yyyy HH:mm:ss
+        // au format dd-MM-yyyy-HH-mm-ss
         public string Get(string datetime) {
             try {
-                var dateTime = DateTime.ParseExact(datetime, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                var dateTime = DateTime.ParseExact(datetime, "dd-MM-yyyy-HH-mm-ss", CultureInfo.InvariantCulture);
                 var userData = _context.UserData.Where(o => o.DateDerniereModif >= dateTime)
                     .Select(o => new {
                         o.UserName, o.HorsFoys, o.ModeArchi, o.Surnom,
@@ -62,7 +62,7 @@ namespace Bargio.Api
                 return JsonConvert.SerializeObject(userData);
             }
             catch (FormatException) {
-                return "Invalid datetime format. Was expecting dd-MM-yyyy HH:mm:ss.";
+                return "Invalid datetime format. Was expecting dd-MM-yyyy-HH-mm-ss.";
             }
         }
 
