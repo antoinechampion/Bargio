@@ -56,7 +56,7 @@ namespace Bargio.Areas.Identity
                     UserName = "admin"
                 };
                 var result = await userManager.CreateAsync
-                    (user, "zifoys");
+                    (user, "zis4lle");
 
                 if (result.Succeeded)
                     await userManager.AddToRoleAsync(user,
@@ -70,7 +70,7 @@ namespace Bargio.Areas.Identity
                     UserName = "babasse"
                 };
                 var result = await userManager.CreateAsync
-                    (user, "zifoys");
+                    (user, "zis4lle");
 
                 if (result.Succeeded)
                     await userManager.AddToRoleAsync(user,

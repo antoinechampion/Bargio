@@ -17,6 +17,16 @@
             <label class="text-success">@Model.SuccessMessage</label>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="UserData.Nom" class="control-label"></label>
+                <input asp-for="UserData.Nom" class="form-control"/>
+                <span asp-validation-for="UserData.Nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserData.Prenom" class="control-label"></label>
+                <input asp-for="UserData.Prenom" class="form-control"/>
+                <span asp-validation-for="UserData.Prenom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="UserData.Solde" class="control-label"></label>
                 <input asp-for="UserData.Solde" class="form-control"/>
                 <span asp-validation-for="UserData.Solde" class="text-danger"></span>
