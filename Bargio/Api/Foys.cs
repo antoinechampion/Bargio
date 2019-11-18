@@ -55,7 +55,7 @@ namespace Bargio.Api
                 var dateTime = DateTime.ParseExact(datetime, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 var userData = _context.UserData.Where(o => o.DateDerniereModif >= dateTime)
                     .Select(o => new {
-                        o.UserName, o.HorsFoys, o.ModeArchi,
+                        o.UserName, o.HorsFoys, o.ModeArchi, o.Surnom,
                         o.Solde, o.FoysApiHasPassword, o.FoysApiPasswordHash, 
                         o.FoysApiPasswordSalt, o.CompteVerrouille
                     }).ToList();

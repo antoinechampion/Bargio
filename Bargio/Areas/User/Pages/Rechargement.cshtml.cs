@@ -39,18 +39,19 @@ namespace Bargio.Areas.User.Pages
             _clientFactory = clientFactory;
             _context = context;
             _userManager = userManager;
-            // En fonction de l'environnement, on charge les donnees de test ou de production
-            _lydiaVendorToken = env.IsDevelopment() && !ForceProductionApi
-                ? "5bd083bec025c852794717"
-                : "5774f7d9df76f082807252";
-            _lydiaApiUrl = env.IsDevelopment() & !ForceProductionApi
-                ? "https://homologation.lydia-app.com/api/request/do.json"
-                : "https://lydia-app.com/api/request/do.json";
 
             var systemParameters = _context.SystemParameters.First();
             CommissionLydiaVariable = systemParameters.CommissionLydiaVariable;
             CommissionLydiaFixe = systemParameters.CommissionLydiaFixe;
             MinimumRechargementLydia = systemParameters.MinimumRechargementLydia;
+
+            // En fonction de l'environnement, on charge les donnees de test ou de production
+            _lydiaVendorToken = env.IsDevelopment() && !ForceProductionApi
+                ? "5bd083bec025c852794717"
+                : systemParameters.LydiaToken;
+            _lydiaApiUrl = env.IsDevelopment() & !ForceProductionApi
+                ? "https://homologation.lydia-app.com/api/request/do.json"
+                : "https://lydia-app.com/api/request/do.json";
         }
 
         [BindProperty]

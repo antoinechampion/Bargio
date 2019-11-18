@@ -181,7 +181,11 @@ $(document).ready(function() {
     }
 
     function isHorsFoys(user) {
-        return user.HorsFoys || user.CompteVerrouille;
+        return user.HorsFoys;
+    }
+
+    function isVerouille(user) {
+        return user.CompteVerrouille;
     }
 
     // Mises à jour asynchrones
@@ -400,7 +404,11 @@ $(document).ready(function() {
 
         async function changerInterface(user) {
             $("#username").text(user.UserName);
-            $("#surnom").text(user.Surnom);
+            if (user.Surnom === undefined) {
+                $("#surnom").text("");
+            } else {
+                $("#surnom").text(user.Surnom);
+            }
             $("#solde-actuel").text(user.Solde.toFixed(2).replace(".", ",") + "€");
             $("#solde-en-cours").text("0€");
             bucquageActuel = nouveauBucquage(user);
@@ -487,6 +495,17 @@ $(document).ready(function() {
                 window.setTimeout(function() {
                         $("#ui-hors-truc").slideUp(200);
                     },
+                    2000);
+                return;
+            } else if (isVerouille(user)) {
+                $("#hors-babasse-solde").text(user.Solde);
+                $("#message-hors-truc").text("Ton compte est verouillé.");
+                $("#ui-hors-truc").slideDown(200);
+                $("#inputNumss").val("");
+                $("#inputNumss").focus();
+                window.setTimeout(function () {
+                    $("#ui-hors-truc").slideUp(200);
+                },
                     2000);
                 return;
             } else {

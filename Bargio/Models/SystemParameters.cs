@@ -20,6 +20,9 @@ namespace Bargio.Models
         [DisplayName("Bloquer les rechargements en ligne")]
         public bool LydiaBloque { get; set; }
 
+        [DisplayName("Token d'API Lydia (ne pas toucher si vous savez pas ce que c'est)")]
+        public string LydiaToken { get; set; }
+
         [DisplayName("Taux de commission variable lydia (%)")]
         [Range(0, 100, ErrorMessage = "On te demande un pourcentage trou de zizi")]
         public decimal CommissionLydiaVariable { get; set; }

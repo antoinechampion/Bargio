@@ -14,85 +14,90 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="SystemParameters.Id"/>
+            <input type="hidden" asp-for="SystemParameters.Id" />
             <div class="form-group">
                 <label asp-for="SystemParameters.DerniereConnexionBabasse" class="control-label"></label>
-                <input asp-for="SystemParameters.DerniereConnexionBabasse" class="form-control"/>
+                <input asp-for="SystemParameters.DerniereConnexionBabasse" class="form-control" />
                 <span asp-validation-for="SystemParameters.DerniereConnexionBabasse" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="SystemParameters.LydiaBloque"/> @Html.DisplayNameFor(model => model.SystemParameters.LydiaBloque)
+                        <input asp-for="SystemParameters.LydiaBloque" /> @Html.DisplayNameFor(model => model.SystemParameters.LydiaBloque)
                     </label>
                 </div>
             </div>
             <div class="form-group">
+                <label asp-for="SystemParameters.LydiaToken" class="control-label"></label>
+                <input asp-for="SystemParameters.LydiaToken" class="form-control" />
+                <span asp-validation-for="SystemParameters.LydiaToken" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="SystemParameters.CommissionLydiaVariable" class="control-label"></label>
-                <input asp-for="SystemParameters.CommissionLydiaVariable" class="form-control"/>
+                <input asp-for="SystemParameters.CommissionLydiaVariable" class="form-control" />
                 <span asp-validation-for="SystemParameters.CommissionLydiaVariable" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SystemParameters.CommissionLydiaFixe" class="control-label"></label>
-                <input asp-for="SystemParameters.CommissionLydiaFixe" class="form-control"/>
+                <input asp-for="SystemParameters.CommissionLydiaFixe" class="form-control" />
                 <span asp-validation-for="SystemParameters.CommissionLydiaFixe" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SystemParameters.MinimumRechargementLydia" class="control-label"></label>
-                <input asp-for="SystemParameters.MinimumRechargementLydia" class="form-control"/>
+                <input asp-for="SystemParameters.MinimumRechargementLydia" class="form-control" />
                 <span asp-validation-for="SystemParameters.MinimumRechargementLydia" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="SystemParameters.Maintenance"/> @Html.DisplayNameFor(model => model.SystemParameters.Maintenance)
+                        <input asp-for="SystemParameters.Maintenance" /> @Html.DisplayNameFor(model => model.SystemParameters.Maintenance)
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="SystemParameters.MiseHorsBabasseAutoActivee"/> @Html.DisplayNameFor(model => model.SystemParameters.MiseHorsBabasseAutoActivee)
+                        <input asp-for="SystemParameters.MiseHorsBabasseAutoActivee" /> @Html.DisplayNameFor(model => model.SystemParameters.MiseHorsBabasseAutoActivee)
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="SystemParameters.MiseHorsBabasseSeuil" class="control-label"></label>
-                <input asp-for="SystemParameters.MiseHorsBabasseSeuil" class="form-control"/>
+                <input asp-for="SystemParameters.MiseHorsBabasseSeuil" class="form-control" />
                 <span asp-validation-for="SystemParameters.MiseHorsBabasseSeuil" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="SystemParameters.MiseHorsBabasseInstantanee"/> @Html.DisplayNameFor(model => model.SystemParameters.MiseHorsBabasseInstantanee)
+                        <input asp-for="SystemParameters.MiseHorsBabasseInstantanee" /> @Html.DisplayNameFor(model => model.SystemParameters.MiseHorsBabasseInstantanee)
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="SystemParameters.MiseHorsBabasseQuotidienne"/> @Html.DisplayNameFor(model => model.SystemParameters.MiseHorsBabasseQuotidienne)
+                        <input asp-for="SystemParameters.MiseHorsBabasseQuotidienne" /> @Html.DisplayNameFor(model => model.SystemParameters.MiseHorsBabasseQuotidienne)
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="SystemParameters.MiseHorsBabasseQuotidienneHeure" class="control-label"></label>
-                <input asp-for="SystemParameters.MiseHorsBabasseQuotidienneHeure" class="form-control"/>
+                <input asp-for="SystemParameters.MiseHorsBabasseQuotidienneHeure" class="form-control" />
                 <span asp-validation-for="SystemParameters.MiseHorsBabasseQuotidienneHeure" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SystemParameters.MiseHorsBabasseHebdomadaireJours" class="control-label"></label>
-                <input asp-for="SystemParameters.MiseHorsBabasseHebdomadaireJours" class="form-control"/>
+                <input asp-for="SystemParameters.MiseHorsBabasseHebdomadaireJours" class="form-control" />
                 <span asp-validation-for="SystemParameters.MiseHorsBabasseHebdomadaireJours" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SystemParameters.MiseHorsBabasseHebdomadaireHeure" class="control-label"></label>
-                <input asp-for="SystemParameters.MiseHorsBabasseHebdomadaireHeure" class="form-control"/>
+                <input asp-for="SystemParameters.MiseHorsBabasseHebdomadaireHeure" class="form-control" />
                 <span asp-validation-for="SystemParameters.MiseHorsBabasseHebdomadaireHeure" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SystemParameters.MotDePasseZifoys" class="control-label"></label>
-                <input asp-for="SystemParameters.MotDePasseZifoys" class="form-control"/>
+                <input asp-for="SystemParameters.MotDePasseZifoys" class="form-control" />
                 <span asp-validation-for="SystemParameters.MotDePasseZifoys" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -108,12 +113,12 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="SystemParameters.Snow"/> @Html.DisplayNameFor(model => model.SystemParameters.Snow)
+                        <input asp-for="SystemParameters.Snow" /> @Html.DisplayNameFor(model => model.SystemParameters.Snow)
                     </label>
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default"/>
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
     </div>

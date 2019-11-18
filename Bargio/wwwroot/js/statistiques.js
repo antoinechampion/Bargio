@@ -186,7 +186,7 @@
 
     // Gestion des event (plage de temps consommation)
     (() => {
-        $("#timepicker-conso").on("change.datetimepicker",
+        $("#timepicker-conso").off("change.datetimepicker").on("change.datetimepicker",
             function(e) {
                 var chosenDate = $("#timepicker-conso").datetimepicker("viewDate");
 
