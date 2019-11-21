@@ -27,6 +27,8 @@ namespace Bargio.Api
     [Route("api/[controller]")]
     public class FoysController : Controller
     {
+        private const string DateTimeFormat = "dd-MM-yyyy-HH-mm-ss";
+
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUserDefaultPwd> _userManager;
 
@@ -52,7 +54,7 @@ namespace Bargio.Api
         // au format dd-MM-yyyy-HH-mm-ss
         public string Get(string datetime) {
             try {
-                var dateTime = DateTime.ParseExact(datetime, "dd-MM-yyyy-HH-mm-ss", CultureInfo.InvariantCulture);
+                var dateTime = DateTime.ParseExact(datetime, DateTimeFormat, CultureInfo.InvariantCulture);
                 var userData = _context.UserData.Where(o => o.DateDerniereModif >= dateTime)
                     .Select(o => new {
                         o.UserName, o.HorsFoys, o.ModeArchi, o.Surnom,
@@ -62,7 +64,7 @@ namespace Bargio.Api
                 return JsonConvert.SerializeObject(userData);
             }
             catch (FormatException) {
-                return "Invalid datetime format. Was expecting dd-MM-yyyy-HH-mm-ss.";
+                return "Invalid datetime format. Was expecting " + DateTimeFormat;
             }
         }
 
@@ -76,7 +78,7 @@ namespace Bargio.Api
                 .Select(o => new {
                     o.Commentaire,
                     o.Montant,
-                    Date = o.Date.ToString("dd/MM HH:mm")
+                    Date = o.Date.ToString(DateTimeFormat)
                 })
                 .ToList();
             return JsonConvert.SerializeObject(history);
@@ -87,7 +89,7 @@ namespace Bargio.Api
         // Méthode post qui reçoit l'historique local de la babasse et le
         // fusionne avec celui du serveur
         public JsonResult PostHistory(string json) {
-            var dateTimeFormat = "dd-MM-yyyy HH:mm:ss"; // your datetime format
+            var dateTimeFormat = DateTimeFormat; // your datetime format
             var dateTimeConverter = new IsoDateTimeConverter {DateTimeFormat = dateTimeFormat};
             List<TransactionHistory> transactionHistory;
             // Gestion d'exception à améliorer

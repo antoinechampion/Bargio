@@ -63,6 +63,7 @@ namespace Bargio.Areas.Admin.Pages.EditDatabase.Utilisateurs
 
             UserData.UserName = UserData.Nums + UserData.TBK + UserData.Proms;
             UserData.FoysApiHasPassword = false;
+            UserData.DateDerniereModif = DateTime.Now;
 
             if (!ModelState.IsValid) return Page();
 
