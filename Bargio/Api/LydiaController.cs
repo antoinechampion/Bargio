@@ -29,6 +29,7 @@ namespace Bargio.Api
         [Route("api/[controller]/confirm")]
         [HttpPost]
         public string Confirm(string order_ref) {
+            Console.WriteLine("Confirm order for order_ref '" + (order_ref ?? "") + "'");
             var request = _context.PaymentRequest.Find(order_ref);
             if (request == null)
                 return "Cette demande de paiement (" + order_ref + ") n'existe pas";
