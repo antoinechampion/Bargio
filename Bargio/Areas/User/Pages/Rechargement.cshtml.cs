@@ -86,7 +86,7 @@ namespace Bargio.Areas.User.Pages
             var msg = "";
             try {
                 var req = Url.ActionContext.HttpContext.Request;
-                var absoluteUri = req.Scheme + "://" + req.Host;
+                var absoluteUri = "https://foys.fr";
 
                 var postData = new LydiaRequestData {
                     VendorToken = _lydiaVendorToken,
