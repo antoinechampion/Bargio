@@ -25,7 +25,7 @@ namespace Bargio.Areas.User.Pages
 {
     public class RechargementModel : PageModel
     {
-        // Active l'API de test de lydia même sur le site en ligne
+        // Active l'API de test de lydia mÃªme sur le site en ligne
         private const bool ForceProductionApi = true;
         private readonly ApplicationDbContext _context;
         private readonly IHttpClientFactory _clientFactory;
@@ -58,13 +58,13 @@ namespace Bargio.Areas.User.Pages
         [Required]
         [Range(1, double.PositiveInfinity, ErrorMessage = "Veuillez entrer un solde correct")]
         [DataType(DataType.Currency, ErrorMessage = "Veuillez entrer un solde correct")]
-        [Display(Name = "Montant en €")]
+        [Display(Name = "Montant en â‚¬")]
         public string Montant { get; set; }
 
         [BindProperty]
         [Required]
-        [DataType(DataType.PhoneNumber, ErrorMessage = "Veuillez entrer un numéro de téléphone valide")]
-        [Display(Name = "N° de téléphone")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Veuillez entrer un numÃ©ro de tÃ©lÃ©phone valide")]
+        [Display(Name = "NÂ° de tÃ©lÃ©phone")]
         public string Telephone { get; set; }
 
         [BindProperty] public decimal SoldeActuel { get; set; }
@@ -79,14 +79,14 @@ namespace Bargio.Areas.User.Pages
 
         [BindProperty] public decimal MinimumRechargementLydia { get; set; }
 
-        // Si succès, retourne (true, url_de_paiement), sinon retourne (false, msg_erreur)
+        // Si succÃ¨s, retourne (true, url_de_paiement), sinon retourne (false, msg_erreur)
         // Passage en prod : changer PublicTestToken en PublicToken, changer testApiUrl en apiUrl
         // https://homologation.lydia-app.com/index.php/backoffice/request/index
         public async Task<(bool, string)> LydiaInitiatePayment(string id, decimal montantPaye) {
             var msg = "";
             try {
                 var req = Url.ActionContext.HttpContext.Request;
-                var absoluteUri = "https://foys.fr";
+                var absoluteUri = "https://" + req.Host;
 
                 var postData = new LydiaRequestData {
                     VendorToken = _lydiaVendorToken,
@@ -138,7 +138,7 @@ namespace Bargio.Areas.User.Pages
             }
             if (statut == "succes") {
                 ClasseTexteStatut = "text-success";
-                StatutPaiement = "Paiement effectué";
+                StatutPaiement = "Paiement effectuÃ©";
             }
             else if (statut == "echec") {
                 ClasseTexteStatut = "text-danger";
@@ -164,7 +164,7 @@ namespace Bargio.Areas.User.Pages
             var minimumRechargement = _context.SystemParameters.First().MinimumRechargementLydia;
             if (decimalMontant < minimumRechargement) {
                 ModelState.AddModelError(string.Empty,
-                    "Le minimum de rechargement est de " + minimumRechargement + "€.");
+                    "Le minimum de rechargement est de " + minimumRechargement + "â‚¬.");
                 return Page();
             }
 
@@ -181,7 +181,7 @@ namespace Bargio.Areas.User.Pages
             // API public key
             [JsonProperty("vendor_token")] public string VendorToken { get; set; }
 
-            // N° Tel
+            // NÂ° Tel
             [JsonProperty("recipient")] public string Recipient { get; set; }
 
             // Message de demande
@@ -205,13 +205,13 @@ namespace Bargio.Areas.User.Pages
             // Methode de paiement (CB interdites)
             [JsonProperty("payment_method")] public string PaymentMethod { get; } = "lydia";
 
-            // Callback côté serveur si le paiement est reussi
+            // Callback cÃ´tÃ© serveur si le paiement est reussi
             [JsonProperty("confirm_url")] public string ConfirmUrl { get; set; }
 
-            // Callback côté serveur si le paiement a été annulé
+            // Callback cÃ´tÃ© serveur si le paiement a Ã©tÃ© annulÃ©
             [JsonProperty("cancel_url")] public string CancelUrl { get; set; }
 
-            // Callback côté serveur si le paiement a expiré
+            // Callback cÃ´tÃ© serveur si le paiement a expirÃ©
             [JsonProperty("expire_url")] public string ExpireUrl { get; set; }
 
             // Url de redirection pour mobiles
@@ -220,7 +220,7 @@ namespace Bargio.Areas.User.Pages
             // Url de redirection pour le web
             [JsonProperty("browser_success_url")] public string BrowserSuccessUrl { get; set; }
 
-            // Url de redirection pour le web en cas d'échec
+            // Url de redirection pour le web en cas d'Ã©chec
             [JsonProperty("browser_fail_url")] public string BrowserFailUrl { get; set; }
 
             // Renvoyer directement l'url de paiement
