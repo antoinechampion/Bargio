@@ -103,7 +103,16 @@ namespace Bargio.Areas.User.Pages
                 var json = JsonConvert.SerializeObject(postData);
                 var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
                 var content = new FormUrlEncodedContent(dict);
-                var client = new HttpClient();
+
+                var httpClientHandler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback =
+                        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                };
+                // Return `true` to allow certificates that are untrusted/invalid
+
+                var client = new HttpClient(httpClientHandler);
+
                 var resp = await client.PostAsync(_lydiaApiUrl, content);
                 msg += "Got resp\n";
                 dynamic o = JsonConvert.DeserializeObject(await resp.Content.ReadAsStringAsync());
