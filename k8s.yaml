@@ -21,6 +21,18 @@ spec:
         ports:
         - containerPort: 80
           name: http
+        volumeMounts:
+        - name: appsettings
+          mountPath: /app/appsettings.json
+          subPath: appsettings.json
+          readOnly: true
+      volumes:
+      - name: appsettings
+        secret:
+          secretName: bargio-appsettings
+          items:
+          - key: appsettings.json
+            path: appsettings.json
       imagePullSecrets:
         - name: scaleway-cr
 ---
