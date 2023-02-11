@@ -13,8 +13,6 @@ FROM build AS publish
 RUN dotnet publish "Bargio/Bargio.csproj" -c Release -o /app/publish
 
 FROM base AS final
-ARG CONNECTION_STRING_DB
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN sed -i "s/\"DefaultConnection\": \"\"/\"DefaultConnection\": \"${CONNECTION_STRING_DB}\"/g" appsettings.json
 ENTRYPOINT ["dotnet", "Bargio.dll"]
